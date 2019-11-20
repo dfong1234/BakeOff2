@@ -1,0 +1,100 @@
+<!-- ..............................................................................
+  preference.html
+  	Markup for preference page of BakeOff2:
+    Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+    Date Created: 10/15/2019
+    Last Modified: 10/23/2019
+  	 .............................................................................. -->	
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+        <title>BakeOff #2 - Diet Preference</title>
+    </head>
+
+    <body>
+        <header>
+            <div id="Preference" class="tabcontent">
+                <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
+            </div>
+            
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
+        </header>
+
+        <div> 
+        <label id = "age"> Age Group: (select one) </label> 
+            <select name = "Age Group">
+                <option value = "Select"> Select </option>
+                <option value = "0-3"> 0-3 </option>
+                <option value = "3-10"> 3-10 </option>
+                <option value = "10-20"> 10-20 </option>
+                <option value = "20-35"> 20-35 </option>
+                <option value = "35-50"> 35-50 </option>
+                <option value = "50-65"> 50-65 </option>
+                <option value = "65+"> 65+ </option>
+            </select>
+        </div>
+
+        <br>
+        <div>
+            <label> Sex </label>
+                <select name = "Gender">
+                    <option value = "Select"> Select </option>
+                    <option value = "Male"> Male </option>
+                    <option value = "Female"> Female </option>
+                </select>
+        </div>
+
+
+        <br>
+        <div>
+            <label> Height (cms) </label>
+                <input type = "number" name = "height">
+        </div>
+
+
+        <br>
+        <div>
+            <label> Weight (kgs) </label>
+                <input type = "number" name = "weight">
+        </div>
+
+
+        <br>
+        <div>
+            <label> Dietary Preferences </label>
+                <select name = "Vegetarian?">
+                    <option value = "Select"> Select </option>
+                    <option value = "Vegetarian"> Vegetarian </option>
+                    <option value = "Vegetarian + Dairy"> Vegetarian </option>
+                    <option value = "Non-Vegetarian"> Non Vegetarian </option>
+                </select>
+        </div>
+
+        <br>
+        <div>
+            <label> Allergy </label>
+                <input type = "text" name = "allergy">
+        </div>
+
+
+
+        
+        <!-- my own or 3rd party library -->
+
+
+        <!-- Online library -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+
+        <!-- Project-specific Library -->
+        <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
+        <script type="text/javascript" src="/static/bakeoff2.preference.js"></script>
+
+    </body>
+</html>
+       

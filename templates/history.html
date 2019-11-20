@@ -1,0 +1,66 @@
+<!-- ..............................................................................
+  history.html
+  	Markup for history page of BakeOff2:
+    Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+    Date Created: 10/15/2019
+    Last Modified: 10/23/2019
+  	 .............................................................................. -->	
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <title>BakeOff #2 - Meal History</title>
+    </head>
+
+    <body>
+        <header>
+            <div id="History" class="tabcontent">
+                <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
+            </div>
+            
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
+        </header>
+        <p>Date: <input type="text" id="datepicker"></p>
+        <button type="submit" id="b_load"><i class="fa fa-search"></i></button>
+        <div id="Breakfast" class="meal">
+            <h3>Breakfast</h3>
+            <ul id="b_list" class="food_list">
+            </ul>
+        </div>
+
+        <div id="Lunch" class="meal">
+            <h3>Lunch</h3>
+            <ul id="l_list" class="food_list">
+            </ul>
+        </div>
+
+        <div id="Dinner" class="meal">
+            <h3>Dinner</h3>
+            <ul id="d_list" class="food_list">
+            </ul>
+        </div>
+
+
+        <!-- Online library -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+        $( function() {
+          $( "#datepicker" ).datepicker();
+        } );
+        </script>
+
+        <!-- Project-specific Library -->
+        <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
+        <script type="text/javascript" src="/static/bakeoff2.history.js"></script>
+
+    </body>
+</html>
+       

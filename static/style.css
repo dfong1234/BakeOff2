@@ -1,0 +1,98 @@
+/*	................................................................................
+ *  style.css
+ *	Style Sheet for BakeOff2:
+ *  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+ *  Date Created: 10/15/2019
+ *  Last Modified: 10/23/2019
+ *	................................................................................
+ */
+/* --- head CSS setting --- */
+head {
+  background-color: lightgray; 
+  font-weight: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url('assets/food-vector-pattern.jpg');
+  background-size: 400px;
+}
+
+/* --- body CSS setting --- */
+body {
+  background-color: lightgray; 
+  font-weight: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: url('assets/food-vector-pattern.jpg');
+  background-size: 400px;
+
+}
+    
+
+/* Style the tab buttons */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 15px;
+  font-size: 16px;
+  width: 25%;
+}
+
+/* Change background color of buttons on hover */
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Set default styles for tab content */
+.tabcontent {
+  color: white;
+  display: none;
+  margin-bottom: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Style each tab content individually */
+#Food {background-color:tomato;}
+#History {background-color:orange;}
+#Track {background-color:lightseagreen;}
+#Preference {background-color:dodgerblue;}
+
+.topnav .search-container {
+  text-align: center;
+}
+
+.topnav input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+}
+
+.topnav .search-container button {
+  text-align: center;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container select {
+  text-align: center;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.topnav .search-container button:hover {
+  background: #ccc;
+  background-image: url('../assets/search-icon.png');
+
+}
