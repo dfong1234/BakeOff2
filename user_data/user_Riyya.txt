@@ -1,5 +1,1 @@
-{"user": "Riyya", 
-"11/20/2019": {"Breakfast": ["Piiza", "asdf", "asdfasdfasdfasd", "Hello", "Chicken", "Rice"], "Lunch": ["asdf"], "Dinner": ["asdf2222", "what"]}, 
-"11/23/2019": {"Breakfast": ["Chicken", "Rice", "Rice"], "Lunch": [], "Dinner": []}, 
-"": {"Breakfast": ["Chicken", "Chicken", "Rice"], "Lunch": ["Chicken"], "Dinner": ["Rice", "Rice"]}
-}
+{"user": "Daniel", "Breakfast": ["Piiza"], "Lunch": [], "Dinner": [], "test": "helllp"}

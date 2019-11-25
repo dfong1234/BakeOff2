@@ -1,95 +1,95 @@
 <!-- ..............................................................................
     index.html
-    Markup for index page of BakeOff2:
+  	Markup for index page of BakeOff2:
     Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
     Date Created: 10/15/2019
     Last Modified: 10/23/2019
-     .............................................................................. --> 
+  	 .............................................................................. -->	
 <!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/style.css">
+        <!-- https://fontawesome.com/ -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
         <title>BakeOff #2 - Food Identification</title>
     </head>
+
     <body>
         <header>
             <div id="Food" class="tabcontent">
                 <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
             </div>
-            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
-            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
-            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
         </header>
-        <div class="topnav">
-            <div class="search-container">
-                <input type="text" placeholder="Search.." name="search" id="search">
-                <select id="meal_time">
-                    <option value="Breakfast"> Breakfast </option>
-                    <option value="Lunch"> Lunch </option>
-                    <option value="Dinner"> Dinner </option>
-                </select>
-                <input type="text" placeholder="Date" id="datepicker">
-                <button type="submit" id="b_search"><i class="fa fa-search"></i></button>
-            </div>
+
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
+        </nav>
+     
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="search-alert">
+                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+        <div class="search-container">
+            <input id="search-keyword" type="text" placeholder="Search">
+            <button type="submit" id="search-icon"><i class="fa fa-search"></i></button>
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+        <div class="food-fact-container">
+            <label>Food:</label>
+            <input id="food-name" type = "text" readonly>
+
+            <label>When:</label>
+            <select id="meal-time">
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+            </select>
+
+            <button type="submit" id="food_add_icon"><i class="fa fa-plus"></i></button>
+
+            <table id="food-fact">
+                    <tr>
+                      <th>Nutrient Name</th>
+                      <th>Amount</th>
+                      <th>Unit</th>
+                    </tr>
+            </table>
         </div> 
-        <table id="table_search" class="display">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Carbohydrates</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Chicken</td>
-                    <td>20g</td>
-                    <td>10g</td>
-                    <td>0g</td>
-                    <th></th>
-                </tr>
-                <tr>
-                    <td>Rice</td>
-                    <td>0g</td>
-                    <td>0g</td>
-                    <td>20g</td>
-                    <th></th>
-                </tr>
-            </tbody>
-        </table>
+        
+
+
+
+
+
+
+
+    
+        <!-- my own or 3rd party library -->
 
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-        $( function() {
-          $( "#datepicker" ).datepicker();
-        } );
-        </script>
-        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-        <script>
-        $(document).ready( function () {
-            $('#table_search').DataTable({
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_food\">Add</button>"
-                }],
-                "searching": false
-            });
-        });
-        </script>
+
+        <script type="text/JavaScript" src="/static/fetchData.js"></script>
+        <script type="text/JavaScript" src="/static/autocomplete.js"></script>
+        <script type="text/JavaScript" src="/static/userhandler.js"></script>
+
 
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
         <script type="text/javascript" src="/static/bakeoff2.index.js"></script>
+
+
     </body>
 </html>

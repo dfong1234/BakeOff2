@@ -1,0 +1,98 @@
+/* --- user fields [Raw Input Data] ---*/
+{
+   "firstName" : "foo",
+   "lastName" : "bar",
+   "age" :  30,  // in years (integer)
+   "sex" :  "male",
+   "height": "1.8",  // in m
+   "weight": "60",   // in kg
+   "activity level":  "sedentary"  // see Activity level reference 
+};
+
+/* use fields Note:
+ * Activity level: https://www.nap.edu/read/11537/chapter/8#84
+ */ 
+
+
+
+/* --- user Dietary Reference Intake fields [Computed Input Data] ---*/
+{
+   "firstName" : "foo",
+   "lastName" : "bar",
+   "day_calories" : 2000,  // in kcal
+   "day_carbohydrate" : 130,  // in g
+   "day_protein" : 56,  // in g
+   "day_fat" : 27,  // in g
+   ...
+};
+
+/* Dietary Reference Intake Note:
+ * All:
+ * https://www.nap.edu/read/10490/chapter/32#1326
+ * Calories: 
+ * https://www.nap.edu/read/11537/chapter/8
+ * https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5537539/
+ * 
+ * carbohydrate, protein, fat: 
+ * http://nationalacademies.org/HMD/Activities/Nutrition/SummaryDRIs/DRI-Tables.aspx
+ * http://nationalacademies.org/hmd/~/media/Files/Report%20Files/2019/DRI-Tables-2019/3_RDAAITWM.pdf?la=en
+ * http://www.nationalacademies.org/hmd/~/media/Files/Activity%20Files/Nutrition/DRI-Tables/8_Macronutrient%20Summary.pdf 
+ *
+ * vitamins and ions:
+ * http://nationalacademies.org/HMD/Activities/Nutrition/SummaryDRIs/DRI-Tables.aspx
+ * http://nationalacademies.org/hmd/~/media/Files/Report%20Files/2019/DRI-Tables-2019/1_EARV.pdf?la=en
+ *
+ */
+
+
+
+/* --- food fields [Raw Input Data] ---*/
+{
+   "name" : "apple",
+   "served_size" :  90 // in g
+};
+
+/* food fields Note:
+ * if solid food, use gram(g) as the standard serving unit
+ * if liquid food, use mililiter(ml) as the standard serving unit
+ */
+
+
+
+/* --- food facts fields [Fact information] ---*/
+{
+   "name" : "apple",
+   "group" : "fruit"
+   "fact_unit_serving_size" : 100,  // in g, ml, etc.
+   "fact_calories" :  30.00,  // in kcal
+   "fact_carbohydrate" :  11.67,  // in g
+   "fact_protein" :  0.00 ,  // in g
+   "fact_fat" :  0.00,  // in g
+   "fact_vitamin_C" :  32.50,  // in mg
+   ...
+};
+
+/* food fields Note:
+ * apple example: https://fdc.nal.usda.gov/fdc-app.html#/food-details/559734/nutrients
+ * food group: https://www.usda.gov/media/blog/2017/09/26/back-basics-all-about-myplate-food-groups
+ */
+
+
+
+ /* --- food comsuned fields [Computed Input Data] ---*/
+{
+   "name" : "apple",
+   "group" : "fruit"
+   "intake_calories" :  27,  // in kcal
+   "intake_carbohydrate" : 10.50,  // in g
+   "intake_protein" :  0.00,  // in g
+   "intake_fat" :  0.00,  // in g
+   "intake_vitamin_C" :  29.25,  // in mg
+   ...
+};
+
+/* food comsuned fields Note:
+ * apple example: https://fdc.nal.usda.gov/fdc-app.html#/food-details/559734/nutrients
+ * food group: https://www.usda.gov/media/blog/2017/09/26/back-basics-all-about-myplate-food-groups
+ */
+

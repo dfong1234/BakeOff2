@@ -10,3 +10,36 @@ var tabName = 'Preference';
 var color = 'dodgerblue';
 
 openTab(tabName, color) 
+
+
+
+
+
+
+
+
+
+/*  ---  ---  */
+
+// --- Label Initialization ---
+
+
+// --- Variables ---
+
+
+
+// --- Subroutine Functions ---
+
+
+// --- In-Use ---
+
+
+/*  ---  ---  */
+
+
+// --- Variables ---
+
+// --- Subroutine Functions ---
+
+
+// --- In-Use ---
