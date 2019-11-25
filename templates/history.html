@@ -26,9 +26,13 @@
             <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
             <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
             <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
+            <br>
         </header>
-        <p>Date: <input type="text" id="datepicker"></p>
+
+        <h2> Date: <input type="text" id="datepicker"> 
         <button type="submit" id="b_load"><i class="fa fa-search"></i></button>
+        </h2>
+        
         <div id="Breakfast" class="meal">
             <h3>Breakfast</h3>
             <ul id="b_list" class="food_list">
@@ -112,6 +116,7 @@
 
                 </tr>
             </thead>
+            <!-- Placeholder Data -->
             <tbody>
                 <tr>
                     <td>Row 1 Data 1</td>
@@ -147,16 +152,16 @@
         <script>
         $(document).ready( function () {
             $('table.display').DataTable({
-                "columnDefs": [ {
+                "columnDefs": [{
                     "targets": -1,
                     "data": null,
                     "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>",
-                } ],
+                }],
                 "searching": false,
                 "paging": false,
                 "info": false
-
-            });
+            })  //Default clear the table until filled
+            .clear().draw();
         });
         </script>
 
