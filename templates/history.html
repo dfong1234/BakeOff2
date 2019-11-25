@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="/static/style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
         <title>BakeOff #2 - Meal History</title>
     </head>
 
@@ -32,20 +33,105 @@
             <h3>Breakfast</h3>
             <ul id="b_list" class="food_list">
             </ul>
+            <table id="breakfast_table" class="display">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Protein</th>
+                    <th>Fat</th>
+                    <th>Carbohydrates</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <td>Row 1 Data 3</td>
+                    <td>Row 1 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                    <td>Row 2 Data 3</td>
+                    <td>Row 2 Data 4</td>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
         </div>
 
         <div id="Lunch" class="meal">
             <h3>Lunch</h3>
             <ul id="l_list" class="food_list">
             </ul>
+            <table id="lunch_table" class="display">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Protein</th>
+                    <th>Fat</th>
+                    <th>Carbohydrates</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <td>Row 1 Data 3</td>
+                    <td>Row 1 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                    <td>Row 2 Data 3</td>
+                    <td>Row 2 Data 4</td>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
         </div>
 
         <div id="Dinner" class="meal">
             <h3>Dinner</h3>
             <ul id="d_list" class="food_list">
             </ul>
+            <table id="dinner_table" class="display">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Protein</th>
+                    <th>Fat</th>
+                    <th>Carbohydrates</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <td>Row 1 Data 3</td>
+                    <td>Row 1 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                    <td>Row 2 Data 3</td>
+                    <td>Row 2 Data 4</td>
+                    <th></th>
+                </tr>
+            </tbody>
+            </table>
         </div>
 
+       
 
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -55,6 +141,33 @@
         $( function() {
           $( "#datepicker" ).datepicker();
         } );
+        </script>
+
+        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script>
+        $(document).ready( function () {
+            $('#breakfast_table').DataTable({
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
+                } ]
+            });
+            $('#lunch_table').DataTable({
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
+                } ]
+            });
+            $('#dinner_table').DataTable({
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
+                } ]
+            });
+        });
         </script>
 
         <!-- Project-specific Library -->
