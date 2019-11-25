@@ -42,7 +42,6 @@ $("#table_breakfast tbody").on('click', 'button', function () {
         "meal": "Breakfast",
         "date": $("#datepicker").val()
     };
-    alert("WABBADUBDUB");
     $("#table_breakfast").DataTable().row($(this).parents('tr')).remove().draw();
     $.ajax({
         url: "/food-log",

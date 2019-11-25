@@ -6,12 +6,13 @@
 //  Last Modified: 10/23/2019
 //	................................................................................
 
+let searchParams = new URLSearchParams(window.location.search)
 
 function changeTab(tabName, color) {
-    if (tabName == 'Food') window.location.href = 'index.html';
-    if (tabName == 'History') window.location.href = 'history.html';
-    if (tabName == 'Track') window.location.href = 'track.html';
-    if (tabName == 'Preference') window.location.href = 'preference.html';
+    if (tabName == 'Food') window.location.href = 'index.html' + window.location.search;
+    if (tabName == 'History') window.location.href = 'history.html' + window.location.search;
+    if (tabName == 'Track') window.location.href = 'track.html' + window.location.search;
+    if (tabName == 'Preference') window.location.href = 'preference.html' + window.location.search;
 }
 
 function openTab(cityName, color) {
