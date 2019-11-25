@@ -146,26 +146,16 @@
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script>
         $(document).ready( function () {
-            $('#breakfast_table').DataTable({
+            $('table.display').DataTable({
                 "columnDefs": [ {
                     "targets": -1,
                     "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
-                } ]
-            });
-            $('#lunch_table').DataTable({
-                "columnDefs": [ {
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
-                } ]
-            });
-            $('#dinner_table').DataTable({
-                "columnDefs": [ {
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>"
-                } ]
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Delete</i></button>",
+                } ],
+                "searching": false,
+                "paging": false,
+                "info": false
+
             });
         });
         </script>
