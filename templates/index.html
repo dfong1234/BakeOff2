@@ -28,7 +28,6 @@
             <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
         </header>
 
-
         <div class="topnav">
             <div class="search-container">
                 <input type="text" placeholder="Search.." name="search" id="search">
@@ -42,7 +41,7 @@
             </div>
         </div> 
 
-        <table id="table_id" class="display">
+        <table id="table_search" class="display">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -55,17 +54,17 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Row 1 Data 1</td>
-                    <td>Row 1 Data 2</td>
-                    <td>Row 1 Data 3</td>
-                    <td>Row 1 Data 4</td>
+                    <td>Chicken</td>
+                    <td>20g</td>
+                    <td>10g</td>
+                    <td>0g</td>
                     <th></th>
                 </tr>
                 <tr>
-                    <td>Row 2 Data 1</td>
-                    <td>Row 2 Data 2</td>
-                    <td>Row 2 Data 3</td>
-                    <td>Row 2 Data 4</td>
+                    <td>Rice</td>
+                    <td>0g</td>
+                    <td>0g</td>
+                    <td>20g</td>
                     <th></th>
                 </tr>
             </tbody>
@@ -83,11 +82,11 @@
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <script>
         $(document).ready( function () {
-            $('#table_id').DataTable({
+            $('#table_search').DataTable({
                 "columnDefs": [{
                     "targets": -1,
                     "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Add</i></button>"
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_food\">Add</i></button>"
                 }],
                 "searching": false
             });

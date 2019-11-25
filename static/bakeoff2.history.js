@@ -14,21 +14,23 @@ openTab(tabName, color)
 $("#b_load").click(function(){
   $.get("/food-log", function(data){
     var sel_date = $("#datepicker").val()
-    $(".food_list").empty();
+    //clear all the food tables
+    $('table.display').DataTable().clear().draw();
+
     var meal_items = data[sel_date]["Breakfast"];
     for(i = 0; i < meal_items.length; i++){
-        $("#b_list").append("<li>" + meal_items[i] + "</li>");
-    }
+        $("#table_breakfast").DataTable().row.add([ meal_items[i], "0", "0", "0"]).draw();
+    };
 
     meal_items = data[sel_date]["Lunch"];
     for(i = 0; i < meal_items.length; i++){
-        $("#l_list").append("<li>" + meal_items[i] + "</li>");
-    }
+        $("#table_lunch").DataTable().row.add([meal_items[i], "0", "0", "0"]).draw();
+    };
 
     meal_items = data[sel_date]["Dinner"];
     for(i = 0; i < meal_items.length; i++){
-        $("#d_list").append("<li>" + meal_items[i] + "</li>");
-    }
+        $("#table_dinner").DataTable().row.add([meal_items[i], "0", "0", "0"]).draw();
+    };
     alert("Data was retrieved for user: " + data["user"]);
   });
 });
