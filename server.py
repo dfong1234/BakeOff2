@@ -45,22 +45,25 @@ def foodLog():
             print(data)
             return jsonify(data)
 
-    elif request.method == 'POST':
+    elif request.method == 'POST' or request.method == 'DELETE':
         with open('user_data/user_test.txt', 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
-            process_data(received_data, stored_data)
+            process_data(received_data, stored_data, request.method)
             json_data = json.dumps(stored_data)
             file.seek(0)
             file.write(json_data)
             file.truncate()
             return json_data
 
-def process_data(received_data, stored_data):
+def process_data(received_data, stored_data, method):
     if received_data["food"] != "":
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
-                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+                if method == 'POST':
+                    stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+                elif method == 'DELETE':
+                    stored_data[received_data["date"]][received_data["meal"]].remove(received_data["food"])
             else:
                 stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
                 stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])

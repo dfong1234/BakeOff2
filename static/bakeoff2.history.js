@@ -9,7 +9,7 @@
 var tabName = 'History';
 var color = 'orange';
 
-openTab(tabName, color) 
+openTab(tabName, color)
 
 $("#b_load").click(function(){
     $.get("/food-log", function(data){
@@ -35,3 +35,27 @@ $("#b_load").click(function(){
     });
 });
 
+$("#table_breakfast tbody").on('click', 'button', function () {
+    var data = $("#table_breakfast").DataTable().row($(this).parents('tr')).data();
+    var my_data = {"user": "tester",
+        "food": data[0],
+        "meal": "Breakfast",
+        "date": $("#datepicker").val()
+    };
+    alert("WABBADUBDUB");
+    $("#table_breakfast").DataTable().row($(this).parents('tr')).remove().draw();
+    $.ajax({
+        url: "/food-log",
+        type: "DELETE",
+        data: my_data, 
+        dataType: "json"             
+    });
+} );
+
+$("#table_lunch tbody").on('click', 'button', function () {
+    $("#table_lunch").DataTable().row($(this).parents('tr')).remove().draw();
+} );
+
+$("#table_dinner tbody").on('click', 'button', function () {
+    $("#table_dinner").DataTable().row($(this).parents('tr')).remove().draw();
+} );
