@@ -58,7 +58,15 @@ def foodLog():
 
 def process_data(received_data, stored_data):
     if received_data["food"] != "":
-        stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+        if received_data["date"] in stored_data:
+            if received_data["meal"] in stored_data[received_data["date"]]:
+                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+            else:
+                stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
+                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+        else:
+            stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
+            stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
     #stored_data.update(request.form.to_dict())
 
 
