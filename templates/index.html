@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="/static/style.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
         <title>BakeOff #2 - Food Identification</title>
     </head>
 
@@ -41,11 +42,48 @@
             </div>
         </div> 
 
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Protein</th>
+                    <th>Fat</th>
+                    <th>Carbohydrates</th>
+                    <th></th>
 
-
-    
-        <!-- my own or 3rd party library -->
-
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1 Data 1</td>
+                    <td>Row 1 Data 2</td>
+                    <td>Row 1 Data 3</td>
+                    <td>Row 1 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 2 Data 1</td>
+                    <td>Row 2 Data 2</td>
+                    <td>Row 2 Data 3</td>
+                    <td>Row 2 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 3 Data 1</td>
+                    <td>Row 3 Data 2</td>
+                    <td>Row 3 Data 3</td>
+                    <td>Row 3 Data 4</td>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>Row 4 Data 1</td>
+                    <td>Row 4 Data 2</td>
+                    <td>Row 4 Data 3</td>
+                    <td>Row 4 Data 4</td>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -56,8 +94,18 @@
           $( "#datepicker" ).datepicker();
         } );
         </script>
-
-        <!-- https://fontawesome.com/ -->
+        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+        <script>
+        $(document).ready( function () {
+            $('#table_id').DataTable({
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button type=\"submit\" id=\"b_add_item\">Add</i></button>"
+                } ]
+            });
+        });
+        </script>
 
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
