@@ -39,14 +39,15 @@ def preference():
 
 @app.route("/food-log", methods = ['GET', 'POST', 'DELETE'])
 def foodLog():
+    user = request.args.get('user', default = 'tester', type = str)
     if request.method == 'GET':
-        with open('user_data/user_test.txt') as file:
+        with open('user_data/user_{}.txt'.format(user)) as file:
             data = json.load(file)
             print(data)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
-        with open('user_data/user_test.txt', 'r+') as file:
+        with open('user_data/user_{}.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             process_data(received_data, stored_data, request.method)

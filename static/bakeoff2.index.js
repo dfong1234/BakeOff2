@@ -11,6 +11,9 @@ var color = 'tomato';
     
 openTab(tabName, color) 
 
+var searchParams = new URLSearchParams(window.location.search)
+
+var food_url = "/food-log" + window.location.search;
 
 $("#table_search tbody").on('click', 'button', function(){
     var data = $('#table_search').DataTable().row($(this).parents('tr')).data();
@@ -19,7 +22,7 @@ $("#table_search tbody").on('click', 'button', function(){
         "meal": $("#meal_time").val(),
         "date": $("#datepicker").val()
     };
-    $.post("/food-log", my_data, null, "json");
+    $.post(food_url, my_data, null, "json");
     alert("Sent Data to History");
 });
 

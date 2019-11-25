@@ -6,8 +6,6 @@
 //  Last Modified: 10/23/2019
 //	................................................................................
 
-let searchParams = new URLSearchParams(window.location.search)
-
 function changeTab(tabName, color) {
     if (tabName == 'Food') window.location.href = 'index.html' + window.location.search;
     if (tabName == 'History') window.location.href = 'history.html' + window.location.search;

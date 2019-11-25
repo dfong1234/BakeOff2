@@ -1,5 +1,0 @@
-{ "user" : "Mark", 
-"Breakfast" : ["Chicken", "Rice", "Eggs"],
-"Lunch" : ["Pizza", "Soda"],
-"Dinner" : ["More Pizza"]
-}

@@ -11,8 +11,12 @@ var color = 'orange';
 
 openTab(tabName, color)
 
+var searchParams = new URLSearchParams(window.location.search)
+
+var food_url = "/food-log" + window.location.search;
+
 $("#b_load").click(function(){
-    $.get("/food-log", function(data){
+    $.get(food_url, function(data){
         var sel_date = $("#datepicker").val()
         //clear all the food tables
         $('table.display').DataTable().clear().draw();
@@ -43,8 +47,8 @@ $("#table_breakfast tbody").on('click', 'button', function () {
         "date": $("#datepicker").val()
     };
     $("#table_breakfast").DataTable().row($(this).parents('tr')).remove().draw();
-    $.ajax({
-        url: "/food-log",
+    $.ajax({        //theres no $.delete, so do it the sad ugly way 
+        url: food_url,
         type: "DELETE",
         data: my_data, 
         dataType: "json"             
