@@ -41,12 +41,12 @@ def preference():
 def foodLog():
     user = request.args.get('user', default = 'tester', type = str)
     if request.method == 'GET':
-        with open('user_data/user_log_{}.txt'.format(user)) as file:
+        with open('user_data/{}_log.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
-        with open('user_data/user_log_{}.txt'.format(user), 'r+') as file:
+        with open('user_data/{}_log.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             processFoodData(received_data, stored_data, request.method)
@@ -60,12 +60,12 @@ def foodLog():
 def foodPref():
     user = request.args.get('user', default = 'tester', type = str)
     if request.method == 'GET':
-        with open('user_data/user_pref_{}.txt'.format(user)) as file:
+        with open('user_data/{}_pref.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
-        with open('user_data/user_pref_{}.txt'.format(user), 'r+') as file:
+        with open('user_data/{}_pref.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             processPrefData(received_data, stored_data, request.method)

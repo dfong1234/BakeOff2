@@ -25,10 +25,9 @@ $("#table-search tbody").on('click', 'button', function(){
     var data = $('#table-search').DataTable().row($(this).parents('tr')).data();
 
     //create data object
-    food_data = {"user": "Daniel",
-        "food": data[0],
-        "meal": $("#meal-time").val(),
-        "date": $("#datepicker").val()
+    food_data = {
+        "user": "Daniel",
+        "food": data[0]
     };
 
     //update nutrition label according to row data
@@ -68,6 +67,8 @@ $("#table-search tbody").on('click', 'button', function(){
 });
 
 $('#food-add-icon').click(function() {
+    food_data["meal"] = $("#meal-time").val();
+    food_data["date"] = $("#datepicker").val();
     $.post(food_url, food_data, null, "json");
     alert("Sent Data to History");
 });
