@@ -43,7 +43,6 @@ def foodLog():
     if request.method == 'GET':
         with open('user_data/user_{}.txt'.format(user)) as file:
             data = json.load(file)
-            print(data)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
@@ -58,8 +57,6 @@ def foodLog():
             return json_data
 
 def process_data(received_data, stored_data, method):
-    print(received_data);
-    print(stored_data);
     if received_data["food"] != "":
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
