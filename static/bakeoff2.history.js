@@ -40,25 +40,29 @@ $("#b_load").click(function(){
 });
 
 $("#table_breakfast tbody").on('click', 'button', function () {
-    var data = $("#table_breakfast").DataTable().row($(this).parents('tr')).data();
+    deleteItem('#table_breakfast', 'Breakfast', $(this).parents('tr'));
+} );
+
+$("#table_lunch tbody").on('click', 'button', function () {
+    deleteItem('#table_lunch', 'Lunch', $(this).parents('tr'));
+} );
+
+$("#table_dinner tbody").on('click', 'button', function () {
+    deleteItem('#table_dinner', 'Dinner', $(this).parents('tr'));
+} );
+
+function deleteItem(meal_ID, meal, row_selector) {
+    var data = $(meal_ID).DataTable().row(row_selector).data();
     var my_data = {"user": "tester",
         "food": data[0],
-        "meal": "Breakfast",
+        "meal": meal,
         "date": $("#datepicker").val()
     };
-    $("#table_breakfast").DataTable().row($(this).parents('tr')).remove().draw();
+    $(meal_ID).DataTable().row(row_selector).remove().draw();
     $.ajax({        //theres no $.delete, so do it the sad ugly way 
         url: food_url,
         type: "DELETE",
         data: my_data, 
         dataType: "json"             
     });
-} );
-
-$("#table_lunch tbody").on('click', 'button', function () {
-    $("#table_lunch").DataTable().row($(this).parents('tr')).remove().draw();
-} );
-
-$("#table_dinner tbody").on('click', 'button', function () {
-    $("#table_dinner").DataTable().row($(this).parents('tr')).remove().draw();
-} );
+};

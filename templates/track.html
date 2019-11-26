@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/static/style.css">
-        <title>BakeOff #2 - Nutrition Tracking</title>
+        <link rel="stylesheet" href="/static/style.css">       
+        <title>BakeOff #2 - Nutrition Report</title>
     </head>
 
     <body>
@@ -18,22 +18,44 @@
             <div id="Track" class="tabcontent">
                 <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
             </div>
-
-            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
-            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
-            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
         </header>
-
-        <canvas id="myCanvas" style="background: white;"></canvas>
-        <legend for="myCanvas"></legend>
-
         
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+        </nav>
+
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="track-alert">
+                <strong>Success!</strong> Indicates a successful or positive action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+        <div class="chart-container">
+            <select id="chart-type" onChange="makeNutritionChart()">
+                    <option value="Line Plot">Line Plot</option>
+                    <option value="Bar Graph">Bar Graph</option>
+                    <option value="Pie Chart">Pie Chart</option>
+            </select>
+                
+            <canvas id="nutrition-chart"></canvas>
+        </div>
+
+
+
+
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <!-- https://www.chartjs.org/ -->
+        <script type="text/javascript" src="/static/Chart.bundle.js"></script>
 
-
+        
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
         <script type="text/javascript" src="/static/bakeoff2.track.js"></script>

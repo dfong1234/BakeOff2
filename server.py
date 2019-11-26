@@ -58,6 +58,8 @@ def foodLog():
             return json_data
 
 def process_data(received_data, stored_data, method):
+    print(received_data);
+    print(stored_data);
     if received_data["food"] != "":
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:

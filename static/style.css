@@ -6,29 +6,41 @@
  *  Last Modified: 10/23/2019
  *	................................................................................
  */
-/* --- head CSS setting --- */
+/* --- head CSS settings --- */
 head {
   background-color: lightgray; 
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url('assets/food-vector-pattern.jpg');
-  background-size: 400px;
 }
 
-/* --- body CSS setting --- */
+/* --- body CSS settings --- */
 body {
   background-color: lightgray; 
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url('assets/food-vector-pattern.jpg');
+  background-image: url('../assets/food-vector-pattern.jpg');
   background-size: 400px;
 
 }
-    
 
-/* Style the tab buttons */
+/* --- Common html CSS settings --- */
+/* Web feader Tab */
+.tabcontent {
+  color: white;
+  display: none;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+#Food {background-image: linear-gradient(to bottom right, lightcoral, crimson)}
+#History {background-image: linear-gradient(to bottom right, gold, darkorange)}
+#Track {background-image:linear-gradient(to bottom right, turquoise, lightseagreen)}
+#Preference {background-image:linear-gradient(to bottom right, skyblue, dodgerblue)}
+
+/* Web Navigation Tabs */
 .tablink {
-  background-color: #555;
+  background-color: #555555;
   color: white;
   float: left;
   border: none;
@@ -39,60 +51,254 @@ body {
   width: 25%;
 }
 
-/* Change background color of buttons on hover */
 .tablink:hover {
-  background-color: #777;
+  background-color: #777777;
 }
 
-/* Set default styles for tab content */
-.tabcontent {
+/* Notification Box */
+#search-alert {
+  text-align: center;
+  margin: auto;
+  width: 75vw;
+  padding: 20px;
   color: white;
-  display: none;
-  margin-bottom: 5px;
+  background-color: #f44336;
+}
+
+#history-alert {
+  text-align: center;
+  margin: auto;
+  width: 75vw;
+  padding: 20px;
+  color: white;
+  background-color: #ff9800;
+}
+
+#track-alert {
+  text-align: center;
+  margin: auto;
+  width: 75vw;
+  padding: 20px;
+  color: white;
+  background-color: #4CAF50;
+}
+
+#preference-alert {
+  text-align: center;
+  margin: auto;
+  width: 75vw;
+  padding: 20px;
+  color: white;
+  background-color: #2196F3;
+}
+
+
+
+/* --- index.html CSS settings --- */
+/* Search Box */
+.search-container {
+  text-align: center;
+  margin: auto;
+}
+
+.search-container input[type=text] {
+  font-size: 18px;
+  width: 50vw;
   padding: 10px;
-  text-align: center;
-}
-
-/* Style each tab content individually */
-#Food {background-color:tomato;}
-#History {background-color:orange;}
-#Track {background-color:lightseagreen;}
-#Preference {background-color:dodgerblue;}
-
-.topnav .search-container {
-  text-align: center;
-}
-
-.topnav input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
   border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
 }
 
-.topnav .search-container button {
-  text-align: center;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
+.search-container button {
+  font-size: 18px;
+  width: 5vw;
+  padding: 10px;
+  background: lightgray;
   border: none;
   cursor: pointer;
 }
 
-.topnav .search-container select {
+.search-container button:hover {
+  background: silver;
+}
+
+/* Nutrition Fact Board */
+.food-fact-container {
   text-align: center;
-  padding: 6px 10px;
-  margin-top: 8px;
-  margin-right: 16px;
-  font-size: 17px;
+  margin: auto;
+  width: 75vw;
+  height: 100vh;
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+}
+
+.food-fact-container #datepicker {
+  font-size: 16px;
+  width: 30vw;
+  padding: 10px;
+  margin: 10px 10px 20px 5px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  cursor: pointer;
+}
+
+.food-fact-container #meal-time {
+  font-size: 16px;
+  width: 20vw;
+  padding: 10px;
+  margin: 10px 5px 20px 5px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  cursor: pointer;
+}
+
+.food-fact-container button {
+  font-size: 16px;
+  width: 5vw;
+  padding: 10px;
+  background: lightgray;
   border: none;
   cursor: pointer;
 }
 
-.topnav .search-container button:hover {
-  background: #ccc;
-  background-image: url('../assets/search-icon.png');
+.food-fact-container button:hover {
+  background: silver;
+}
 
+.food-fact-container table {
+  text-align: center;
+  width: 65vw;
+  margin-left:auto; 
+  margin-right:auto;
+  border-collapse: collapse;
+  overflow: auto;
+}
+
+.food-fact-container #nutrition-facts{
+  width: 20vw;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  position: relative;
+  text-align: left
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+tr:nth-child(even) {
+  background-color: lightgray;
+}
+
+
+
+/* --- history.html CSS settings --- */
+
+
+
+
+/* --- track.html CSS settings --- */
+.chart-container {
+  text-align: center;
+  margin: auto;
+  height: 50vh; 
+  width: 80vw;
+}
+
+#chart-type {
+  font-size: 16px;
+  width: 30vw;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  cursor: pointer;
+}
+
+#nutrition-chart {
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+}
+
+
+/* --- preference.html CSS settings --- */
+#preference-wrapper {
+  overflow: auto;
+}
+
+/* User Preference Board */
+.preference-container {
+  float:left; 
+  text-align: left;
+  width: 40vw;
+  height: 50vh;
+  margin-left: 2vw;
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+}
+
+.preference-container label {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.preference-container select, input {
+  font-size: 16px;
+  width: 20vw;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  cursor: pointer;
+}
+
+.preference-container button {
+  text-align: center;
+  margin-left: 15vw;
+  font-size: 16px;
+  width: 10vw;
+  padding: 10px;
+  background: lightgray;
+  border: none;
+  cursor: pointer;
+}
+
+/* DRI Board */
+.dri-container {
+  float: right;			
+  text-align: left;
+  width: 50vw;
+  height: 50vh;
+  margin-right: 2vw;
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+}
+
+.dri-container label {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+.dri-container input {
+  font-size: 16px;
+  width: 20vw;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  cursor: pointer;
 }

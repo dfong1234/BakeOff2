@@ -15,21 +15,36 @@
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
         <title>BakeOff #2 - Meal History</title>
     </head>
+
     <body>
         <header>
             <div id="History" class="tabcontent">
                 <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
             </div>
-            
-            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
-            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
-            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
-            <br>
         </header>
-        <h2> Date: <input type="text" id="datepicker"> 
-        <button type="submit" id="b_load"><i class="fa fa-search"></i></button>
-        </h2>
+
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+        </nav>
+    
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="history-alert">
+                <strong>Warning!</strong> Indicates a warning that might need attention.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+        <div class="search-container">
+            <input type="text" id="datepicker" placeholder="Date"> 
+            <button type="submit" id="b_load"><i class="fa fa-search"></i></button>
+        </div>
+
+
         <div id="Breakfast" class="meal">
             <h3>Breakfast</h3>
             <table id="table_breakfast" class="display">
@@ -79,6 +94,9 @@
             </tbody>
             </table>
         </div>
+
+        <div style="margin-top: 5vh"></div>   
+
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
@@ -95,7 +113,7 @@
                 "columnDefs": [{
                     "targets": -1,
                     "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_delete_item\">Delete</button>",
+                    "defaultContent": "<button type=\"submit\" id=\"b_delete_item\"><i class=\"fas fa-trash-alt\"></i></button>",
                 }],
                 "searching": false,
                 "paging": false,

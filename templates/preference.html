@@ -18,72 +18,89 @@
             <div id="Preference" class="tabcontent">
                 <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
             </div>
-            
-            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
-            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
-            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
         </header>
+        
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+        </nav>
 
-        <div> 
-        <label id = "age"> Age Group: (select one) </label> 
-            <select name = "Age Group">
-                <option value = "Select"> Select </option>
-                <option value = "0-3"> 0-3 </option>
-                <option value = "3-10"> 3-10 </option>
-                <option value = "10-20"> 10-20 </option>
-                <option value = "20-35"> 20-35 </option>
-                <option value = "35-50"> 35-50 </option>
-                <option value = "50-65"> 50-65 </option>
-                <option value = "65+"> 65+ </option>
-            </select>
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="preference-alert">
+                <strong>Info!</strong> Indicates a neutral informative change or action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
         </div>
 
-        <br>
-        <div>
-            <label> Sex </label>
-                <select name = "Gender">
+        <div style="margin-top: 5vh"></div>   
+
+
+        <div id="prefernce-wrapper">
+            <div class="preference-container">
+                <br>
+                <label id = "age">Age [year]:</label> 
+                <select>
+                    <option value = "Select"> Select </option>
+                    <option value = "1-3">1-3</option>
+                    <option value = "4-8">4-8</option>
+                    <option value = "9-13">9-13</option>
+                    <option value = "14-18">14-18</option>
+                    <option value = "19-30">19-30</option>
+                    <option value = "31-50">31-50</option>
+                    <option value = "51-70">51-70</option>
+                </select>
+                
+                <br>
+                <label id="sex">Sex:</label>
+                <select>
                     <option value = "Select"> Select </option>
                     <option value = "Male"> Male </option>
                     <option value = "Female"> Female </option>
                 </select>
-        </div>
 
+                <br>
+                <label> Height [m]:</label>
+                <input type = "number" min="0">
 
-        <br>
-        <div>
-            <label> Height (cms) </label>
-                <input type = "number" name = "height">
-        </div>
+                <br>
+                <label>Weight [kg]:</label>
+                <input type = "number" min="0">
 
-
-        <br>
-        <div>
-            <label> Weight (kgs) </label>
-                <input type = "number" name = "weight">
-        </div>
-
-
-        <br>
-        <div>
-            <label> Dietary Preferences </label>
-                <select name = "Vegetarian?">
+                <br>
+                <label id = "activity"> Activity Level:</label> 
+                <select>
                     <option value = "Select"> Select </option>
-                    <option value = "Vegetarian"> Vegetarian </option>
-                    <option value = "Vegetarian + Dairy"> Vegetarian </option>
-                    <option value = "Non-Vegetarian"> Non Vegetarian </option>
+                    <option value = "Sendentary">Sendentary</option>
+                    <option value = "Low active">Low active</option>
+                    <option value = "Active">Active</option>
+                    <option value = "Very Active">Very Active</option>
                 </select>
+
+                <br>
+                <button type="submit" id="preference_update_icon">Apply</button>
+            </div>
+
+            <div class="dri-container">
+                <br>
+                <label>Daily Calories [kcal]:</label>
+                <input id="dri-calories" type = "number" min="0"> 
+
+                <br>
+                <label>Daily Carbohydrates [g]:</label>
+                <input id="dri-calories" type = "number" min="0"> 
+                
+                <br>
+                <label>Daily Proteins [g]:</label>
+                <input id="dri-calories" type = "number" min="0"> 
+
+                <br>
+                <label>Daily Fats [g]:</label>
+                <input id="dri-calories" type = "number" min="0"> 
+            </div>
         </div>
 
-        <br>
-        <div>
-            <label> Allergy </label>
-                <input type = "text" name = "allergy">
-        </div>
-
-
-
-        
         <!-- my own or 3rd party library -->
 
 

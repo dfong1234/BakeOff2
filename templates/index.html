@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Archivo+Black">
+        <link rel="stylesheet" type="text/css" href="/static/nutrition-label/dist/css/nutritionLabel-min.css">
         <title>BakeOff #2 - Food Identification</title>
     </head>
     <body>
@@ -20,24 +22,32 @@
             <div id="Food" class="tabcontent">
                 <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
             </div>
-            <button id="Food-tab" class="tablink" onclick="changeTab('Food', 'tomato')">Identify Food</button>
-            <button id="History-tab" class="tablink" onclick="changeTab('History', 'orange')">Meal History</button>
-            <button id="Track-tab" class="tablink" onclick="changeTab('Track', 'lightseagreen')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference', 'dodgerblue')">Diet Preference</button>
         </header>
-        <div class="topnav">
-            <div class="search-container">
-                <input type="text" placeholder="Search.." name="search" id="search">
-                <select id="meal_time">
-                    <option value="Breakfast"> Breakfast </option>
-                    <option value="Lunch"> Lunch </option>
-                    <option value="Dinner"> Dinner </option>
-                </select>
-                <input type="text" placeholder="Date" id="datepicker">
-                <button type="submit" id="b_search"><i class="fa fa-search"></i></button>
-            </div>
-        </div> 
-        <table id="table_search" class="display">
+
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
+        </nav>
+     
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="search-alert">
+                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 5vh"></div>
+
+        <div class="search-container">
+            <input id="search-keyword" type="text" placeholder="Search">
+            <button type="submit" id="search-icon"><i class="fa fa-search"></i></button>
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+        <table id="table-search" class="display">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -65,31 +75,30 @@
             </tbody>
         </table>
 
+        <div style="margin-top: 5vh"></div>   
+
+        <div class="food-fact-container">
+            <label>When:</label>
+            <select id="meal-time">
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+            </select>
+            <input type="text" id="datepicker"> 
+            <button type="submit" id="food_add_icon"><i class="fa fa-plus"></i></button>
+            <p> TODO:Fill in with nutrition facts here using nutrient fact plugin</p>
+            <div id="nutrition-facts"></div>
+        </div>
+
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script>
-        $( function() {
-          $( "#datepicker" ).datepicker();
-        } );
-        </script>
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-        <script>
-        $(document).ready( function () {
-            $('#table_search').DataTable({
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_add_food\">Add</button>"
-                }],
-                "searching": false
-            });
-        });
-        </script>
 
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
         <script type="text/javascript" src="/static/bakeoff2.index.js"></script>
+        <script type="text/javascript" src="/static/nutrition-label/dist/js/nutritionLabel-min.js"></script>
     </body>
 </html>
