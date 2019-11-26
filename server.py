@@ -41,22 +41,41 @@ def preference():
 def foodLog():
     user = request.args.get('user', default = 'tester', type = str)
     if request.method == 'GET':
-        with open('user_data/user_{}.txt'.format(user)) as file:
+        with open('user_data/user_log_{}.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
-        with open('user_data/user_{}.txt'.format(user), 'r+') as file:
+        with open('user_data/user_log_{}.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
-            process_data(received_data, stored_data, request.method)
+            processFoodData(received_data, stored_data, request.method)
             json_data = json.dumps(stored_data)
             file.seek(0)
             file.write(json_data)
             file.truncate()
             return json_data
 
-def process_data(received_data, stored_data, method):
+@app.route("/food-pref", methods = ['GET', 'POST', 'DELETE'])
+def foodPref():
+    user = request.args.get('user', default = 'tester', type = str)
+    if request.method == 'GET':
+        with open('user_data/user_pref_{}.txt'.format(user)) as file:
+            data = json.load(file)
+            return jsonify(data)
+
+    elif request.method == 'POST' or request.method == 'DELETE':
+        with open('user_data/user_pref_{}.txt'.format(user), 'r+') as file:
+            stored_data = json.load(file)
+            received_data = request.form.to_dict()
+            processPrefData(received_data, stored_data, request.method)
+            json_data = json.dumps(stored_data)
+            file.seek(0)
+            file.write(json_data)
+            file.truncate()
+            return json_data
+
+def processFoodData(received_data, stored_data, method):
     if received_data["food"] != "":
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
@@ -72,6 +91,8 @@ def process_data(received_data, stored_data, method):
             stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
     #stored_data.update(request.form.to_dict())
 
+def processPrefData(received_data, stored_data, method):
+    print("Fill this in")
 
 if __name__ == "__main__":
     app.debug = True
