@@ -17,6 +17,7 @@ var food_url = "/food-log" + window.location.search;
 
 var food_data = {};
 
+//Clicking column button to display data in nutrition label
 $("#table-search tbody").on('click', 'button', function(){
     //Do database search, and populate row with data
     //fillTable();
@@ -66,6 +67,7 @@ $("#table-search tbody").on('click', 'button', function(){
     });
 });
 
+//Clicking button to add to food log
 $('#food-add-icon').click(function() {
     food_data["meal"] = $("#meal-time").val();
     food_data["date"] = $("#datepicker").val();
@@ -73,6 +75,7 @@ $('#food-add-icon').click(function() {
     alert("Sent Data to History");
 });
 
+//Example of autocomplete functionality
 $( function() {
     var recentlyUsed = [
         "Chicken",
@@ -84,14 +87,17 @@ $( function() {
     });
 });
 
+//Search button
 $('#search-icon').click(function() {
     alert("Searching");
 });
 
+//Initialize datepicker
 $( function() {
     $("#datepicker").datepicker();
 } );
 
+//Initialize tables
 $(document).ready( function () {
     $('#table-search').DataTable({
         "columnDefs": [{
