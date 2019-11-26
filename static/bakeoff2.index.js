@@ -67,7 +67,7 @@ $("#table-search tbody").on('click', 'button', function(){
     });
 });
 
-$('#food_add_icon').click(function() {
+$('#food-add-icon').click(function() {
     $.post(food_url, food_data, null, "json");
     alert("Sent Data to History");
 });
