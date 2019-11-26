@@ -73,6 +73,16 @@ $('#food-add-icon').click(function() {
     alert("Sent Data to History");
 });
 
+$( function() {
+    var recentlyUsed = [
+        "Chicken",
+        "Rice"
+    ];
+
+    $("#search-keyword").autocomplete({
+        source: recentlyUsed
+    });
+});
 
 $('#search-icon').click(function() {
     alert("Searching");
