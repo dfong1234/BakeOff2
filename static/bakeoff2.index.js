@@ -45,7 +45,8 @@ function fillTable(searchTerm) {
                 var protein = food_array["nf_protein"].toString();
                 var carb = food_array["nf_total_carbohydrate"].toString();
                 var fat = food_array["nf_total_fat"].toString();
-                $("#table-search").DataTable().row.add([name, protein, carb, fat]).draw();
+                var serving_size = food_array["serving_weight_grams"].toString();
+                $("#table-search").DataTable().row.add([name, protein, carb, fat, serving_size]).draw();
             };  
         },
         error: function(xhr, status, error){
