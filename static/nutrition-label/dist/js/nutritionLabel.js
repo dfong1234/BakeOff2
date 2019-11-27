@@ -25,6 +25,7 @@
 			//destroy the nutrition label's html code
 			if (option === 'destroy') {
 				new NutritionLabel().destroy( $(this) );
+				alert("what");
 			//allows the user to hide the nutrition value
 			} else if (option === 'hide') {
 				new NutritionLabel().hide( $(this) );

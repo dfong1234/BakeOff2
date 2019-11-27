@@ -135,8 +135,6 @@ $("#table-search tbody").on('click', 'button', function(){
     });
 });
 
-
-
 //Clicking button to add to food log
 $('#food-add-icon').click(function() {
     food_data["meal"] = $("#meal-time").val();
@@ -172,7 +170,7 @@ $(document).ready( function () {
         }],
         "searching": false,
         "info": false
-    });
+    }).clear().draw();
     $('#nutrition-facts').nutritionLabel({showLegacyVersion : false});
 });
 
