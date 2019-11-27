@@ -1,37 +1,60 @@
-//Map values to html elements
-var valToHTML = {}  //Syntax: ["elementID", "displayName"]
-valToHTML["Energy"] = ["#energy", "Calories"];
-valToHTML["Sugars, total"] = ["#sugars", "Sugars"];
-valToHTML["Total lipid (fat)"] = ["#lipids", "Fats"];
-valToHTML["Carbohydrate, by difference"] = ["#carbs", "Carbohydrates"];
+//  ................................................................................
+//  fetchData.js
+//  javascript for accessing nutrition apis for BakeOff2:
+//  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+//  Date Created: 10/15/2019
+//  Last Modified: 11/26/2019
+//  ................................................................................
 
-//Config
-var databasekey = "10SKlZqWe3IkC3ymxUWxzMrjgUfNFuixcuqY10gC";
-var dbnum = `01009`;
-var ntCategories = '&nutrients=205&nutrients=204&nutrients=208&nutrients=269';
-
+//Don't use this stuff, this database hurts...
+/*var api_key = "xMEfr5SuW0FGSB10rgz70JnydjjLEQKFctkGevhv";
+var fdc_url = `https://api.nal.usda.gov/fdc/v1/search?api_key=${api_key}`;
 function searchItem(searchTerm) {
-  //var query = `https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${databasekey}${ntCategories}&ndbno=${dbnum}`;
-  var searchQuery = `https://api.nal.usda.gov/ndb/search/?format=json&q=${searchTerm}&sort=r&max=5&offset=0&api_key=${databasekey}`;
-  $.get(searchQuery, function(data){
-    //autocomplete(document.getElementById("searchField"), data.list.item);
-    let selectIndex = 0;
-    let selectedItem = data.list.item[selectIndex];
-    console.log("Database entry: " + selectedItem.name);
-    var nutritionQuery = `https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=${databasekey}${ntCategories}&ndbno=${selectedItem.ndbno}`;
-    $.get(nutritionQuery, function(data) {
-      $(foodName).html("<b>Nutritional Data for " + formatTitle(selectedItem.name) + "<b>");
-      data.report.foods[0].nutrients.forEach((e) => {
-        console.log(valToHTML[e.nutrient][0] + ": " + e.value);
-        $(valToHTML[e.nutrient][0]).html("<b>" + valToHTML[e.nutrient][1] + ": </b>" + e.value + " grams");
-      })
-    })
-  })
+    var data_params = {
+        "generalSearchInput" : searchTerm
+    };
+    var data_string = JSON.stringify(data_params);
+    $.ajax({
+        type: "POST",
+        url: fdc_url,
+        dataType: "json",
+        contentType: "application/json",
+        data: data_string,
+        success: function(data){
+            alert(JSON.stringify(data["foodSearchCriteria"]));
+        },
+        error: function(xhr, status, error){
+            alert(xhr.responseText);
+        }
+    });
+}*/
+
+var api_key = "5015be239c92535807bae011a26fbcd2";
+var app_id = "8ea44c06";
+var url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+function searchItem(searchTerm) {
+    var data_params = {
+        "query" : "apple"
+    };
+    var data_string = JSON.stringify(data_params);
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: "json",
+        contentType: "application/json",
+        headers: {
+            "x-app-id": app_id,
+            "x-app-key": api_key,
+            "x-remote-user-id": "0"
+        },
+        data: data_string,
+        success: function(data){
+            alert(JSON.stringify(data["foods"]));
+        },
+        error: function(xhr, status, error){
+            alert("Failed to search database");
+        }
+    });
 }
 
-function formatTitle(text) {  //Removes UPC and formats capitalization
-  return text.toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
-}
+searchItem();
