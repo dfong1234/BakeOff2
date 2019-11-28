@@ -3,7 +3,7 @@
  *	Style Sheet for BakeOff2:
  *  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
  *  Date Created: 10/15/2019
- *  Last Modified: 10/23/2019
+ *  Last Modified: 11/27/2019
  *	................................................................................
  */
 /* --- head CSS settings --- */
@@ -18,7 +18,7 @@ body {
   background-color: lightgray; 
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
-  background-image: url('assets/food-vector-pattern.jpg');
+  background-image: url('/static/assets/food-vector-pattern.jpg');
   background-size: 400px;
 
 }

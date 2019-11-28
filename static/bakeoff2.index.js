@@ -3,28 +3,45 @@
 //  javascript for index page of BakeOff2:
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 10/23/2019
+//  Last Modified: 11/27/2019
 //  ................................................................................
 
+/*  --- Website Header and Tabs ---  */
+// --- Variables ---
 var tabName = 'Food';
-var color = 'tomato';
-    
-openTab(tabName, color) 
+var tabcolor = 'tomato';
 
-/* Database API access for filling up table */
+// --- In-Use ---
+openTab(tabName, tabcolor) 
 
 
+
+
+/*  --- Nutrition Database Access ---  
+ *  Nutritionix - Largest Verified Nutrition Database
+ *  https://developer.nutritionix.com/docs/v2
+ */
+// --- Variables ---
 var api_key = "5015be239c92535807bae011a26fbcd2";
 var app_id = "8ea44c06";
-var nutrient_url = "https://trackapi.nutritionix.com/v2/natural/nutrients";  //look up item
-var instant_url = "https://trackapi.nutritionix.com/v2/search/instant";      //automatically searches, to be used for autocomplete (gives list of commonly used foods)
-var food_data_all = {};
 
-function fillTable(searchTerm) {
+// url for obtaining detailed nutrient breakdown of requested food(s)
+var nutrient_url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
+// url for providing list of commonon foods to a search field     
+var instant_url = "https://trackapi.nutritionix.com/v2/search/instant";         
+
+var foods_databaseData = {};  // Data of foods obtained from online atabase
+
+// --- Functions ---
+function searchFood(searchTerm) {
     var data_params = {
         "query" : searchTerm
     };
     var data_string = JSON.stringify(data_params);
+
+    // jQuery.ajax() 
+    // Perform an asynchronous HTTP (Ajax) request
+    // https://api.jquery.com/jquery.ajax/
     $.ajax({
         type: "POST",
         url: nutrient_url,
@@ -37,30 +54,79 @@ function fillTable(searchTerm) {
         },
         data: data_string,
         success: function(data){
-            food_data_all = data["foods"]; //save all data for use in populating nutrition facts
-            $("#table-search").DataTable().clear().draw();
-            for(i = 0; i < data["foods"].length; i++){
-                var food_array = data["foods"][i];
-                var name = food_array["food_name"];
-                var protein = food_array["nf_protein"].toString();
-                var carb = food_array["nf_total_carbohydrate"].toString();
-                var fat = food_array["nf_total_fat"].toString();
-                var serving_size = food_array["serving_weight_grams"].toString();
-                $("#table-search").DataTable().row.add([name, protein, carb, fat, serving_size]).draw();
-            };  
+            // save all data for use in populating nutrition facts
+            // https://gist.github.com/mattsilv/7122853
+            foods_databaseData = data["foods"]; 
+            alert("Success in obtaining infotmation from database");
         },
         error: function(xhr, status, error){
-            alert("Failed to search database");
+            alert("Failed to obtain infotmation from database");
         }
     });
 };
 
-//Search button
+
+function fillResultTable() {
+    $("#table-search").DataTable().clear().draw();
+    for(i = 0; i < foods_databaseData.length; i++){
+        var food_array = foods_databaseData[i];
+        var name = food_array["food_name"];
+        var protein = food_array["nf_protein"].toString();
+        var carb = food_array["nf_total_carbohydrate"].toString();
+        var fat = food_array["nf_total_fat"].toString();
+        var serving_size = food_array["serving_weight_grams"].toString();
+        $("#table-search").DataTable().row.add([name, protein, carb, fat, serving_size]).draw();
+    };  
+}
+
+function addFoodToLocalDatabase(food) {
+
+    //create data object
+    food_data = {
+        "name": food["food_name"],
+        "calories": food["nf_calories"].toString(),
+        "carbohydrates": food["nf_total_carbohydrate"].toString(),
+        "proteins": food["nf_protein"].toString(),
+        "fat": food["nf_total_fat"].toString(),
+        "serving": food["serving_weight_grams"].toString()
+    };
+    
+    $.post('/food-database', food_data, null, "json");
+}
+
+
+// --- In-Use ---
 $('#search-icon').click(function() {
-    fillTable($("#search-keyword").val());
+    searchFood($("#search-keyword").val());
+    
+    fillResultTable();
+    
+    for(i = 0; i < foods_databaseData.length; i++){
+        var food = foods_databaseData[i];
+        addFoodToLocalDatabase(food);
+    }
 });
 
 
+
+/*  --- ---  */
+
+// --- Label Initialization ---
+
+
+// --- Variables ---
+
+
+
+// --- Functions ---
+
+
+// --- In-Use ---
+
+
+
+
+/*  --- Nutrition Fact Board  --- */
 /* Other parts for the index page */
 var searchParams = new URLSearchParams(window.location.search)
 var food_url = "/food-log" + window.location.search;
@@ -81,8 +147,8 @@ $("#table-search tbody").on('click', 'button', function(){
 
     var food_nutrition = {};
     //fist, find correct food item in the saved data from when we populated the table
-    for(i = 0; i < food_data_all.length; i++){
-        food_nutrition = food_data_all[i];
+    for(i = 0; i < foods_databaseData.length; i++){
+        food_nutrition = foods_databaseData[i];
         if(food_nutrition["food_name"] == data[0]) { //found it, so break
             break;
         }
@@ -174,4 +240,3 @@ $(document).ready( function () {
     }).clear().draw();
     $('#nutrition-facts').nutritionLabel({showLegacyVersion : false});
 });
-
