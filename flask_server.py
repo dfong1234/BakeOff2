@@ -13,20 +13,6 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
-
-def writeToJSONFile(path, fileName, data):
-    filePathNameWExt = path + fileName + '.json'
-    with open(filePathNameWExt, 'w') as fp:
-        json.dump(data, fp)
-
-
-# Example
-data = {}
-data['key'] = 'value'
-
-writeToJSONFile('./','file-name',data)
-
-
 # --- Define a local Web server --- #
 app = Flask(__name__)
 
