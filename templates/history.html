@@ -10,9 +10,14 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/style.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
+        <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Font Awesome Documentaiton: https://fontawesome.com/how-to-use/-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <!-- DataTables Documentation https://datatables.net/examples/api/ -->
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+        
         <title>BakeOff #2 - Meal History</title>
     </head>
 
@@ -27,7 +32,7 @@
             <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
             <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
             <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
         </nav>
     
         <div style="margin-top: 10vh"></div>   
@@ -37,70 +42,75 @@
                 <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
         </div>
 
-        <div style="margin-top: 5vh"></div>   
+        <div style="margin-top: 2.5vh"></div>
 
         <div class="search-container">
             <input type="text" id="datepicker" placeholder="Date"> 
-            <button type="submit" id="b_load"><i class="fa fa-search"></i></button>
+            <button type="submit" id="history-search-icon"><i class="fa fa-search"></i></button>
         </div>
 
 
-        <div id="Breakfast" class="meal">
-            <h3>Breakfast</h3>
-            <table id="table_breakfast" class="display">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Carbohydrates</th>
-                    <th></th>
-
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            </table>
+        <div class="history-container">
+            <div id="Breakfast-container" class="meal">
+                <h3>Breakfast</h3>
+                <table id="table_breakfast" class="display">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbohydrate(g)</th>
+                            <th>Protein(g)</th>
+                            <th>Fat(g)</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="Lunch-continer" class="meal">
+                <h3>Lunch</h3>
+                <table id="table_lunch" class="display">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbohydrate(g)</th>
+                            <th>Protein(g)</th>
+                            <th>Fat(g)</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="Dinner-container" class="meal">
+                <h3>Dinner</h3>
+                <table id="table_dinner" class="display">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Carbohydrate(g)</th>
+                            <th>Protein(g)</th>
+                            <th>Fat(g)</th>
+                            <th>Tags</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div id="Lunch" class="meal">
-            <h3>Lunch</h3>
-            <table id="table_lunch" class="display">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Carbohydrates</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            </table>
-        </div>
-        <div id="Dinner" class="meal">
-            <h3>Dinner</h3>
-            <table id="table_dinner" class="display">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Protein</th>
-                    <th>Fat</th>
-                    <th>Carbohydrates</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            </table>
-        </div>
-
+        
         <div style="margin-top: 5vh"></div>   
+
 
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->     
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
         <script>
         $( function() {
           $( "#datepicker" ).datepicker();
@@ -122,6 +132,7 @@
             .clear().draw();
         });
         </script>
+
 
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>

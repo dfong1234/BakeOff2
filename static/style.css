@@ -24,11 +24,11 @@ body {
 }
 
 /* --- Common html CSS settings --- */
-/* Web feader Tab */
+/* Web Header Tab */
 .tabcontent {
   color: white;
   display: none;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 10px;
   text-align: center;
 }
@@ -55,10 +55,13 @@ body {
   background-color: #777777;
 }
 
+
 /* Notification Box */
 #search-alert {
   text-align: center;
-  margin: auto;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 0;
   width: 75vw;
   padding: 20px;
   color: white;
@@ -67,7 +70,9 @@ body {
 
 #history-alert {
   text-align: center;
-  margin: auto;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 0;
   width: 75vw;
   padding: 20px;
   color: white;
@@ -76,7 +81,9 @@ body {
 
 #track-alert {
   text-align: center;
-  margin: auto;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 0;
   width: 75vw;
   padding: 20px;
   color: white;
@@ -85,11 +92,28 @@ body {
 
 #preference-alert {
   text-align: center;
-  margin: auto;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 0;
   width: 75vw;
   padding: 20px;
   color: white;
   background-color: #2196F3;
+}
+
+
+/* Table */
+td, th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: white;
+}
+
+tr:nth-child(even) {
+  background-color: lightgray;
 }
 
 
@@ -122,33 +146,34 @@ body {
   background: silver;
 }
 
+
 /* Nutrition Fact Board */
 .food-fact-container {
-  text-align: center;
+  text-align: left;
   margin: auto;
-  width: 75vw;
-  height: 100vh;
+  width: 90vw;
+  height: 60vh;
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
 }
 
-.food-fact-container #datepicker {
+.food-fact-container #meal-time {
   font-size: 16px;
-  width: 30vw;
+  width: 15vw;
   padding: 10px;
-  margin: 10px 10px 20px 5px;
+  margin: 10px 5px 20px 5px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
   cursor: pointer;
 }
 
-.food-fact-container #meal-time {
+.food-fact-container #datepicker {
   font-size: 16px;
   width: 20vw;
   padding: 10px;
-  margin: 10px 5px 20px 5px;
+  margin: 10px 10px 20px 5px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
   cursor: pointer;
@@ -167,60 +192,71 @@ body {
   background: silver;
 }
 
-.food-fact-container table {
+#foods-container {
   text-align: center;
-  width: 65vw;
-  margin-left:auto; 
-  margin-right:auto;
+  width: 50vw;
+  margin: 0px 1vw 0px 1vw;
+  float: left;
+}
+
+
+#result-container{
+  width: 50vw;
   border-collapse: collapse;
   overflow: auto;
 }
 
-.food-fact-container #nutrition-facts{
+#nutrition-facts {
+  text-align: left;
+  padding: 10px;
   width: 20vw;
   height: auto;
-  margin: 0 auto;
-  padding: 10px;
-  position: relative;
-  text-align: left
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  padding: 8px;
-}
-
-tr:nth-child(odd) {
-  background-color: white;
-}
-
-tr:nth-child(even) {
-  background-color: lightgray;
+  margin: 2vh 2vw 0vh 0vw;
+  float: right;
 }
 
 
 
 /* --- history.html CSS settings --- */
+/* Food History Table */
+.history-container {
+  text-align: center;
+  margin: auto;
+  width: 90vw;
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+}
 
+.meal {
+  text-align: center;
+  width: 80vw;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 2vh;
+  border-collapse: collapse;
+  overflow: auto;
+}
 
 
 
 /* --- track.html CSS settings --- */
 .chart-container {
   text-align: center;
-  margin: auto;
   height: 50vh; 
   width: 80vw;
+  margin: auto;
 }
 
 #chart-type {
   font-size: 16px;
-  width: 30vw;
   padding: 10px;
-  margin-bottom: 10px;
+  cursor: pointer;
+  width: 30vw;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
-  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 #nutrition-chart {
@@ -231,6 +267,8 @@ tr:nth-child(even) {
 }
 
 
+
+
 /* --- preference.html CSS settings --- */
 #preference-wrapper {
   overflow: auto;
@@ -238,67 +276,65 @@ tr:nth-child(even) {
 
 /* User Preference Board */
 .preference-container {
-  float:left; 
   text-align: left;
-  width: 40vw;
-  height: 50vh;
-  margin-left: 2vw;
+  width: 40%;
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
+  margin-left: 2vw;
+  margin-bottom: 2vw;
+  float:left; 
 }
-
 .preference-container label {
-  margin-bottom: 20px;
-  margin-left: 20px;
+  margin-bottom: 1vw;
+  margin-left: 1.5vw;
 }
 .preference-container select, input {
   font-size: 16px;
   width: 20vw;
+  cursor: pointer;
   padding: 10px;
-  margin-bottom: 20px;
-  margin-left: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
-  cursor: pointer;
+  margin-bottom: 2vw;
+  margin-left: 1vw;
 }
-
 .preference-container button {
   text-align: center;
-  margin-left: 15vw;
   font-size: 16px;
-  width: 10vw;
   padding: 10px;
-  background: lightgray;
-  border: none;
   cursor: pointer;
+  width: 10vw;
+  border: none;
+  background: lightgray;
+  margin-bottom: 2vw;
+  margin-left: 15vw;
 }
 
 /* DRI Board */
 .dri-container {
-  float: right;			
   text-align: left;
-  width: 50vw;
-  height: 50vh;
-  margin-right: 2vw;
+  width: 50%;
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
+  margin-right: 2vw;
+  margin-bottom: 2vw;
+  float: right;			
 }
-
 .dri-container label {
-  margin-bottom: 20px;
-  margin-left: 20px;
+  margin-bottom: 1vw;
+  margin-left: 1.5vw;
 }
 .dri-container input {
   font-size: 16px;
   width: 20vw;
+  cursor: pointer;
   padding: 10px;
-  margin-bottom: 20px;
-  margin-left: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
-  cursor: pointer;
+  margin-bottom: 2vw;
+  margin-left: 1vw;
 }

@@ -6,16 +6,50 @@
 //  Last Modified: 10/23/2019
 //  ................................................................................
 
+/*  --- Website Header and Tabs ---  */
+// --- Variables ---
 var tabName = 'History';
-var color = 'orange';
+var tabColor = 'orange';
 
-openTab(tabName, color)
+// --- In-Use ---
+openTab(tabName, tabColor)
+
+
+
+
+
+
+
+
+/*  --- ---  */
+
+// --- Label Initialization ---
+
+
+// --- Variables ---
+
+
+
+// --- Functions ---
+
+
+// --- In-Use ---
+
+
+
+
+
+
+
+
+
+
 
 var searchParams = new URLSearchParams(window.location.search)
 
 var food_url = "/food-log" + window.location.search;
 
-$("#b_load").click(function(){
+$("#history-search-icon").click(function(){
     $.get(food_url, function(data){
         var sel_date = $("#datepicker").val()
         //clear all the food tables

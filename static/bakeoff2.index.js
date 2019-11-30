@@ -9,10 +9,10 @@
 /*  --- Website Header and Tabs ---  */
 // --- Variables ---
 var tabName = 'Food';
-var tabcolor = 'tomato';
+var tabColor = 'tomato';
 
 // --- In-Use ---
-openTab(tabName, tabcolor) 
+openTab(tabName, tabColor) 
 
 
 
@@ -30,7 +30,7 @@ var nutrient_url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 // url for providing list of commonon foods to a search field     
 var instant_url = "https://trackapi.nutritionix.com/v2/search/instant";         
 
-var foods_databaseData = {};  // Data of foods obtained from online atabase
+var foods_databaseData = {};  // Data of foods obtained from online database
 
 // --- Functions ---
 function searchFood(searchTerm) {
@@ -67,7 +67,7 @@ function searchFood(searchTerm) {
 
 
 function fillResultTable() {
-    $("#table-search").DataTable().clear().draw();
+    $("#result-table").DataTable().clear().draw();
     for(i = 0; i < foods_databaseData.length; i++){
         var food_array = foods_databaseData[i];
         var name = food_array["food_name"];
@@ -75,28 +75,29 @@ function fillResultTable() {
         var carb = food_array["nf_total_carbohydrate"].toString();
         var fat = food_array["nf_total_fat"].toString();
         var serving_size = food_array["serving_weight_grams"].toString();
-        $("#table-search").DataTable().row.add([name, protein, carb, fat, serving_size]).draw();
+        $("#result-table").DataTable().row.add([name, protein, carb, fat, serving_size]).draw();
     };  
 }
 
 function addFoodToLocalDatabase(food) {
 
     //create data object
-    food_data = {
+    food_localData = {
         "name": food["food_name"],
+        "serving": food["serving_weight_grams"].toString(),
         "calories": food["nf_calories"].toString(),
         "carbohydrates": food["nf_total_carbohydrate"].toString(),
         "proteins": food["nf_protein"].toString(),
         "fat": food["nf_total_fat"].toString(),
-        "serving": food["serving_weight_grams"].toString()
+        
     };
     
-    $.post('/food-database', food_data, null, "json");
+    $.post('/food-database', food_localData, null, "json");
 }
 
 
 // --- In-Use ---
-$('#search-icon').click(function() {
+$('#index-search-icon').click(function() {
     searchFood($("#search-keyword").val());
     
     fillResultTable();
@@ -127,25 +128,37 @@ $('#search-icon').click(function() {
 
 
 /*  --- Nutrition Fact Board  --- */
-/* Other parts for the index page */
-var searchParams = new URLSearchParams(window.location.search)
-var food_url = "/food-log" + window.location.search;
-var food_data = {}; //food data for just the food we are going to add
+// --- Variables ---
+var food_mealData = {};   // Data of food that willbe added to user's meal history
+var food_nutrition = {};
 
+// --- Functions ---
+//helper function for filling out nutrition table
+function findVitaminValue(attribute_ID){
+    for(i = 0; i < food_nutrition["full_nutrients"].length; i++) {
+        if(attribute_ID == food_nutrition["full_nutrients"][i]["attr_id"]){
+            return food_nutrition["full_nutrients"][i]["value"];
+        }
+    }
+}
+
+// --- In-Use ---
 //Clicking column button to display data in nutrition label
-$("#table-search tbody").on('click', 'button', function(){
+$("#result-table tbody").on('click', 'button', function(){
     //Assuming we have already done database search, and populated row with data...
 
+
     //Grab data from row in table
-    var data = $('#table-search').DataTable().row($(this).parents('tr')).data();
-    //searchItem(data[0])
+    var data = $('#result-table').DataTable().row($(this).parents('tr')).data();
+
+
     //create data object
-    food_data = {
-        "user": "Daniel",
+    food_mealData = {
+        "user": "test",
         "food": data[0]
     };
 
-    var food_nutrition = {};
+
     //fist, find correct food item in the saved data from when we populated the table
     for(i = 0; i < foods_databaseData.length; i++){
         food_nutrition = foods_databaseData[i];
@@ -154,17 +167,8 @@ $("#table-search tbody").on('click', 'button', function(){
         }
     }
 
-    //helper function for filling out nutrition table
-    function findVitaminValue(attribute_ID){
-        for(i = 0; i < food_nutrition["full_nutrients"].length; i++) {
-            if(attribute_ID == food_nutrition["full_nutrients"][i]["attr_id"]){
-                return food_nutrition["full_nutrients"][i]["value"];
-            }
-        }
-    }
-    
-    //food_nutrition will contail all nutrition facts of food. Update nutrition label accordingly
-    //$('#nutrition-facts').nutritionLabel().hide();
+
+    //food_nutrition will contain all nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({
         itemName : food_nutrition["food_name"],
 
@@ -202,13 +206,28 @@ $("#table-search tbody").on('click', 'button', function(){
     });
 });
 
+
+
+
+
+
+
+
+
+
+
 //Clicking button to add to food log
 $('#food-add-icon').click(function() {
-    food_data["meal"] = $("#meal-time").val();
-    food_data["date"] = $("#datepicker").val();
-    $.post(food_url, food_data, null, "json");
+    food_mealData["meal"] = $("#meal-time").val();
+    food_mealData["date"] = $("#datepicker").val();
+    $.post("/food-log" + window.location.search, food_mealData, null, "json");
     alert("Sent Data to History");
 });
+
+
+
+
+
 
 //Example of autocomplete functionality
 $( function() {
@@ -229,7 +248,7 @@ $( function() {
 
 //Initialize tables
 $(document).ready( function () {
-    $('#table-search').DataTable({
+    $('#result-table').DataTable({
         "columnDefs": [{
             "targets": -1,
             "data": null,
