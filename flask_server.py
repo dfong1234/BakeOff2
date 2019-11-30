@@ -13,6 +13,20 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+
+def writeToJSONFile(path, fileName, data):
+    filePathNameWExt = path + fileName + '.json'
+    with open(filePathNameWExt, 'w') as fp:
+        json.dump(data, fp)
+
+
+# Example
+data = {}
+data['key'] = 'value'
+
+writeToJSONFile('./','file-name',data)
+
+
 # --- Define a local Web server --- #
 app = Flask(__name__)
 
@@ -43,7 +57,7 @@ def preference():
 
 
 
-@app.route("/food-database", methods = ['GET', 'POST', 'DELETE'])
+@app.route("/food-database", methods = ['GET', 'POST'])
 def foodDatabase():
     if request.method == 'GET':
         json_file = os.path.join(app.root_path, 'food_data', 'localFoods.json')
@@ -56,7 +70,7 @@ def foodDatabase():
             data = json.load(file)
             return jsonify(data)
 
-    elif request.method == 'POST' or request.method == 'DELETE':
+    elif request.method == 'POST':
         json_file = os.path.join(app.root_path, 'food_data', 'localFoods.json')
         if not os.path.isfile(json_file):
             with open(json_file, 'w') as file:
@@ -103,6 +117,7 @@ def foodDatabase():
             file.truncate()
         
         return json_combined_data
+
 
 
 @app.route("/food-log", methods = ['GET', 'POST', 'DELETE'])
