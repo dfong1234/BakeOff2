@@ -49,18 +49,10 @@ var daily_carbohydrate_goal = 130;
 var daily_protein_goal = 56;
 var daily_fat_goal = 27;
 
-
 var daily_userCalories = 1000;
 var daily_userCarbohydrate = 70;
 var daily_userProtein = 36;
 var daily_userFat = 17;
-
-
-var userFood_name = 'hamburger';
-var userFood_calories = 500;
-var userFood_carbohydrate = 50;
-var userFood_protein = 35;
-var userFood_fat = 25;
 
 
 var aiFood_name = 'hamburger';
@@ -70,19 +62,86 @@ var aiFood_protein = 35;
 var aiFood_fat = 25;
 
 
-var userPref_calories_threshold = 300;
-var userPref_carbohydrate_threshold = 40;
+
+
+/*  --- Food Choice Decision Making ---  */
+// --- Variables ---
+var foods_localData = [];
+
+var userFood_name;
+var userFood_calories;
+var userFood_carbohydrate;
+var userFood_protein;
+var userFood_fat;
+
+var userPref_calories_threshold = 50;
+var userPref_carbohydrate_threshold = 30;
 var userPref_protein_threshold = 20;
 var userPref_fat_threshold = 10;
 
 
+var foodChoice_decision = "Good Food";
+var foodchoice_reason = [];
 
-/*  --- Food Choice Decision Making ---  */
+// --- Functions ---
+//helper function for find a food's nutrition facts from local database
+function findFoodFacts(food){
+    for(i = 0; i < foods_localData.length; i++) {
+        if(foods_localData[i]["name"] == food){
+            return foods_localData[i];
+        }
+    }
+}
+
 function foodChoiceEvaluation(userFood) {
 
+    $.get("/food-database", function(data){
+        foods_localData = data;
+    });
+
+    var food_nutrition = findFoodFacts(userFood);
+
+    userFood_name = food_nutrition["name"];
+    userFood_calories = food_nutrition["calories"]; 
+    userFood_carbohydrate = food_nutrition["carbohydrates"];
+    userFood_protein = food_nutrition["proteins"];
+    userFood_fat = food_nutrition["fats"];
+
+    if (userFood_calories > userPref_calories_threshold) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+
+        foodChoice_decision = "Bad Food";
+    }
 
 
+    if (userFood_carbohydrate > userPref_carbohydrate_threshold) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+
+        foodChoice_decision = "Bad Food";
+    }
+
+
+    if (userFood_protein > userPref_protein_threshold) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+
+        foodChoice_decision = "Bad Food";
+    }
+
+    if (userFood_fat > userPref_fat_threshold) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+
+        foodChoice_decision = "Bad Food";
+    }
+
+    return foodChoice_decision;
 }
+
+
+
 
 
 /*  --- Food Suggestion Decision Making ---  */
@@ -94,14 +153,14 @@ function foodSuggestEvaluation(aiFood) {
 
 
 
-
+/*
 
 var calories_reason = [];
 var calories_reason_count = 0;
 var calories_explain = "";
 var calories_suggest = "";
 
-if (food_calories > user_calories_threshold) {
+if (userFood_calories > userPref_calories_threshold) {
     calories_reason[calories_reason_count] =  "has calories > that of "
     calories_reason_count++;
        
@@ -109,14 +168,15 @@ if (food_calories > user_calories_threshold) {
     calories_reason[calories_reason_count] =  "has calories \u2264 that of "
     calories_reason_count++;
 }
+*/
 
 
-
-calories_suggest = food_name;
-
+/*
+calories_suggest = userFood_name;
 for(var i = 0; i < calories_reason_count; i++) {
     if (typeof reason === 'string' || reason instanceof String)
         calories_suggest = claories_suggest + reason;
         calories_reason.splice()
 
 }    
+*/

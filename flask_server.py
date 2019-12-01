@@ -61,11 +61,7 @@ def preference():
 def foodDatabase():
     if request.method == 'GET':
         json_file = os.path.join(app.root_path, 'food_data', 'localFoods.json')
-        if not os.path.isfile(json_file):
-            with open(json_file, 'w') as file:
-                json.dump([{"name": "placeholder"}], file)
 
-        # TODO: need to work on this for AI decision
         with open(json_file) as file:
             data = json.load(file)
             return jsonify(data)
@@ -129,6 +125,11 @@ def foodLog():
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
+        json_file = os.path.join(app.root_path, 'user_data', '{}_log.txt'.format(user))
+        if not os.path.isfile(json_file):
+            with open(json_file, 'w') as file:
+                json.dump({"user": "tester"}, file)
+
         with open('user_data/{}_log.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
@@ -138,6 +139,22 @@ def foodLog():
             file.write(json_data)
             file.truncate()
             return json_data
+
+def processFoodData(received_data, stored_data, method):
+    if received_data["food"] != "":
+        if received_data["date"] in stored_data:
+            if received_data["meal"] in stored_data[received_data["date"]]:
+                if method == 'POST':
+                    stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+                elif method == 'DELETE':
+                    stored_data[received_data["date"]][received_data["meal"]].remove(received_data["food"])
+            else:
+                stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
+                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+        else:
+            stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
+            stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+
 
 @app.route("/food-pref", methods = ['GET', 'POST', 'DELETE'])
 def foodPref():
@@ -157,23 +174,6 @@ def foodPref():
             file.write(json_data)
             file.truncate()
             return json_data
-
-
-def processFoodData(received_data, stored_data, method):
-    if received_data["food"] != "":
-        if received_data["date"] in stored_data:
-            if received_data["meal"] in stored_data[received_data["date"]]:
-                if method == 'POST':
-                    stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
-                elif method == 'DELETE':
-                    stored_data[received_data["date"]][received_data["meal"]].remove(received_data["food"])
-            else:
-                stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
-                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
-        else:
-            stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
-            stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
-    #stored_data.update(request.form.to_dict())
 
 def processPrefData(received_data, stored_data, method):
     print("Fill this in")

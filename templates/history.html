@@ -57,10 +57,13 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Carbohydrate(g)</th>
-                            <th>Protein(g)</th>
-                            <th>Fat(g)</th>
+                            <th>Serving Size[g]</th>
+                            <th>Calories[kcal]</th>
+                            <th>Carbohydrate[g]</th>
+                            <th>Protein[g]</th>
+                            <th>Fat[g]</th>
                             <th>Tags</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,10 +76,13 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Carbohydrate(g)</th>
-                            <th>Protein(g)</th>
-                            <th>Fat(g)</th>
+                            <th>Serving Size[g]</th>
+                            <th>Calories[kcal]</th>
+                            <th>Carbohydrate[g]</th>
+                            <th>Protein[g]</th>
+                            <th>Fat[g]</th>
                             <th>Tags</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,10 +95,13 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Carbohydrate(g)</th>
-                            <th>Protein(g)</th>
-                            <th>Fat(g)</th>
+                            <th>Serving Size[g]</th>
+                            <th>Calories[kcal]</th>
+                            <th>Carbohydrate[g]</th>
+                            <th>Protein[g]</th>
+                            <th>Fat[g]</th>
                             <th>Tags</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,35 +117,19 @@
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->     
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-
-
-        <script>
-        $( function() {
-          $( "#datepicker" ).datepicker();
-        } );
-        </script>
+        <!-- DataTables Documentation https://datatables.net/examples/api/ -->
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+
         <script>
-        $(document).ready( function () {
-            $('table.display').DataTable({
-                "columnDefs": [{
-                    "targets": -1,
-                    "data": null,
-                    "defaultContent": "<button type=\"submit\" id=\"b_delete_item\"><i class=\"fas fa-trash-alt\"></i></button>",
-                }],
-                "searching": false,
-                "paging": false,
-                "info": false
-            })  //Default clear the table until filled
-            .clear().draw();
-        });
+
         </script>
 
 
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
         <script type="text/javascript" src="/static/bakeoff2.history.js"></script>
+        <script type="text/javascript" src="/static/bakeoff2.ai.js"></script>
 
     </body>
 </html>
