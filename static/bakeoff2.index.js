@@ -92,6 +92,8 @@ function searchFood(searchTerm) {
             // save all data for use in populating nutrition facts
             // https://gist.github.com/mattsilv/7122853
             foods_onlineData = data["foods"]; 
+            $("#table-search").DataTable().clear().draw();
+            fillResultTable();
             alert("Success in obtaining infotmation from database");
         },
         error: function(xhr, status, error){
@@ -132,9 +134,7 @@ function addFoodToLocalDatabase(food) {
 // --- In-Use ---
 $('#index-search-icon').click(function() {
     searchFood($("#search-keyword").val());
-    
-    fillResultTable();
-    
+        
     for(i = 0; i < foods_onlineData.length; i++){
         var food = foods_onlineData[i];
         addFoodToLocalDatabase(food);

@@ -274,67 +274,152 @@ tr:nth-child(even) {
   overflow: auto;
 }
 
-/* User Preference Board */
-.preference-container {
+/* Body Info Board */
+.userInfo-container {
   text-align: left;
-  width: 40%;
+  width: 30%;
+  box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
-  margin-left: 2vw;
-  margin-bottom: 2vw;
+  margin-left: 1.5vw;
+  margin-bottom: 1vw;
+  margin-right: 1.5vw;
   float:left; 
 }
-.preference-container label {
-  margin-bottom: 1vw;
-  margin-left: 1.5vw;
+.userInfo-container h3 {
+  text-align: center;
 }
-.preference-container select, input {
+.userInfo-container label {
+  margin-left: 1.5vw;
+  margin-bottom: 1vw;
+}
+.userInfo-container select, input {
   font-size: 16px;
-  width: 20vw;
+  width: 10vw;
+  min-width: 100px;
   cursor: pointer;
   padding: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
-  margin-bottom: 2vw;
-  margin-left: 1vw;
+  margin-left: 0.5vw;
+  margin-bottom: 1vw;
 }
-.preference-container button {
+.userInfo-container button {
   text-align: center;
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
-  width: 10vw;
+  width: 120px;
   border: none;
   background: lightgray;
-  margin-bottom: 2vw;
-  margin-left: 15vw;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
 }
 
-/* DRI Board */
-.dri-container {
+/* Daily Reference Intake Board */
+.plan-container {
   text-align: left;
-  width: 50%;
+  width: 30%;
+  box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
   border-style: solid;
-  border-color: wheat;
-  margin-right: 2vw;
-  margin-bottom: 2vw;
-  float: right;			
+  border-color: wheat; 
+  margin-left: 1.5vw;
+  margin-bottom: 1vw;
+  margin-right: 1.5vw;
+  display: inline-block;
 }
-.dri-container label {
+.plan-container h3 {
+  text-align: center;
+}
+.plan-container label {
   margin-bottom: 1vw;
   margin-left: 1.5vw;
 }
-.dri-container input {
+.plan-container input {
   font-size: 16px;
-  width: 20vw;
+  width: 10vw;
+  min-width: 100px;
   cursor: pointer;
   padding: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
-  margin-bottom: 2vw;
-  margin-left: 1vw;
+  margin-left: 0.5vw;
+  margin-bottom: 1vw;
+}
+.plan-container button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+
+
+
+/* Nutrient Cutoff Board */
+.cutoff-container {
+  text-align: left;
+  width: 30%;
+  box-sizing: border-box; 
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+  margin-left: 1.5vw;
+  margin-bottom: 1vw;
+  margin-right: 1.5vw;
+  float:right; 
+}
+.cutoff-container h3 {
+  text-align: center;
+}
+.cutoff-container label {
+  margin-bottom: 1vw;
+  margin-left: 1.5vw;
+}
+.cutoff-container input {
+  font-size: 16px;
+  width: 10vw;
+  min-width: 100px;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  margin-left: 0.5vw;
+  margin-bottom: 1vw;
+}
+.cutoff-container button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+
+#preference-save-button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
 }

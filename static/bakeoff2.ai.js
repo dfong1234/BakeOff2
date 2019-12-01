@@ -180,3 +180,92 @@ for(var i = 0; i < calories_reason_count; i++) {
 
 }    
 */
+
+
+/* For AI on User preference
+
+
+function calculateCarbohydrate() {
+    // Carbohydrate for ages 0
+    if (userAge == 0) {
+        return (77.5)
+    }
+
+    // Carbohydrate for ages 1+
+    if (userAge >= 1) {
+        return (130)
+    }
+}
+
+
+function calculateProtein() {
+    // Protein for ages 0
+    if (userAge == 0) {
+        return (10)
+    }
+
+    // Protein for ages 1 to 3
+    if (userAge <= 3) {
+        return (13)
+    }
+
+    // Protein for ages 4 to 8
+    if (userAge <= 8) {
+        return (19)
+    }
+
+    // Protein for ages 9 to 13
+    if (userAge <= 13) {
+        return (34)
+    }
+
+    // Protein for ages 14 to 18
+    if (userAge <= 18) {
+        if (userSex == "Male") {
+            return (52)
+        }
+        if (userSex == "Female") {
+            return (46)
+        }
+    }
+
+    // Protein for ages 19+
+    if (userAge > 18) {
+        if (userSex == "Male") {
+            return (56)
+        }
+        if (userSex == "Female") {
+            return (46)
+        }
+    }
+}
+
+
+function calculateFat() {
+    // Fat for ages 0
+    if (userAge == 0) {
+        return (30)
+    }
+
+    // Fat for ages 1 to 3
+    if (userAge <= 3) {
+        return (35)
+    }
+
+    // Fat for ages 4 to 18
+    if (userAge <= 18) {
+        return (30)
+    }
+    
+    // Fat for ages 19+
+    if (userAge > 18) {
+        return (27.5)
+    }
+}
+
+
+
+
+
+
+*/

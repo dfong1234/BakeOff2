@@ -14,19 +14,6 @@ from flask import request
 from flask import jsonify
 
 
-def writeToJSONFile(path, fileName, data):
-    filePathNameWExt = path + fileName + '.json'
-    with open(filePathNameWExt, 'w') as fp:
-        json.dump(data, fp)
-
-
-# Example
-data = {}
-data['key'] = 'value'
-
-writeToJSONFile('./','file-name',data)
-
-
 # --- Define a local Web server --- #
 app = Flask(__name__)
 
@@ -118,7 +105,7 @@ def foodDatabase():
 
 @app.route("/food-log", methods = ['GET', 'POST', 'DELETE'])
 def foodLog():
-    user = request.args.get('user', default = 'tester', type = str)
+    user = request.args.get('user', default = 'test', type = str)
     if request.method == 'GET':
         with open('user_data/{}_log.txt'.format(user)) as file:
             data = json.load(file)
@@ -128,7 +115,7 @@ def foodLog():
         json_file = os.path.join(app.root_path, 'user_data', '{}_log.txt'.format(user))
         if not os.path.isfile(json_file):
             with open(json_file, 'w') as file:
-                json.dump({"user": "tester"}, file)
+                json.dump({"user": "test"}, file)
 
         with open('user_data/{}_log.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
@@ -158,13 +145,18 @@ def processFoodData(received_data, stored_data, method):
 
 @app.route("/food-pref", methods = ['GET', 'POST', 'DELETE'])
 def foodPref():
-    user = request.args.get('user', default = 'tester', type = str)
+    user = request.args.get('user', default = 'test', type = str)
     if request.method == 'GET':
         with open('user_data/{}_pref.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
 
     elif request.method == 'POST' or request.method == 'DELETE':
+        json_file = os.path.join(app.root_path, 'user_data', '{}_pref.txt'.format(user))
+        if not os.path.isfile(json_file):
+            with open(json_file, 'w') as file:
+                json.dump({"user": "test", "plan": None}, file)
+
         with open('user_data/{}_pref.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
@@ -176,7 +168,9 @@ def foodPref():
             return json_data
 
 def processPrefData(received_data, stored_data, method):
-    print("Fill this in")
+    stored_data["plan"] = received_data.copy()
+
+
 
 # --- Initialize a local Web server --- #
 if __name__ == "__main__":

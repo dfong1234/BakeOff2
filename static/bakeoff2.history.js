@@ -3,7 +3,7 @@
 //  javascript for index page of BakeOff2:
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 10/23/2019
+//  Last Modified: 11/30/2019
 //  ................................................................................
 
 /*  --- ---  */
@@ -118,7 +118,8 @@ $("#history-search-icon").click(function(){
         meal_items = data[sel_date]["Breakfast"];
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_label = foodChoiceEvaluation(meal_items[i]);
+            var food_name = food_nutrition["name"];
+            var food_label = foodChoiceEvaluation(food_name);
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
@@ -129,7 +130,8 @@ $("#history-search-icon").click(function(){
         meal_items = data[sel_date]["Lunch"];
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_label = foodChoiceEvaluation(meal_items[i]);
+            var food_name = food_nutrition["name"];
+            var food_label = foodChoiceEvaluation(food_name);
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
@@ -139,7 +141,8 @@ $("#history-search-icon").click(function(){
         meal_items = data[sel_date]["Dinner"];
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_label = foodChoiceEvaluation(meal_items[i]);
+            var food_name = food_nutrition["name"];
+            var food_label = foodChoiceEvaluation(food_name);
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
