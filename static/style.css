@@ -152,7 +152,7 @@ tr:nth-child(even) {
   text-align: left;
   margin: auto;
   width: 90vw;
-  height: 60vh;
+  height: 80vh;
   background-color: white;
   border-radius: 6px;
   border-style: solid;
@@ -201,7 +201,7 @@ tr:nth-child(even) {
 
 
 #result-container{
-  width: 50vw;
+  width: 60vw;
   border-collapse: collapse;
   overflow: auto;
 }
