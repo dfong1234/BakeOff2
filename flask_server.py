@@ -101,7 +101,7 @@ def foodDatabase():
         
         return json_combined_data
 
-
+ 
 
 @app.route("/food-log", methods = ['GET', 'POST', 'DELETE'])
 def foodLog():

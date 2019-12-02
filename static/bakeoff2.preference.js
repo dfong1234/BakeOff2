@@ -26,7 +26,44 @@ openTab(tabName, color)
 
 
 
-/*  --- Daily Reference Intake Calculator ---  */
+/*  --- Loading Diet Profile ---  */
+// --- Variables ---
+var userDietProfile = {};
+
+// --- Functions ---
+function loadDietProfile() {
+    $.get("/food-pref", function(data){
+        userDietProfile = data["plan"];
+
+        if (data["plan"] != null) {
+            $("#dri-calories").val(data["plan"]["target_calories"]);
+            $("#age").val(data["plan"]["age"]);
+            $("#height").val(data["plan"]["height"]);
+            $("#weight").val(data["plan"]["weight"]);    
+            document.getElementById("sex").value = data["plan"]["sex"]
+            document.getElementById("activity").value = data["plan"]["activity_level"]
+
+            $("#user-calories").val(data["plan"]["plan_calories"]);
+            $("#user-carbohydrates").val(data["plan"]["plan_carbohydrates"]);
+            $("#user-proteins").val(data["plan"]["plan_proteins"]);
+            $("#user-fats").val(data["plan"]["plan_fats"]);
+
+            $("#cutoff-calories").val(data["plan"]["cutoff_calories"]);
+            $("#cutoff-carbohydrates").val(data["plan"]["cutoff_carbohydrates"]);
+            $("#cutoff-proteins").val(data["plan"]["cutoff_proteins"]);
+            $("#cutoff-fats").val(data["plan"]["cutoff_fats"]);
+        }
+    });
+
+}
+
+// --- In-Use ---
+loadDietProfile();
+
+
+
+
+/*  --- Daily Reference Intake Planner ---  */
 // Dietary Reference Intakes: The Essential Guide to Nutrient Requirements (2006)
 // https://www.nap.edu/read/11537/chapter/8
 // http://www.nationalacademies.org/hmd/~/media/Files/Activity%20Files/Nutrition/DRI-Tables/8_Macronutrient%20Summary.pdf
@@ -44,10 +81,6 @@ var carbohydrate;
 var protein;
 var fat;
 
-var userFood_calories_cutoff = null;
-var userFood_carbohydrate_cutoff = null;
-var userFood_protein_cutoff = null;
-var userFood_fat_cutoff = null;
 
 // --- Functions ---
 function calculateCalories_EER() {
@@ -221,6 +254,16 @@ $("#dri-adjust-button").click(function() {
 });
 
 
+
+
+/*  --- Single Food's Cutoffs Planner ---  */
+// --- Variables ---
+var userFood_calories_cutoff = null;
+var userFood_carbohydrate_cutoff = null;
+var userFood_protein_cutoff = null;
+var userFood_fat_cutoff = null;
+
+// --- In-Use ---
 $("#food-cutoff-button").click(function() {
     userFood_calories_cutoff = $("#cutoff-calories").val();
     userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
@@ -233,8 +276,9 @@ $("#food-cutoff-button").click(function() {
 
 
 
+/*  --- Saving Diet Profile ---  */
+// --- In-Use ---
 $("#preference-save-button").click(function() {
-
     //create user's diet profile object
     user_DietProfile = {
 		"age"       	 : userAge.toString(),
