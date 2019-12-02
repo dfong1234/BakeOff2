@@ -75,7 +75,7 @@ var foods_localData = [];
 // --- Functions ---
 //helper function for find a food's nutrition facts from local database
 function findFoodFacts(food){
-    for(i = 0; i < foods_localData.length; i++) {
+    for(let i = 0; i < foods_localData.length; i++) {
         if(foods_localData[i]["name"] == food){
             return foods_localData[i];
         }
@@ -106,19 +106,18 @@ $("#history-search-icon").click(function(){
         // https://datatables.net/reference/api/cells()
         // https://www.geeksforgeeks.org/jquery-css-method/
         meal_items = data[sel_date]["Breakfast"];
-        for(i = 0; i < meal_items.length; i++){
+        console.log(meal_items);
+        for(let i = 0; i < meal_items.length; i++){;
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
-            $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-                food_nutrition["calories"], food_nutrition["carbohydrates"], 
-                food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
+            $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"], food_nutrition["calories"], food_nutrition["carbohydrates"], food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
         };
 
 
         //load lunch table
         meal_items = data[sel_date]["Lunch"];
-        for(i = 0; i < meal_items.length; i++){
+        for(let i = 0; i < meal_items.length; i++){
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
@@ -128,7 +127,7 @@ $("#history-search-icon").click(function(){
         };
         //load dinner table
         meal_items = data[sel_date]["Dinner"];
-        for(i = 0; i < meal_items.length; i++){
+        for(let i = 0; i < meal_items.length; i++){
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);

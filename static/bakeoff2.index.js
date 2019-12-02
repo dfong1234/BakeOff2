@@ -104,7 +104,7 @@ function searchFood(searchTerm) {
 
 function fillResultTable() {
     $("#result-table").DataTable().clear().draw();
-    for(i = 0; i < foods_onlineData.length; i++){
+    for(let i = 0; i < foods_onlineData.length; i++){
         var food_array = foods_onlineData[i];
         var name = food_array["food_name"];
         var serving_size = food_array["serving_weight_grams"].toString();
@@ -135,7 +135,7 @@ function addFoodToLocalDatabase(food) {
 $('#index-search-icon').click(function() {
     searchFood($("#search-keyword").val());
         
-    for(i = 0; i < foods_onlineData.length; i++){
+    for(let i = 0; i < foods_onlineData.length; i++){
         var food = foods_onlineData[i];
         addFoodToLocalDatabase(food);
     }
@@ -151,7 +151,7 @@ var url_params = new URLSearchParams(window.location.search);
 // --- Functions ---
 //helper function for filling out nutrition table
 function findVitaminValue(attribute_ID){
-    for(i = 0; i < food_nutritionData["full_nutrients"].length; i++) {
+    for(let i = 0; i < food_nutritionData["full_nutrients"].length; i++) {
         if(attribute_ID == food_nutritionData["full_nutrients"][i]["attr_id"]){
             return food_nutritionData["full_nutrients"][i]["value"];
         }
@@ -167,7 +167,7 @@ $("#result-table tbody").on('click', 'button', function(){
     var row_data = $('#result-table').DataTable().row($(this).parents('tr')).data();
 
     //find correct food item in the saved data from when we populated the table
-    for(i = 0; i < foods_onlineData.length; i++){
+    for(let i = 0; i < foods_onlineData.length; i++){
         food_nutritionData = foods_onlineData[i];
         if(food_nutritionData["food_name"] == row_data[0]) { //found it, so break
             break;

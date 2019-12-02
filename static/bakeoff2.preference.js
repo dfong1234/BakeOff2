@@ -56,7 +56,7 @@ function loadDietProfile() {
             $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
             $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
 
-            for(i = 0; i < data["plan"]["micronutrient_rules"].length; i++){
+            for(let i = 0; i < data["plan"]["micronutrient_rules"].length; i++){
                 $("#rules-table").DataTable().row.add([data["plan"]["micronutrient_rules"][i]["micronutrient"], data["plan"]["micronutrient_rules"][i]["operator"], data["plan"]["micronutrient_rules"][i]["amount"], "0"]).draw();
                 micronutrientRules.push({
                     "micronutrient": data["plan"]["micronutrient_rules"][i]["micronutrient"],
