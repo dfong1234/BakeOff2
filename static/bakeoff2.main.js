@@ -3,7 +3,7 @@
 //	javascript for common actions in BakeOff2:
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 10/23/2019
+//  Last Modified: 11/26/2019
 //	................................................................................
 
 function changeTab(tabName, color) {
@@ -34,3 +34,8 @@ function openTab(cityName, color) {
     var tabID = cityName + '-tab'
     document.getElementById(tabID).style.backgroundColor = color;
 }
+
+
+
+
+

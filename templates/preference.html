@@ -1,3 +1,154 @@
+
+<!-- ..............................................................................
+  preference.html
+  	Markup for preference page of BakeOff2:
+    Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+    Date Created: 10/15/2019
+    Last Modified: 11/30/2019
+  	 .............................................................................. -->	
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+
+        <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        
+        <title>BakeOff #2 - Diet Preference</title>
+    </head>
+
+    <body>
+        <header>
+            <div id="Preference" class="tabcontent">
+                <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
+            </div>
+        </header>
+        
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+        </nav>
+
+        <div style="margin-top: 7.5vh"></div>
+     
+        <div id="preference-alert">
+                <strong>Info!</strong> Indicates a neutral informative change or action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 2.5vh"></div>
+
+        <div id="prefernce-wrapper">
+            <div class="userInfo-container">
+                <h3>Body Information</h3>
+
+                <label>Targeted Daily Calories [kcal]:</label>
+                <input id="dri-calories" type = "number" readonly> 
+
+                <br>
+                <label >Age [year]:</label>
+                <input id="age" type="number" min="0">
+
+                <br>
+                <label>Sex:</label>
+                <select id="sex">
+                    <option value = "Select"> Select </option>
+                    <option value = "Male"> Male </option>
+                    <option value = "Female"> Female </option>
+                </select>
+
+                <br>
+                <label> Height [m]:</label>
+                <input id="height" type="number" min="0" step=".01">
+
+                <br>
+                <label>Weight [kg]:</label>
+                <input id="weight" type="number" min="0" step=".01">
+
+                <br>
+                <label> Activity Level:</label> 
+                <select id="activity">
+                    <option value = "Select"> Select </option>
+                    <option value = "Sedentary">Sedentary</option>
+                    <option value = "Low Active">Low Active</option>
+                    <option value = "Active">Active</option>
+                    <option value = "Very Active">Very Active</option>
+                </select>
+
+                <br>
+                <br>
+                <button type="submit" id="dri-calculate-button">Get Diet Plan</button>
+            </div>
+
+            <div class="plan-container">
+                <h3>Diet Plan</h3>
+
+                <label>Your Daily Calories [kcal]:</label>
+                <input id="user-calories" type = "number" readonly> 
+
+                <br>
+                <label>Your Daily Carbohydrates [g]:</label>
+                <input id="user-carbohydrates" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Your Daily Proteins [g]:</label>
+                <input id="user-proteins" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Your Daily Fats [g]:</label>
+                <input id="user-fats" type = "number" min="0" step=".01">
+
+                <br>
+                <br>
+                <button id="dri-adjust-button">Adjust Diet Plan</button>
+            </div>
+
+            <div class="cutoff-container">
+                <h3>Single Food Cutoffs</h3>
+
+                <label>Calories Cutoff [kcal]:</label>
+                <input id="cutoff-calories" type = "number" min="0" step=".01"> 
+
+                <br>
+                <label>Carbohydrates Cutoff [g]:</label>
+                <input id="cutoff-carbohydrates" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Proteins Cutoff [g]:</label>
+                <input id="cutoff-proteins" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Fats Cutoff [g]:</label>
+                <input id="cutoff-fats" type = "number" min="0" step=".01">
+
+                <br>
+                <br>
+                <button id="food-cutoff-button">Set Food Cutoffs</button>
+            </div>
+        </div>
+
+        <div style="clear: both;"></div>
+        <div style="margin-top: 5vh"></div>
+
+        <button id="preference-save-button">Save Preference</button>
+
+
+        <!-- Online library -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+        <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->     
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+        <!-- Project-specific Library -->
+        <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
+        <script type="text/javascript" src="/static/bakeoff2.preference.js"></script>
+
+    </body>
+</html>
+
 <!-- ..............................................................................
   preference.html
   	Markup for preference page of BakeOff2:
@@ -114,4 +265,5 @@
 
     </body>
 </html>
+master
        
