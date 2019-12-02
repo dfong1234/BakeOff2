@@ -55,9 +55,17 @@ function loadDietProfile() {
             $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
             $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
             $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
+
+            for(i = 0; i < data["plan"]["micronutrient_rules"].length; i++){
+                $("#rules-table").DataTable().row.add([data["plan"]["micronutrient_rules"][i]["micronutrient"], data["plan"]["micronutrient_rules"][i]["operator"], data["plan"]["micronutrient_rules"][i]["amount"], "0"]).draw();
+                micronutrientRules.push({
+                    "micronutrient": data["plan"]["micronutrient_rules"][i]["micronutrient"],
+                    "operator": data["plan"]["micronutrient_rules"][i]["operator"],
+                    "amount": data["plan"]["micronutrient_rules"][i]["amount"]
+                })
+            }
         }
     });
-
 }
 
 /*  --- Daily Reference Intake Planner ---  */
@@ -220,10 +228,10 @@ $("#dri-adjust-button").click(function() {
 
 /*  --- Single Food's Cutoffs Planner ---  */
 // --- Variables ---
-var userFood_calories_cutoff = null;
-var userFood_carbohydrate_cutoff = null;
-var userFood_protein_cutoff = null;
-var userFood_fat_cutoff = null;
+var userFood_calories_cutoff = $("#cutoff-calories").val();
+var userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
+var userFood_protein_cutoff = $("#cutoff-proteins").val();
+var userFood_fat_cutoff = $("#cutoff-fats").val();
 
 // --- In-Use ---
 $("#food-cutoff-button").click(function() {
@@ -233,6 +241,22 @@ $("#food-cutoff-button").click(function() {
     userFood_fat_cutoff = $("#cutoff-fats").val();
 
     alert("Food Cutoffs updated!");
+});
+
+
+/*  --- Micronutrient Rules ---  */
+// --- Variables ---
+var micronutrientRules = []; 
+
+// --- In-Use ---
+$("#add-micronutrient-button").click(function() {
+    var rule = {
+        "micronutrient": $("#rule-micronutrient").val(),
+        "operator": $("#rule-operator").val(),
+        "amount": $("#rule-amount").val()
+    };
+    micronutrientRules.push(rule);
+    $("#rules-table").DataTable().row.add([rule["micronutrient"], rule["operator"], rule["amount"], "0"]).draw();
 });
 
 /*  --- Saving Diet Profile ---  */
@@ -256,7 +280,9 @@ $("#preference-save-button").click(function() {
         "cutoff_calories": userFood_calories_cutoff,
         "cutoff_carbohydrates": userFood_carbohydrate_cutoff,
         "cutoff_proteins": userFood_protein_cutoff,
-        "cutoff_fats": userFood_fat_cutoff
+        "cutoff_fats": userFood_fat_cutoff,
+
+        "micronutrient_rules" : JSON.stringify(micronutrientRules)
     };
 
     $.post("/food-pref", user_DietProfile, null, "json");
@@ -267,6 +293,11 @@ $("#preference-save-button").click(function() {
 $("#preference-restore-button").click(function() {
     loadDietProfile();
     alert("Preferences Restored!");
+});
+
+
+$("#rules-table tbody").on('click', 'button', function () {
+    $("#rules-table").DataTable().row($(this).parents('tr')).remove().draw();
 });
 
 //Wait till document is "loaded" before starting data stuff, just in case of bugs or something
@@ -312,6 +343,16 @@ $( document ).ready(function() {
             $("#user-calories").val(user_calories);
         }
     });
+
+    $('#rules-table').DataTable({
+        "columnDefs": [{
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<button type=\"submit\" id=\"b_expand_food\"><i class=\"fas fa-trash-alt\"></i></button>"
+        }],
+        "searching": false,
+        "info": false
+    }).clear().draw();
 
     loadDietProfile();
 });

@@ -179,6 +179,8 @@ def foodPref():
         with open('user_data/{}_pref.txt'.format(user), 'r+') as file:
             stored_data = json.load(file)
             received_data = request.form.to_dict()
+            received_data["micronutrient_rules"] = json.loads(received_data["micronutrient_rules"])
+            print(received_data)
             processPrefData(received_data, stored_data, request.method)
             json_data = json.dumps(stored_data)
             file.seek(0)
