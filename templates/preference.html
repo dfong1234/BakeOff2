@@ -1,3 +1,4 @@
+
 <!-- ..............................................................................
   preference.html
   	Markup for preference page of BakeOff2:
@@ -147,4 +148,122 @@
 
     </body>
 </html>
+
+<!-- ..............................................................................
+  preference.html
+  	Markup for preference page of BakeOff2:
+    Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+    Date Created: 10/15/2019
+    Last Modified: 10/23/2019
+  	 .............................................................................. -->	
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <title>BakeOff #2 - Diet Preference</title>
+    </head>
+
+    <body>
+        <header>
+            <div id="Preference" class="tabcontent">
+                <h1>NutriPlan - An intelligent Nutrition Assistant</h1>
+            </div>
+        </header>
+        
+        <nav>
+            <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
+            <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
+            <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+        </nav>
+
+        <div style="margin-top: 10vh"></div>   
+     
+        <div id="preference-alert">
+                <strong>Info!</strong> Indicates a neutral informative change or action.
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        </div>
+
+        <div style="margin-top: 5vh"></div>   
+
+
+        <div id="prefernce-wrapper">
+            <div class="preference-container">
+                <br>
+                <label>Age [year]:</label>
+                <input type = "number" min="0" id="age"> 
+                
+                <br>
+                <label>Sex:</label>
+                <select id="sex">
+                    <option value = "Select"> Select </option>
+                    <option value = "Male"> Male </option>
+                    <option value = "Female"> Female </option>
+                </select>
+
+                <br>
+                <label> Height [m]:</label>
+                <input type = "number" min="0" id="height">
+
+                <br>
+                <label>Weight [kg]:</label>
+                <input type = "number" min="0" id="weight">
+
+                <br>
+                <label id = "activity"> Activity Level:</label> 
+                <select>
+                    <option value = "Select"> Select </option>
+                    <option value = "Sendentary">Sendentary</option>
+                    <option value = "Low active">Low active</option>
+                    <option value = "Active">Active</option>
+                    <option value = "Very Active">Very Active</option>
+                </select>
+
+                <br>
+                <button type="submit" id="preference_update_icon">Apply</button>
+            </div>
+
+            <div class="dri-container">
+                <br>
+                <label>Daily Calories [kcal]:</label>
+                <input id="dri-calories" type = "number" min="0"> 
+
+                <br>
+                <label>Daily Carbohydrates [g]:</label>
+                <input id="dri-carbohydrates" type = "number" min="0">
+                <div id="slider-dri-carbohydrates" class="nutrient-slider"></div>
+                
+                <br>
+                <label>Daily Proteins [g]:</label>
+                <input id="dri-proteins" type = "number" min="0">
+                <div id="slider-dri-proteins" class="nutrient-slider"></div>  
+
+                <br>
+                <label>Daily Fats [g]:</label>
+                <input id="dri-fats" type = "number" min="0">
+                <div id="slider-dri-fats" class="nutrient-slider"></div>
+
+                <br>
+                <button id="dri-defaults">Restore Defaults</button>
+                <button id="dri-save">Save</button>
+            </div>
+        </div>
+
+        <!-- my own or 3rd party library -->
+
+
+        <!-- Online library -->
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <!-- Project-specific Library -->
+        <script type="text/javascript" src="/static/bakeoff2.main.js"></script>
+        <script type="text/javascript" src="/static/bakeoff2.preference.js"></script>
+
+    </body>
+</html>
+master
        
