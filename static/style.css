@@ -423,3 +423,16 @@ tr:nth-child(even) {
   margin-bottom: 1vw;
   display: block;
 }
+
+#preference-preference-button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
