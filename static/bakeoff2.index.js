@@ -94,10 +94,10 @@ function searchFood(searchTerm) {
             foods_onlineData = data["foods"]; 
             $("#table-search").DataTable().clear().draw();
             fillResultTable();
-            alert("Success in obtaining infotmation from database");
+            alert("Success in obtaining information from database");
         },
         error: function(xhr, status, error){
-            alert("Failed to obtain infotmation from database");
+            alert("Failed to obtain information from database");
         }
     });
 };
@@ -147,7 +147,7 @@ $('#index-search-icon').click(function() {
 // --- Variables ---
 var food_mealData = {};   // Data of single food that will be added to user's meal history
 var food_nutritionData = {};  // Data of single food that will be loaded to Nutrition Fact Label
-
+var url_params = new URLSearchParams(window.location.search);
 // --- Functions ---
 //helper function for filling out nutrition table
 function findVitaminValue(attribute_ID){
@@ -175,9 +175,18 @@ $("#result-table tbody").on('click', 'button', function(){
     }
 
     //food_mealData will contain user, and food name, meal time, meal date of food.
-    food_mealData["user"] = "test";
-    food_mealData["food"] = row_data[0];
-
+    if(url_params.has('user')){
+        food_mealData["user"] = url_params.get('user');
+    }
+    else{
+        food_mealData["user"] = "test";
+    }
+    food_mealData["name"] = row_data[0];
+    food_mealData["serving"] = row_data[1];
+    food_mealData["calories"] = row_data[2];
+    food_mealData["carbohydrates"] = row_data[3];
+    food_mealData["proteins"] = row_data[4];
+    food_mealData["fats"] = row_data[5];
 
     //food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({

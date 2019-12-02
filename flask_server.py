@@ -115,32 +115,51 @@ def foodLog():
         json_file = os.path.join(app.root_path, 'user_data', '{}_log.txt'.format(user))
         if not os.path.isfile(json_file):
             with open(json_file, 'w') as file:
-                json.dump({"user": "test"}, file)
+                try:
+                    json.dump({"user": user}, file)
+                except:
+                    print("User doesn't exist and couldn't create user profile!")
 
         with open('user_data/{}_log.txt'.format(user), 'r+') as file:
-            stored_data = json.load(file)
-            received_data = request.form.to_dict()
-            processFoodData(received_data, stored_data, request.method)
-            json_data = json.dumps(stored_data)
-            file.seek(0)
-            file.write(json_data)
-            file.truncate()
-            return json_data
+            try:
+                stored_data = json.load(file)
+                received_data = request.form.to_dict()
+                processFoodData(received_data, stored_data, request.method)
+                json_data = json.dumps(stored_data)
+                file.seek(0)
+                file.write(json_data)
+                file.truncate()
+                return json_data
+            except Exception as e:
+                print("Couldn't write to user data!:", e)
+                return "ERROR"
 
 def processFoodData(received_data, stored_data, method):
-    if received_data["food"] != "":
+    #Make sure required fields are present
+    if method == 'POST' and not all(keys in received_data for keys in ["name", "meal", "date", "user", "serving", "calories", "carbohydrates", "proteins", "fats"]):
+        raise Exception("not all required data was present in received_data")
+    elif method == 'DELETE' and not all(keys in received_data for keys in ["name", "meal", "date", "user"]):
+        raise Exception("not all required data was present in received_data")
+
+    if received_data["name"] != "":
+        remove = ["meal", "date", "user"];
+        food_temp = {x: received_data[x] for x in received_data if x not in remove}
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
                 if method == 'POST':
-                    stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+                    stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
                 elif method == 'DELETE':
-                    stored_data[received_data["date"]][received_data["meal"]].remove(received_data["food"])
+                    for index in range(len(stored_data[received_data["date"]][received_data["meal"]])):
+                        if(stored_data[received_data["date"]][received_data["meal"]][index]["name"] == received_data["name"]):
+                            print("Deleted", received_data["name"], "at", index )
+                            stored_data[received_data["date"]][received_data["meal"]].pop(index)
             else:
                 stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
-                stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+                stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
         else:
             stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
-            stored_data[received_data["date"]][received_data["meal"]].append(received_data["food"])
+            stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
+
 
 
 @app.route("/food-pref", methods = ['GET', 'POST', 'DELETE'])
