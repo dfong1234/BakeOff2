@@ -58,9 +58,9 @@ function loadDietProfile() {
             $("#cutoff-calcium").val(data["plan"]["cutoff_calcium"]);
             $("#cutoff-magnesium").val(data["plan"]["cutoff_magnesium"]);
 
-            $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
-            $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
-            $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
+            $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["target_calories"] * 100) );
+            $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["target_calories"]* 100) );
+            $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["target_calories"] * 100) );
 
             
         }

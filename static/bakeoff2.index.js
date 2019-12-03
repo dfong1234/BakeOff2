@@ -127,7 +127,7 @@ function fillResultTable() {
 
 function addFoodToLocalDatabase(food) {
 
-    function helper(attribute_ID){
+    function helperVitID(attribute_ID){
         for(let i = 0; i < food["full_nutrients"].length; i++) {
             if(attribute_ID == food["full_nutrients"][i]["attr_id"]){
                 return food["full_nutrients"][i]["value"];
@@ -135,21 +135,52 @@ function addFoodToLocalDatabase(food) {
         }
         return "Not Found";
     }
+
+    let serving = food["serving_weight_grams"];
+    function helperNormalize(item){
+        return Math.round((item * 100 / serving) * 100) / 100;
+    }
     //create the food's nutrition dictionary object
+
+    //first, normalize to 100g serving sizes
     var food_localData = {
         "name": food["food_name"],
-        "serving": food["serving_weight_grams"].toString(),
-        "calories": food["nf_calories"].toString(),
-        "carbohydrates": food["nf_total_carbohydrate"].toString(),
-        "proteins": food["nf_protein"].toString(),
-        "fats": food["nf_total_fat"].toString(),
-        "iron": helper(303),
-        "vitaminD": helper(324),
-        "vitaminB12": helper(418),
-        "calcium": helper(301),
-        "magnesium": helper(304)
+        "serving": 100,
+        "calories": helperNormalize(food["nf_calories"]),
+        "carbohydrates": helperNormalize(food["nf_total_carbohydrate"]),
+        "proteins": helperNormalize(food["nf_protein"]),
+        "fats": helperNormalize(food["nf_total_fat"]),
+        "iron": helperNormalize(helperVitID(303)),
+        "vitaminD": helperNormalize(helperVitID(324)),
+        "vitaminB12": helperNormalize(helperVitID(418)),
+        "calcium": helperNormalize(helperVitID(301)),
+        "magnesium": helperNormalize(helperVitID(304)),
     };
     
+    //next, try to determine tags
+    let tags = [];
+
+    if( ((food_localData["proteins"] * 4) > (0.4 * food_localData["calories"])) || (food_localData["proteins"] > 20)){
+        tags.push("High Protein");
+    }
+    else if( (food_localData["proteins"] * 4) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Protein");
+    }
+
+    if( (food_localData["carbohydrates"] * 4) > (0.4 * food_localData["calories"]) || (food_localData["carbohydrates"] > 30)){
+        tags.push("High Carbohydrates");
+    }
+    else if( (food_localData["carbohydrates"] * 4) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Carbohydrates");
+    }
+
+    if( (food_localData["fats"] * 9) > (0.4 * food_localData["calories"]) || (food_localData["fats"] > 20)){
+        tags.push("High Fat");
+    }
+    else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Fat");
+    }
+    food_localData["tags"] = JSON.stringify(tags);
     return food_localData;
     //$.post('/food-database', food_localData, null, "json");
 }
