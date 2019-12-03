@@ -220,11 +220,6 @@ def foodDislike():
             file.truncate()
             return json_data
 
-# def processPrefData(received_data, stored_data, method):
-#     stored_data["plan"] = received_data.copy()
-
-
-
 # --- Initialize a local Web server --- #
 if __name__ == "__main__":
     app.debug = True
