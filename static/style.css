@@ -276,7 +276,7 @@ tr:nth-child(even) {
 
 /* Body Info Board */
 .userInfo-container {
-  height: 70vh;
+  height: 100vh;
   text-align: left;
   width: 30%;
   box-sizing: border-box; 
@@ -322,7 +322,7 @@ tr:nth-child(even) {
 
 /* Daily Reference Intake Board */
 .plan-container {
-  height: 70vh;
+  height: 100vh;
   text-align: left;
   width: 30%;
   box-sizing: border-box; 
@@ -370,7 +370,7 @@ tr:nth-child(even) {
 
 /* Nutrient Cutoff Board */
 .cutoff-container {
-  height: 70vh;
+  height: 100vh;
   text-align: left;
   width: 30%;
   box-sizing: border-box; 
@@ -417,7 +417,7 @@ tr:nth-child(even) {
 .micronutrient-rules-container {  
   text-align: left;
   width: 100%;
-  height: 50vh;
+  height: 80vh;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;

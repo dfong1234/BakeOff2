@@ -52,18 +52,17 @@ function loadDietProfile() {
             $("#cutoff-carbohydrates").val(data["plan"]["cutoff_carbohydrates"]);
             $("#cutoff-proteins").val(data["plan"]["cutoff_proteins"]);
             $("#cutoff-fats").val(data["plan"]["cutoff_fats"]);
+            $("#cutoff-iron").val(data["plan"]["cutoff_iron"]);
+            $("#cutoff-vitaminD").val(data["plan"]["cutoff_vitaminD"]);
+            $("#cutoff-vitaminB12").val(data["plan"]["cutoff_vitaminB12"]);
+            $("#cutoff-calcium").val(data["plan"]["cutoff_calcium"]);
+            $("#cutoff-magnesium").val(data["plan"]["cutoff_magnesium"]);
+
             $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
             $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
             $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
 
-            for(let i = 0; i < data["plan"]["micronutrient_rules"].length; i++){
-                $("#rules-table").DataTable().row.add([data["plan"]["micronutrient_rules"][i]["micronutrient"], data["plan"]["micronutrient_rules"][i]["operator"], data["plan"]["micronutrient_rules"][i]["amount"], "0"]).draw();
-                micronutrientRules.push({
-                    "micronutrient": data["plan"]["micronutrient_rules"][i]["micronutrient"],
-                    "operator": data["plan"]["micronutrient_rules"][i]["operator"],
-                    "amount": data["plan"]["micronutrient_rules"][i]["amount"]
-                })
-            }
+            
         }
     });
 }
@@ -233,12 +232,23 @@ var userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
 var userFood_protein_cutoff = $("#cutoff-proteins").val();
 var userFood_fat_cutoff = $("#cutoff-fats").val();
 
+var userFood_iron_cutoff = $("#cutoff-iron").val();
+var userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
+var userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
+var userFood_calcium_cutoff = $("#cutoff-calcium").val();
+var userFood_magnesium_cutoff = $("#cutoff-magnesium").val();
+
 // --- In-Use ---
 $("#food-cutoff-button").click(function() {
     userFood_calories_cutoff = $("#cutoff-calories").val();
     userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
     userFood_protein_cutoff = $("#cutoff-proteins").val();
     userFood_fat_cutoff = $("#cutoff-fats").val();
+    userFood_iron_cutoff = $("#cutoff-iron").val();
+    userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
+    userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
+    userFood_calcium_cutoff = $("#cutoff-calcium").val();
+    userFood_magnesium_cutoff = $("#cutoff-magnesium").val();
 
     alert("Food Cutoffs updated!");
 });
@@ -281,8 +291,11 @@ $("#preference-save-button").click(function() {
         "cutoff_carbohydrates": userFood_carbohydrate_cutoff,
         "cutoff_proteins": userFood_protein_cutoff,
         "cutoff_fats": userFood_fat_cutoff,
-
-        "micronutrient_rules" : JSON.stringify(micronutrientRules)
+        "cutoff_iron": userFood_iron_cutoff,
+        "cutoff_vitaminD": userFood_vitaminD_cutoff,
+        "cutoff-vitaminB12": userFood_vitaminB12_cutoff,
+        "cutoff_calcium": userFood_calcium_cutoff,
+        "cutoff_magnesium": userFood_magnesium_cutoff
     };
 
     $.post("/food-pref", user_DietProfile, null, "json");
