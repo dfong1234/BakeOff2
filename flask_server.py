@@ -188,6 +188,31 @@ def foodPref():
             file.truncate()
             return json_data
 
+@app.route("/food-dislike", methods = ['GET', 'POST', 'DELETE'])
+def foodDislike():
+    user = request.args.get('user', default = 'test', type = str)
+    if request.method == 'GET':
+        with open('user_data/{}_dislike.txt'.format(user)) as file:
+            data = json.load(file)
+            return jsonify(data)
+
+    elif request.method == 'POST' or request.method == 'DELETE':
+        json_file = os.path.join(app.root_path, 'user_data', '{}_dislike.txt'.format(user))
+        if not os.path.isfile(json_file):
+            with open(json_file, 'w') as file:
+                json.dump({"user": "test", "dislike": []}, file)
+
+        with open('user_data/{}_dislike.txt'.format(user), 'r+') as file:
+            stored_data = json.load(file)
+            received_data = request.form.to_dict()
+            print(received_data)
+            stored_data["dislike"].append(received_data["dislike"])
+            json_data = json.dumps(stored_data)
+            file.seek(0)
+            file.write(json_data)
+            file.truncate()
+            return json_data
+
 def processPrefData(received_data, stored_data, method):
     stored_data["plan"] = received_data.copy()
 
