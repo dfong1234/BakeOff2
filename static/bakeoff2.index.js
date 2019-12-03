@@ -96,10 +96,12 @@ function searchFood(searchTerm) {
             fillResultTable();
             alert("Success in obtaining information from database");
             //had to move this since ajax call is async, so need to do it like this
+            var iter = 0;
             function sendRequestHelper(){
-                if(foods_onlineData.length > 0){
-                    let food = foods_onlineData.shift();
+                if(iter < foods_onlineData.length){
+                    let food = foods_onlineData[iter];
                     let food_localData = addFoodToLocalDatabase(food);
+                    iter++;
                     $.post('/food-database', food_localData, sendRequestHelper, "json");
                 }
             }
@@ -273,7 +275,9 @@ $("#result-table tbody").on('click', 'button', function(){
         valuePotassium_2018 : findVitaminValue(306),
         valueCalcium        : findVitaminValue(301),
         valueIron           : findVitaminValue(303),
+        valueVitaminB12     : findVitaminValue(418),
         valueAddedSugars    : findVitaminValue(539),
+        valueMagnesium      : findVitaminValue(304),
 
         //serving info
         valueServingWeightGrams : food_nutritionData["serving_weight_grams"],
