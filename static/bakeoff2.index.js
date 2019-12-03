@@ -95,6 +95,15 @@ function searchFood(searchTerm) {
             $("#table-search").DataTable().clear().draw();
             fillResultTable();
             alert("Success in obtaining information from database");
+            //had to move this since ajax call is async, so need to do it like this
+            function sendRequestHelper(){
+                if(foods_onlineData.length > 0){
+                    let food = foods_onlineData.shift();
+                    let food_localData = addFoodToLocalDatabase(food);
+                    $.post('/food-database', food_localData, sendRequestHelper, "json");
+                }
+            }
+            sendRequestHelper();
         },
         error: function(xhr, status, error){
             alert("Failed to obtain information from database");
@@ -118,27 +127,36 @@ function fillResultTable() {
 
 function addFoodToLocalDatabase(food) {
 
+    function helper(attribute_ID){
+        for(let i = 0; i < food["full_nutrients"].length; i++) {
+            if(attribute_ID == food["full_nutrients"][i]["attr_id"]){
+                return food["full_nutrients"][i]["value"];
+            }
+        }
+        return "Not Found";
+    }
     //create the food's nutrition dictionary object
-    food_localData = {
+    var food_localData = {
         "name": food["food_name"],
         "serving": food["serving_weight_grams"].toString(),
         "calories": food["nf_calories"].toString(),
         "carbohydrates": food["nf_total_carbohydrate"].toString(),
         "proteins": food["nf_protein"].toString(),
-        "fats": food["nf_total_fat"].toString()
+        "fats": food["nf_total_fat"].toString(),
+        "iron": helper(303),
+        "vitaminD": helper(324),
+        "vitaminB12": helper(418),
+        "calcium": helper(301),
+        "magnesium": helper(304)
     };
     
-    $.post('/food-database', food_localData, null, "json");
+    return food_localData;
+    //$.post('/food-database', food_localData, null, "json");
 }
 
 // --- In-Use ---
 $('#index-search-icon').click(function() {
     searchFood($("#search-keyword").val());
-        
-    for(let i = 0; i < foods_onlineData.length; i++){
-        var food = foods_onlineData[i];
-        addFoodToLocalDatabase(food);
-    }
 });
 
 

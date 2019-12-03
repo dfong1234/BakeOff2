@@ -65,13 +65,16 @@ def foodDatabase():
         with open(json_file, 'r') as file:
             stored_data = json.load(file)  # in python list
 
+        print("STORED DATA ____________________________")
         print(type(stored_data))
         print(stored_data)
 
         received_data = request.form.to_dict()  # in python dict
+        print("RECEIVED DATA______________________________")
         print(type(received_data))
         print(received_data)
 
+        print("NEW STORED DATA______________________________________")
         stored_data.append(received_data.copy())
         print(type(stored_data))
         print(stored_data)
@@ -86,6 +89,7 @@ def foodDatabase():
                 seen.add(dictionary_tuple)
                 combined_data.append(dictionary)
 
+        print("COMBINED DATA________________________________")
         print(type(combined_data))
         print(combined_data)
 
