@@ -1,10 +1,10 @@
 <!-- ..............................................................................
  track.html
-  	Markup for track page of BakeOff2:
+    Markup for track page of BakeOff2:
     Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
     Date Created: 10/15/2019
     Last Modified: 10/23/2019
-  	 .............................................................................. -->	
+     .............................................................................. --> 
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,9 +43,8 @@
         </div>
 
         <div style="margin-top: 2.5vh"></div>
-
-        <div class="chart-container">
-            <div class="search-container">
+        
+        <div class="search-container">
                 <select id="chart-type" onChange="makeNutritionChart()">
                     <option value="Line Plot">Line Plot</option>
                     <option value="Bar Graph">Bar Graph</option>
@@ -55,9 +54,52 @@
                 <button type="submit" id="track-search-icon"><i class="fa fa-search"></i></button>
             </div> 
 
-            <canvas id="nutrition-chart"></canvas>
-        </div>
+        <div id="track-wrapper">
+            <div class="chart-container">
+                <h3>Nutrition Report</h3>
+                <div id="nutrition-chart-container">
+                    <canvas id="nutrition-chart"></canvas>
+                </div>
+            </div>
 
+            <div class="suggest-container">
+                <h3>Food Suggestion</h3>
+                <div id="table-suggest-container">
+                    <table id="table-suggest" class="display">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Tags</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                </div>
+
+                <br>
+                <button type="submit" id="food-suggest-button">Get Food Suggestion</button>
+            </div>
+
+            <div class="suggest-cutoff-container">
+                <h3>Suggestion Criteria</h3>
+                <div id="table-suggest-container">
+                    <select>
+                        <option value="Carbohydrates">Carbohydrates</option>
+                        <option value="Fats">Fats</option>
+                        <option value="Protein">Protein</option>
+                        <option value="VitaminD">Vitamin D</option>
+                        <option value="VitaminB12">Vitamin B12</option>
+                        <option value="Calcium">Calcium</option>
+                        <option value="Iron">Iron</option>
+                        <option value="Magnesium">Magnesium</option>
+                        <option value="Sodium">Sodium</option>
+                    </select>
+                    <input type="text" name="cutoff-value">
+                </div>
+            </div>
+        </div>
 
 
 
@@ -68,8 +110,8 @@
         <!-- DataTables Documentation https://datatables.net/examples/api/ -->
         <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
         <!-- https://www.chartjs.org/ -->
-        <script type="text/javascript" src="/static/Chart.bundle.js"></script>
-
+        <script type="text/javascript" src="/static/chartjs/Chart.bundle.js"></script>
+        <script type="text/javascript" src="/static/chartjs/chartjs-plugin-annotation.js"></script>
         
         <!-- Project-specific Library -->
         <script type="text/javascript" src="/static/bakeoff2.main.js"></script>

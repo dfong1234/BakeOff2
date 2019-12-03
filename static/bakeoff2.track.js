@@ -32,18 +32,86 @@ $(function() {
 });
 
 
-
-/*  --- Nutrition Report Chart ---  */
+/*  --- DataTable ---  */
+// https://datatables.net/forums/discussion/50691/how-to-use-columndefs-multiple-time-in-a-datatable
+// https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
 // --- Initialization ---
-var chart_box = document.getElementById('chart-type');
-// Creating a Chart
-// https://www.chartjs.org/docs/latest/getting-started/usage.html
-var ctx = document.getElementById('nutrition-chart').getContext('2d');
-var nutritionChart = makeNutritionChart("Line Plot");
+$(document).ready( function () {
+    $('table.display').DataTable({
+        "columnDefs": [
+            {
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<input type=\"checkbox\" id=\"b_check_item\"></input>",
+            }
+        ],
+        "searching": false,
+        "paging": false,
+        "info": false
+    })  //Default clear the table until filled
+    .clear().draw();
+});
 
 
+
+/*  --- Load Local Food Database ---  */
 // --- Variables ---
 var foods_localData = [];
+
+// --- Functions ---
+function loadLocalFoodDatabase() {
+       
+    $.get("/food-database", function(data){
+        foods_localData = data;
+    });
+}
+
+// --- In-Use ---
+loadLocalFoodDatabase();
+
+
+
+/*  --- Load Diet Profile ---  */
+// --- Variables ---
+var userDietProfile = {};
+var userPref_plan_calories = 0; 
+var userPref_plan_carbohydrates = 0; 
+var userPref_plan_proteins = 0;  
+var userPref_plan_fats = 0;  
+
+// --- Functions ---
+function loadDietProfile() {
+    $.get("/food-pref", function(data){
+        userDietProfile = data["plan"];
+        if (data["plan"]["plan_calories"] != null) 
+            userPref_plan_calories = parseFloat(data["plan"]["plan_calories"]);
+        
+        if (data["plan"]["plan_carbohydrates"] != null) 
+            userPref_plan_carbohydrates = parseFloat(data["plan"]["plan_carbohydrates"]);
+        
+        if (data["plan"]["plan_proteins"] != null) 
+            userPref_plan_proteins  = parseFloat(data["plan"]["plan_proteins"]); 
+        
+        if (data["plan"]["plan_fats"] != null) 
+            userPref_plan_fats = parseFloat(data["plan"]["plan_fats"]);
+    });
+
+}
+
+// --- In-Use ---
+loadDietProfile();
+
+
+
+
+/*  --- Nutrition Chart Report ---  */
+// 10 Chart.js example charts to get you started
+// https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/
+// --- Variables ---
+var chart_box = document.getElementById('chart-type');
+var ctx = document.getElementById('nutrition-chart').getContext('2d');
+var nutritionChart;
+
 
 var user;
 var foods_breakfast = [];
@@ -68,25 +136,32 @@ var dinner_fats;
 
 
 var line_data = {
-    labels: ["Breakfast", "Lunch", "Dinner"],
-    datasets: [{
-        label: 'Carbohydrate [g]',
-        data: [],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        fill: false
-      }, {
-        label: 'Protein [g]',
-        data: [],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        fill: false
-      }, {
-        label: 'Fat [g]',
-        data: [],
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
-        fill: false
+    labels: ["After Breakfast", " After Lunch", "After Dinner"],
+    datasets: [
+        {
+            label: 'Calories [kcal]',
+            data: [0, 0, 0],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            fill: false
+     }, {
+            label: 'Carbohydrate [g]',
+            data: [0, 0, 0],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            fill: false
+     }, {
+            label: 'Protein [g]',
+            data: [0, 0, 0],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            fill: false
+     }, {
+            label: 'Fat [g]',
+            data: [0, 0, 0],
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            fill: false
       }]
   };
 
@@ -102,9 +177,8 @@ var line_options = {
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      max: 250,
-                      min: 0,
-                      stepSize: 50
+                      suggestedMin: 0,
+                      suggestedMax: 1000
                   },
                   scaleLabel: {
                        display: true,
@@ -115,18 +189,20 @@ var line_options = {
 
 
 var bar_data = {
-    labels: ["Carbohydrate [g]", "Protein [g]", "Fat [g]"],
+    labels: ["Calories [kcal]", "Carbohydrate [g]", "Protein [g]", "Fat [g]"],
     datasets: [{
-        data: [],
+        data: [0, 0, 0, 0],
         backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
         ],
         borderColor: [
             'rgba(255, 99, 132, 1)',
+            'rgba(75, 192, 192, 1)',
             'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
+            'rgba(255, 206, 86, 1)'
         ]
       }]
   };
@@ -143,33 +219,40 @@ var bar_options = {
         fontSize: 16
     },
     scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: true,
-                      max: 1000,
-                      min: 0,
-                      stepSize: 50
-                  },
-                  scaleLabel: {
-                       display: true,
-                  }
-              }]            
-          }  
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
+                suggestedMin: 0,
+                suggestedMax: 3000
+            },
+            scaleLabel: {
+                display: true,
+            }
+        }]            
+    },
+    // https://github.com/chartjs/chartjs-plugin-annotation
+    // https://www.npmjs.com/package/chartjs-plugin-annotation
+    annotation: {
+        annotations: [],
+        drawTime: "afterDraw" // (default)
+    }
   };
 
   var pie_data = {
-    labels: ["Carbohydrate [g]", "Protein [g]", "Fat [g]"],
+    labels: ["Calories [kcal]", "Carbohydrate [kcal]", "Protein [kcal]", "Fat [kcal]"],
     datasets: [{
-        data: [],
+        data: [0, 0, 0, 0],
         backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
         ],
         borderColor: [
             'rgba(255, 99, 132, 1)',
+            'rgba(75, 192, 192, 1)',
             'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
+            'rgba(255, 206, 86, 1)'
         ]
       }]
   };
@@ -224,12 +307,88 @@ function makeNutritionChart(chart) {
     }
 }
 
+function getNewCalories(chartType){
+    if (chartType == "Line Plot") {
+        return ([breakfast_calories, breakfast_calories + lunch_calories, 
+            breakfast_calories + lunch_calories + dinner_calories]);
+    }
+
+    if (chartType == 'Bar Graph' || chartType == 'Pie Chart') {
+        return (breakfast_calories + lunch_calories + dinner_calories);
+    }
+    return null;
+}
+
+function getNewCarbohydrates(chartType){
+    if (chartType == "Line Plot") {
+        return ([breakfast_carbohydrates, breakfast_carbohydrates + lunch_carbohydrates, 
+            breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates]);
+    }
+    if (chartType == 'Bar Graph') {
+        return (breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates);
+    }
+    if (chartType == 'Pie Chart') {
+        return ((breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates) * 4);
+    }
+    return null;
+}
+
+function getNewProteins(chartType){
+    if (chartType == "Line Plot") {
+        return ([breakfast_proteins, breakfast_proteins + lunch_proteins, 
+            breakfast_proteins + lunch_proteins + dinner_proteins]);
+    }
+    if (chartType == 'Bar Graph') {
+        return (breakfast_proteins + lunch_proteins + dinner_proteins);
+    }
+    if (chartType == 'Pie Chart') {
+        return ((breakfast_proteins + lunch_proteins + dinner_proteins) * 4);
+    }
+    return null;
+}
+
+function getNewFats(chartType){
+    if (chartType == "Line Plot") {
+        return ([breakfast_fats, breakfast_fats + lunch_fats, 
+            breakfast_fats + lunch_fats + dinner_fats]);
+    }
+    if (chartType == 'Bar Graph') {
+        return (breakfast_fats + lunch_fats + dinner_fats);
+    }
+    if (chartType == 'Pie Chart') {
+        return ((breakfast_fats + lunch_fats + dinner_fats) * 9);
+    }
+    return null;
+}
+
+function bar_getNewTargetLine(targetValue, targetColor) {
+
+
+    targetLine = {
+        type: 'line',
+        mode: 'horizontal',
+        scaleID: 'y-axis-0',
+        value: targetValue,
+        borderColor: targetColor,
+        borderWidth: 1,
+        borderDash: [2, 2],
+        label: {
+            enabled: true,
+            position: "left",
+            content: "Target: " + targetValue 
+        }
+    }
+
+    return targetLine
+}
+
+
 // --- In-Use ---
+// Initialize a Chart
+// https://www.chartjs.org/docs/latest/getting-started/usage.html
+makeNutritionChart("Line Plot");
+
 $("#track-search-icon").click(function(){
-    
-    $.get("/food-database", function(data){
-        foods_localData = data;
-    });
 
     $.get("/food-log" + window.location.search, function(data){
         var sel_date = $("#datepicker").val()
@@ -250,12 +409,12 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_name = food_nutrition["name"];
+            var food_name = toString(food_nutrition["name"]);
 
-            breakfast_calories += food_nutrition["calories"];
-            breakfast_carbohydrates += food_nutrition["carbohydrates"];
-            breakfast_proteins += food_nutrition["proteins"];
-            breakfast_fats += food_nutrition["fats"];
+            breakfast_calories += parseFloat(food_nutrition["calories"]);
+            breakfast_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
+            breakfast_proteins += parseFloat(food_nutrition["proteins"]);
+            breakfast_fats += parseFloat(food_nutrition["fats"]);
         };
 
 
@@ -268,12 +427,12 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_name = food_nutrition["name"];
+            var food_name = toString(food_nutrition["name"]);
         
-            lunch_calories += food_nutrition["calories"];
-            lunch_carbohydrates += food_nutrition["carbohydrates"];
-            lunch_proteins += food_nutrition["proteins"];
-            lunch_fats += food_nutrition["fats"];
+            lunch_calories += parseFloat(food_nutrition["calories"]);
+            lunch_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
+            lunch_proteins += parseFloat(food_nutrition["proteins"]);
+            lunch_fats += parseFloat(food_nutrition["fats"]);
         };
 
         //load dinner report
@@ -285,55 +444,64 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < meal_items.length; i++){
             var food_nutrition = findFoodFacts(meal_items[i]);
-            var food_name = food_nutrition["name"];
+            var food_name = toString(food_nutrition["name"]);
 
-            dinner_calories += food_nutrition["calories"];
-            dinner_carbohydrates += food_nutrition["carbohydrates"];
-            dinner_proteins += food_nutrition["proteins"];
-            dinner_fats += food_nutrition["fats"];
+            dinner_calories += parseFloat(food_nutrition["calories"]);
+            dinner_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
+            dinner_proteins += parseFloat(food_nutrition["proteins"]);
+            dinner_fats += parseFloat(food_nutrition["fats"]);
         };
 
+        // Update nutritionChart datas
+        line_data.datasets[0].data = getNewCalories("Line Plot");
+        line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
+        line_data.datasets[2].data = getNewProteins("Line Plot");
+        line_data.datasets[3].data = getNewFats("Line Plot");
 
-        // Updating Charts
-        // https://www.chartjs.org/docs/latest/developers/updates.html
-        var newData = [];
+        bar_data.datasets[0].data[0] = getNewCalories("Bar Graph");
+        bar_data.datasets[0].data[1] = getNewCarbohydrates("Bar Graph");
+        bar_data.datasets[0].data[2] = getNewProteins("Bar Graph");
+        bar_data.datasets[0].data[3] = getNewFats("Bar Graph");
 
-        nutritionChart.data.datasets.forEach((dataset) => {
-            dataset.data.pop();
-        });
+        bar_options.annotation.annotations[0] = bar_getNewTargetLine(userPref_plan_calories, "rgb(255, 99, 132)");
+        bar_options.annotation.annotations[1] = bar_getNewTargetLine(userPref_plan_carbohydrates, "rgb(75, 192, 192)");
+        bar_options.annotation.annotations[2] = bar_getNewTargetLine(userPref_plan_proteins, "rgb(54, 162, 235)");
+        bar_options.annotation.annotations[3] = bar_getNewTargetLine(userPref_plan_fats, "rgb(255, 206, 86)");
 
+
+        pie_data.datasets[0].data[0] = getNewCalories("Pie Chart");
+        pie_data.datasets[0].data[1] = getNewCarbohydrates("Pie Chart");
+        pie_data.datasets[0].data[2] = getNewProteins("Pie Chart");
+        pie_data.datasets[0].data[3] = getNewFats("Pie Chart");
+
+
+        // Update nutritionChart
         if (chart_box.value == 'Line Plot') {
-            newData[0] = [breakfast_calories, lunch_calories, dinner_calories]
-            newData[1] = [breakfast_carbohydrates, lunch_carbohydrates, dinner_carbohydrates]
-            newData[2] = [breakfast_proteins, lunch_proteins, dinner_proteins]
-            newData[3] = [breakfast_fats, lunch_fats, dinner_fats]
-
-            for (i = 0; i < nutritionChart.data.datasets.length; i++) {
-                nutritionChart.data.datasets[i].push(newData[i]);
-            }
+            nutritionChart.data.datasets[0].data = getNewCalories("Line Plot");          
+            nutritionChart.data.datasets[1].data = getNewCarbohydrates("Line Plot");
+            nutritionChart.data.datasets[2].data = getNewProteins("Line Plot");
+            nutritionChart.data.datasets[3].data = getNewFats("Line Plot");
         }       
-
-
+        
         if (chart_box.value == 'Bar Graph') {
-            newData[0] = [breakfast_calories + lunch_calories + dinner_calories]
-            newData[1] = [breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates]
-            newData[2] = [breakfast_proteins + lunch_proteins + dinner_proteins]
-            newData[3] = [breakfast_fats + lunch_fats + dinner_fats]
+            nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
+            nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
+            nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
+            nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
 
-            for (i = 0; i < nutritionChart.data.datasets.length; i++) {
-                nutritionChart.data.datasets[i].push(newData[i]);
-            }
-        }   
-
+            nutritionChart.options.annotation.annotations[0] = bar_getNewTargetLine(userPref_plan_calories, "rgb(255, 99, 132)");
+            nutritionChart.options.annotation.annotations[1] = bar_getNewTargetLine(userPref_plan_carbohydrates, "rgb(75, 192, 192)");
+            nutritionChart.options.annotation.annotations[2] = bar_getNewTargetLine(userPref_plan_proteins, "rgb(54, 162, 235)");
+            nutritionChart.options.annotation.annotations[3] = bar_getNewTargetLine(userPref_plan_fats, "rgb(255, 206, 86)");
+        } 
+        
+        
         if (chart_box.value == 'Pie Chart') {
-            newData[0] = [breakfast_calories + lunch_calories + dinner_calories]
-            newData[1] = [breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates]
-            newData[2] = [breakfast_proteins + lunch_proteins + dinner_proteins]
-            newData[3] = [breakfast_fats + lunch_fats + dinner_fats]
+            nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
+            nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
+            nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
+            nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
 
-            for (i = 0; i < nutritionChart.data.datasets.length; i++) {
-                nutritionChart.data.datasets[i].push(newData[i]);
-            }
         }   
 
         nutritionChart.update();
@@ -343,46 +511,5 @@ $("#track-search-icon").click(function(){
     });
 });
 
-// makeNutritionChart("Line Plot")
 
-/*
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Calories', 'Carbohydrate', 'Protein', 'Fat', 'Sodium', 'Calcium'],
-        datasets: [{
-            label: 'nutrient',
-            data: [540, 35, 17, 9, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    max: 1000,
-                    min: 0,
-                    stepSize: 100,
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-*/
+/*  --- Cutoff for suggestions ---  */
