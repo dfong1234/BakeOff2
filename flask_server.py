@@ -188,7 +188,7 @@ def foodPref():
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             print(received_data)
-            stored_data["plan"].update(received_data)
+            stored_data["plan"] = received_data.copy()
             json_data = json.dumps(stored_data)
             file.seek(0)
             file.write(json_data)
@@ -219,6 +219,7 @@ def foodDislike():
             file.write(json_data)
             file.truncate()
             return json_data
+
 
 # --- Initialize a local Web server --- #
 if __name__ == "__main__":
