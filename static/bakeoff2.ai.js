@@ -90,12 +90,19 @@ function findFoodFacts(food){
             return foods_localData[i];
         }
     }
+    return null;
 }
 
 function foodChoiceEvaluation(userFood) {
 
 
     var food_nutrition = findFoodFacts(userFood);
+  
+    if(food_nutrition == null){
+        return "Couldn't Find Food";
+    }
+
+
     userFood_name = food_nutrition["name"];
     userFood_calories = parseFloat(food_nutrition["calories"]); 
     userFood_carbohydrate = parseFloat(food_nutrition["carbohydrates"]);

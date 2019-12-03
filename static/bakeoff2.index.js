@@ -94,17 +94,28 @@ function searchFood(searchTerm) {
             foods_onlineData = data["foods"]; 
             $("#table-search").DataTable().clear().draw();
             fillResultTable();
-            alert("Success in obtaining infotmation from database");
+            alert("Success in obtaining information from database");
+            //had to move this since ajax call is async, so need to do it like this
+            var iter = 0;
+            function sendRequestHelper(){
+                if(iter < foods_onlineData.length){
+                    let food = foods_onlineData[iter];
+                    let food_localData = addFoodToLocalDatabase(food);
+                    iter++;
+                    $.post('/food-database', food_localData, sendRequestHelper, "json");
+                }
+            }
+            sendRequestHelper();
         },
         error: function(xhr, status, error){
-            alert("Failed to obtain infotmation from database");
+            alert("Failed to obtain information from database");
         }
     });
 };
 
 function fillResultTable() {
     $("#result-table").DataTable().clear().draw();
-    for(i = 0; i < foods_onlineData.length; i++){
+    for(let i = 0; i < foods_onlineData.length; i++){
         var food_array = foods_onlineData[i];
         var name = food_array["food_name"];
         var serving_size = food_array["serving_weight_grams"].toString();
@@ -118,27 +129,67 @@ function fillResultTable() {
 
 function addFoodToLocalDatabase(food) {
 
+    function helperVitID(attribute_ID){
+        for(let i = 0; i < food["full_nutrients"].length; i++) {
+            if(attribute_ID == food["full_nutrients"][i]["attr_id"]){
+                return food["full_nutrients"][i]["value"];
+            }
+        }
+        return "Not Found";
+    }
+
+    let serving = food["serving_weight_grams"];
+    function helperNormalize(item){
+        return Math.round((item * 100 / serving) * 100) / 100;
+    }
     //create the food's nutrition dictionary object
-    food_localData = {
+
+    //first, normalize to 100g serving sizes
+    var food_localData = {
         "name": food["food_name"],
-        "serving": food["serving_weight_grams"].toString(),
-        "calories": food["nf_calories"].toString(),
-        "carbohydrates": food["nf_total_carbohydrate"].toString(),
-        "proteins": food["nf_protein"].toString(),
-        "fats": food["nf_total_fat"].toString()
+        "serving": 100,
+        "calories": helperNormalize(food["nf_calories"]),
+        "carbohydrates": helperNormalize(food["nf_total_carbohydrate"]),
+        "proteins": helperNormalize(food["nf_protein"]),
+        "fats": helperNormalize(food["nf_total_fat"]),
+        "iron": helperNormalize(helperVitID(303)),
+        "vitaminD": helperNormalize(helperVitID(324)),
+        "vitaminB12": helperNormalize(helperVitID(418)),
+        "calcium": helperNormalize(helperVitID(301)),
+        "magnesium": helperNormalize(helperVitID(304)),
     };
     
-    $.post('/food-database', food_localData, null, "json");
+    //next, try to determine tags
+    let tags = [];
+
+    if( ((food_localData["proteins"] * 4) > (0.4 * food_localData["calories"])) || (food_localData["proteins"] > 20)){
+        tags.push("High Protein");
+    }
+    else if( (food_localData["proteins"] * 4) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Protein");
+    }
+
+    if( (food_localData["carbohydrates"] * 4) > (0.4 * food_localData["calories"]) || (food_localData["carbohydrates"] > 30)){
+        tags.push("High Carbohydrates");
+    }
+    else if( (food_localData["carbohydrates"] * 4) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Carbohydrates");
+    }
+
+    if( (food_localData["fats"] * 9) > (0.4 * food_localData["calories"]) || (food_localData["fats"] > 20)){
+        tags.push("High Fat");
+    }
+    else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
+        tags.push("Low Fat");
+    }
+    food_localData["tags"] = JSON.stringify(tags);
+    return food_localData;
+    //$.post('/food-database', food_localData, null, "json");
 }
 
 // --- In-Use ---
 $('#index-search-icon').click(function() {
     searchFood($("#search-keyword").val());
-        
-    for(i = 0; i < foods_onlineData.length; i++){
-        var food = foods_onlineData[i];
-        addFoodToLocalDatabase(food);
-    }
 });
 
 
@@ -147,15 +198,16 @@ $('#index-search-icon').click(function() {
 // --- Variables ---
 var food_mealData = {};   // Data of single food that will be added to user's meal history
 var food_nutritionData = {};  // Data of single food that will be loaded to Nutrition Fact Label
-
+var url_params = new URLSearchParams(window.location.search);
 // --- Functions ---
 //helper function for filling out nutrition table
 function findVitaminValue(attribute_ID){
-    for(i = 0; i < food_nutritionData["full_nutrients"].length; i++) {
+    for(let i = 0; i < food_nutritionData["full_nutrients"].length; i++) {
         if(attribute_ID == food_nutritionData["full_nutrients"][i]["attr_id"]){
             return food_nutritionData["full_nutrients"][i]["value"];
         }
     }
+    return "Not Found";
 }
 
 // --- In-Use ---
@@ -167,7 +219,7 @@ $("#result-table tbody").on('click', 'button', function(){
     var row_data = $('#result-table').DataTable().row($(this).parents('tr')).data();
 
     //find correct food item in the saved data from when we populated the table
-    for(i = 0; i < foods_onlineData.length; i++){
+    for(let i = 0; i < foods_onlineData.length; i++){
         food_nutritionData = foods_onlineData[i];
         if(food_nutritionData["food_name"] == row_data[0]) { //found it, so break
             break;
@@ -175,9 +227,23 @@ $("#result-table tbody").on('click', 'button', function(){
     }
 
     //food_mealData will contain user, and food name, meal time, meal date of food.
-    food_mealData["user"] = "test";
-    food_mealData["food"] = row_data[0];
-
+    if(url_params.has('user')){
+        food_mealData["user"] = url_params.get('user');
+    }
+    else{
+        food_mealData["user"] = "test";
+    }
+    food_mealData["name"] = row_data[0];
+    food_mealData["serving"] = row_data[1];
+    food_mealData["calories"] = row_data[2];
+    food_mealData["carbohydrates"] = row_data[3];
+    food_mealData["proteins"] = row_data[4];
+    food_mealData["fats"] = row_data[5];
+    food_mealData["iron"] = findVitaminValue(303);
+    food_mealData["vitaminD"] = findVitaminValue(324);
+    food_mealData["vitaminB12"] = findVitaminValue(418);
+    food_mealData["calcium"] = findVitaminValue(301);
+    food_mealData["magnesium"] = findVitaminValue(304);
 
     //food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({
@@ -209,7 +275,9 @@ $("#result-table tbody").on('click', 'button', function(){
         valuePotassium_2018 : findVitaminValue(306),
         valueCalcium        : findVitaminValue(301),
         valueIron           : findVitaminValue(303),
+        valueVitaminB12     : findVitaminValue(418),
         valueAddedSugars    : findVitaminValue(539),
+        valueMagnesium      : findVitaminValue(304),
 
         //serving info
         valueServingWeightGrams : food_nutritionData["serving_weight_grams"],

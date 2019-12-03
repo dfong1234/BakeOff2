@@ -93,10 +93,11 @@ var foods_breakfast = [];
 var foods_lunch = [];
 var foods_dinner = [];
 
+
 // --- Functions ---
 //helper function for find a food's nutrition facts from local database
 function findFoodFacts(food){
-    for(i = 0; i < foods_localData.length; i++) {
+    for(let i = 0; i < foods_localData.length; i++) {
         if(foods_localData[i]["name"] == food){
             return foods_localData[i];
         }
@@ -113,12 +114,6 @@ $("#history-search-icon").click(function(){
         //clear all meal tables
         $('table.display').DataTable().clear().draw();
 
-        user = data["user"];
-        foods_breakfast = data[sel_date]["Breakfast"];
-        foods_lunch = data[sel_date]["Lunch"];
-        foods_dinner = data[sel_date]["Dinner"];
-
-
         //load breakfast table
         // https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
         // https://datatables.net/forums/discussion/48165/how-to-get-row-index-of-recently-added-row
@@ -129,34 +124,36 @@ $("#history-search-icon").click(function(){
         // https://datatables.net/reference/api/cells()
         // https://www.geeksforgeeks.org/jquery-css-method/
         meal_items = data[sel_date]["Breakfast"];
-        for(i = 0; i < meal_items.length; i++){
-            var food_nutrition = findFoodFacts(meal_items[i]);
+        console.log(meal_items);
+        for(let i = 0; i < meal_items.length; i++){;
+            var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
 
-            https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
+            //https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_name + "," + food_label]).draw();
+
         };
 
 
         //load lunch table
         meal_items = data[sel_date]["Lunch"];
-        for(i = 0; i < meal_items.length; i++){
-            var food_nutrition = findFoodFacts(meal_items[i]);
+        for(let i = 0; i < meal_items.length; i++){
+            var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
 
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_name + "," + food_label]).draw();
-        };
 
+        };
         //load dinner table
         meal_items = data[sel_date]["Dinner"];
-        for(i = 0; i < meal_items.length; i++){
-            var food_nutrition = findFoodFacts(meal_items[i]);
+        for(let i = 0; i < meal_items.length; i++){
+            var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
 
@@ -200,7 +197,6 @@ $("#history-search-icon").click(function(){
 
 
 
-
 /*
 $(".food-tag-Good-Food").bind('click', function(){
 
@@ -211,10 +207,11 @@ $(".food-tag-Good-Food").bind('click', function(){
 });
 */
 
+
 function deleteItem(meal_ID, meal, row_selector) {
     var data = $(meal_ID).DataTable().row(row_selector).data();
     var my_data = {"user": "tester",
-        "food": data[0],
+        "name": data[0],
         "meal": meal,
         "date": $("#datepicker").val()
     };

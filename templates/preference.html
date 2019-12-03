@@ -13,6 +13,10 @@
 
         <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Font Awesome Documentaiton: https://fontawesome.com/how-to-use/-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <!-- DataTables Documentation https://datatables.net/examples/api/ -->
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
         
         <title>BakeOff #2 - Diet Preference</title>
     </head>
@@ -28,7 +32,7 @@
             <button id="Food-tab" class="tablink" onclick="changeTab('Food')">Identify Food</button>
             <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
             <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
-            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>        </nav>
+            <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
         </nav>
 
         <div style="margin-top: 7.5vh"></div>
@@ -90,15 +94,18 @@
 
                 <br>
                 <label>Your Daily Carbohydrates [g]:</label>
-                <input id="user-carbohydrates" type = "number" min="0" step=".01">
+                <input id="user-carbohydrates" type = "number" min="0" step="1">
+                <div id="slider-user-carbohydrates" class="nutrient-slider"></div>
                 
                 <br>
                 <label>Your Daily Proteins [g]:</label>
-                <input id="user-proteins" type = "number" min="0" step=".01">
+                <input id="user-proteins" type = "number" min="0" step="1">
+                <div id="slider-user-proteins" class="nutrient-slider"></div>
 
                 <br>
                 <label>Your Daily Fats [g]:</label>
-                <input id="user-fats" type = "number" min="0" step=".01">
+                <input id="user-fats" type = "number" min="0" step="1">
+                <div id="slider-user-fats" class="nutrient-slider"></div>
 
                 <br>
                 <br>
@@ -124,6 +131,25 @@
                 <input id="cutoff-fats" type = "number" min="0" step=".01">
 
                 <br>
+                <label>Iron [mg]:</label>
+                <input id="cutoff-iron" type = "number" min="0" step=".01"> 
+
+                <br>
+                <label>Vitamin D [IU]:</label>
+                <input id="cutoff-vitaminD" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Vitamin B12 [Âµg]:</label>
+                <input id="cutoff-vitaminB12" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Calcium [mg]:</label>
+                <input id="cutoff-calcium" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Magnesium [mg]:</label>
+                <input id="cutoff-magnesium" type = "number" min="0" step=".01">
+                <br>
                 <br>
                 <button id="food-cutoff-button">Set Food Cutoffs</button>
             </div>
@@ -132,13 +158,16 @@
         <div style="clear: both;"></div>
         <div style="margin-top: 5vh"></div>
 
-        <button id="preference-save-button">Save Preference</button>
+        <button id="preference-save-button">Save Preferences</button>
+        <button id="preference-restore-button">Restore Preferences</button>
 
 
         <!-- Online library -->
         <script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
         <!-- jQuery UI Documentation: https://api.jqueryui.com/ -->     
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!-- DataTables Documentation https://datatables.net/examples/api/ -->
+        <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 
 
         <!-- Project-specific Library -->
@@ -147,4 +176,4 @@
 
     </body>
 </html>
-       
+
