@@ -335,6 +335,49 @@ tr:nth-child(even) {
   text-align: center;
   border-collapse: collapse;
   overflow: auto;
+
+}
+
+/* Food Suggestion Board */
+.suggest-container {
+  text-align: left;
+  width: 30%;
+  box-sizing: border-box; 
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat; 
+  margin-left: 1.5vw;
+  margin-bottom: 1vw;
+  margin-right: 1.5vw;
+  display: inline-block;
+}
+.suggest-container h3 {
+  text-align: center;
+}
+.suggest-container button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+#table-suggest-container {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+
+#table-suggest {
+  text-align: center;
+  border-collapse: collapse;
+  overflow: auto;
 }
 
 .suggest-cutoff-container{

@@ -42,7 +42,7 @@ $(document).ready( function () {
             {
                 "targets": -1,
                 "data": null,
-                "defaultContent": "<input type=\"checkbox\" class=\"b_check_item\" id=\"b_check_item\"></input><button class=\"b_remove_item\" id=\"b_remove_item\"><i class=\"fas fa-trash-alt\"></i></button>",
+                "defaultContent": "<input type=\"checkbox\" class=\"b_check_item\" id=\"b_check_item\"></input><button class=\"b_remove_item\" id=\"b_remove_item\"><i class=\"fas fa-trash-alt\"></i></button>"
             }
         ],
         "searching": false,
@@ -61,7 +61,6 @@ $("#table-suggest tbody").on('click', 'button.b_remove_item', function(){
     $("#table-suggest").DataTable().row($(this).parents('tr')).remove().draw();
     $.post("/food-dislike" + window.location.search, my_data, null, "json");
 });
-
 
 /*  --- Load Local Food Database ---  */
 // --- Variables ---
@@ -518,7 +517,6 @@ $("#track-search-icon").click(function(){
 
         alert("Data was retrieved for user: " + user);
     });
+
 });
 
-
-/*  --- Cutoff for suggestions ---  */

@@ -25,6 +25,7 @@ var tabColor = 'orange';
 openTab(tabName, tabColor)
 
 
+
 /*  --- Datepiacker ---  */
 // --- Initialization ---
 $(function() {
@@ -32,23 +33,24 @@ $(function() {
 });
 
 
+
 /*  --- DataTable ---  */
-// https://datatables.net/forums/discussion/50691/how-to-use-columndefs-multiple-time-in-a-datatable
-// https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
 // --- Initialization ---
 $(document).ready( function () {
     $('table.display').DataTable({
+        // https://datatables.net/forums/discussion/50691/how-to-use-columndefs-multiple-time-in-a-datatable
         "columnDefs": [
             {
                 targets: -2,
-                createdCell: function (td, cellData, rowData, row, col) {
-                    if (cellData == "Good Food" ) {
-                        $(td).css('color', 'green');
-                    }
-
-                    if (cellData == "Bad Food" ) {
-                        $(td).css('color', 'red');
-                    }
+                // https://datatables.net/reference/option/columns.createdCell
+                createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+                },
+                // https://datatables.net/reference/option/columns.render
+                // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
+                render: function(data, type, full){
+                    var data_array = data.split(",");
+                    var data_class = "food-tag-" + data_array[1].replace(" ", "-");
+                    return ("<label class=\""+ data_class + "\" for=\""+ data_array[0] + "\">" + data_array[1] + "</label>");
                 }
             },
             {
@@ -66,10 +68,30 @@ $(document).ready( function () {
 
 
 
-/*  --- Meal Tables --- */
-//food1_calories = data[0]["calories"]
+/*  --- Load Local Food Database ---  */
 // --- Variables ---
 var foods_localData = [];
+
+// --- Functions ---
+function loadLocalFoodDatabase() {
+       
+    $.get("/food-database", function(data){
+        foods_localData = data;
+    });
+}
+
+// --- In-Use ---
+loadLocalFoodDatabase();
+
+
+
+/*  --- Meal Table Report --- */
+// --- Variables ---
+var user = "";
+var sel_date = "";
+var foods_breakfast = [];
+var foods_lunch = [];
+var foods_dinner = [];
 
 
 // --- Functions ---
@@ -84,13 +106,9 @@ function findFoodFacts(food){
 
 // --- In-Use ---
 $("#history-search-icon").click(function(){
-    
-    $.get("/food-database", function(data){
-        foods_localData = data;
-    });
 
     $.get("/food-log" + window.location.search, function(data){
-        var sel_date = $("#datepicker").val()
+        sel_date = $("#datepicker").val()
         var meal_items;
 
         //clear all meal tables
@@ -111,7 +129,12 @@ $("#history-search-icon").click(function(){
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
-            $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"], food_nutrition["calories"], food_nutrition["carbohydrates"], food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
+
+            //https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
+            $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
+            food_nutrition["calories"], food_nutrition["carbohydrates"], 
+            food_nutrition["proteins"], food_nutrition["fats"], food_name + "," + food_label]).draw();
+
         };
 
 
@@ -121,9 +144,11 @@ $("#history-search-icon").click(function(){
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
+
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-                food_nutrition["calories"], food_nutrition["carbohydrates"], 
-                food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
+            food_nutrition["calories"], food_nutrition["carbohydrates"], 
+            food_nutrition["proteins"], food_nutrition["fats"], food_name + "," + food_label]).draw();
+
         };
         //load dinner table
         meal_items = data[sel_date]["Dinner"];
@@ -131,14 +156,56 @@ $("#history-search-icon").click(function(){
             var food_nutrition = meal_items[i];
             var food_name = food_nutrition["name"];
             var food_label = foodChoiceEvaluation(food_name);
+
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-                food_nutrition["calories"], food_nutrition["carbohydrates"], 
-                food_nutrition["proteins"], food_nutrition["fats"], food_label]).draw();
+            food_nutrition["calories"], food_nutrition["carbohydrates"], 
+            food_nutrition["proteins"], food_nutrition["fats"], food_name + "," + food_label]).draw();
         };
 
-        alert("Data was retrieved for user: " + data["user"]);
+        // style food tags
+        $("label").css( "color", "white");
+        $("label").css( "padding", "5px");
+        // https://api.jquery.com/contains-selector/
+        $("label:contains('Good Food')").css( "background-color", "lightseagreen" );
+        $("label:contains('Bad Food')").css( "background-color", "tomato" );
+
+        // add eventlisteners to food tags
+        // https://stackoverflow.com/questions/19655189/javascript-click-event-listener-on-class
+        var goodFoodLabels = document.getElementsByClassName("food-tag-Good-Food");
+        var badFoodLabels = document.getElementsByClassName("food-tag-Bad-Food");
+
+        var explanation_GoodFood = function() {
+            document.getElementById("history-alert").innerHTML = "I am a Good Food!";
+            alert('Good Food Label Clicked!')
+        };
+        var explanation_BadFood = function() {
+            document.getElementById("history-alert").innerHTML = "I am a Bad Food!";
+            alert('Bad Food Label Clicked!')
+        };
+
+        for (var i = 0; i < goodFoodLabels.length; i++) {
+            goodFoodLabels[i].addEventListener('click', explanation_GoodFood, false);
+        }
+        for (var i = 0; i < badFoodLabels.length; i++) {
+            badFoodLabels[i].addEventListener('click', explanation_BadFood, false);
+        }
+
+
+        alert("Data was retrieved for user: " + user);
     });
 });
+
+
+
+/*
+$(".food-tag-Good-Food").bind('click', function(){
+
+    alert('Good Food Label Clicked!')
+    var explanation_textbox = $('#history-alert');
+    explanation_textbox.style.display = "block"; 
+
+});
+*/
 
 
 function deleteItem(meal_ID, meal, row_selector) {

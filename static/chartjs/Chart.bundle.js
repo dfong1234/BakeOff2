@@ -1381,6 +1381,7 @@ var colorName$1 = {
 	"whitesmoke": [245, 245, 245],
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
+
 };
 
 /* MIT license */

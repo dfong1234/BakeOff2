@@ -6,44 +6,142 @@
 //  Last Modified: 11/28/2019
 //  ................................................................................
 
-
 /*  --- ---  */
-
-// --- Label Initialization ---
-
+// --- Initialization ---
 
 // --- Variables ---
 
-
-
 // --- Functions ---
-
 
 // --- In-Use ---
 
 
+
+/*  --- Load Local Food Database ---  */
+// --- Variables ---
+var foods_localData = [];
+
+// --- Functions ---
+function loadLocalFoodDatabase() {
+       
+    $.get("/food-database", function(data){
+        foods_localData = data;
+    });
+}
+
+// --- In-Use ---
+loadLocalFoodDatabase();
+
+
+
+/*  --- Load Diet Profile ---  */
+// --- Variables ---
+var userDietProfile = {};
+var userPref_calories_cutoff = 9999;  // initialize to a very large number for case where user not set cutoff
+var userPref_carbohydrate_cutoff = 9999;  // initialize to a very large number for case where user not set cutoff
+var userPref_protein_cutoff = 9999;  // initialize to a very large number for case where user not set cutoff
+var userPref_fat_cutoff = 9999;  // initialize to a very large number for case where user not set cutoff
+
+
+// --- Functions ---
+function loadDietProfile() {
+    $.get("/food-pref", function(data){
+        userDietProfile = data["plan"];
+        if (data["plan"]["cutoff_calories"] != null) 
+            userPref_calories_cutoff = parseFloat(data["plan"]["cutoff_calories"]);
+        
+        if (data["plan"]["cutoff_carbohydrates"] != null) 
+            userPref_carbohydrate_cutoff = parseFloat(data["plan"]["cutoff_carbohydrates"]);
+        
+        if (data["plan"]["cutoff_proteins"] != null) 
+            userPref_protein_cutoff  = parseFloat(data["plan"]["cutoff_proteins"]); 
+        
+        if (data["plan"]["cutoff_fats"] != null) 
+            userPref_fat_cutoff = parseFloat(data["plan"]["cutoff_fats"]);
+    });
+
+}
+
+// --- In-Use ---
+loadDietProfile();
+
+
+
+
+/*  --- Food Choice Decision Making ---  */
+// --- Variables ---
+
+var userFood_name;
+var userFood_calories;
+var userFood_carbohydrate;
+var userFood_protein;
+var userFood_fat;
+
+
+
+var foodChoice_decision = "";
+var foodchoice_reason = [];
+
+// --- Functions ---
+//helper function for find a food's nutrition facts from local database
+function findFoodFacts(food){
+    for(i = 0; i < foods_localData.length; i++) {
+        if(foods_localData[i]["name"] == food){
+            return foods_localData[i];
+        }
+    }
+    return null;
+}
+
+function foodChoiceEvaluation(userFood) {
+
+
+    var food_nutrition = findFoodFacts(userFood);
+  
+    if(food_nutrition == null){
+        return "Couldn't Find Food";
+    }
+
+
+    userFood_name = food_nutrition["name"];
+    userFood_calories = parseFloat(food_nutrition["calories"]); 
+    userFood_carbohydrate = parseFloat(food_nutrition["carbohydrates"]);
+    userFood_protein = parseFloat(food_nutrition["proteins"]);
+    userFood_fat = parseFloat(food_nutrition["fats"]);
+
+    foodChoice_decision = "Good Food";
+
+    if (userFood_calories > userPref_calories_cutoff) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+        foodChoice_decision = "Bad Food";
+    }
+
+    if (userFood_carbohydrate > userPref_carbohydrate_cutoff) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+        foodChoice_decision = "Bad Food";
+    }
+
+
+    if (userFood_protein > userPref_protein_cutoff) {
+        calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+        foodChoice_decision = "Bad Food";
+    }
+
+    if (userFood_fat > userPref_fat_cutoff) {
+        // calories_reason[calories_reason_count] =  "has calories > that of "
+        // calories_reason_count++;
+        foodChoice_decision = "Bad Food";
+    }
+
+    return foodChoice_decision;
+}
+
+
+
 /*
-{
-   "Name" : "foo",
-   "day_calories" : 2000,  // in kcal
-   "day_carbohydrate" : 130,  // in g
-   "day_protein" : 56,  // in g
-   "day_fat" : 27,  // in g
-   ...
-};
-
-{
-    "name" : "apple",
-    "calories" :  27,  // in kcal
-    "carbohydrate" : 10.50,  // in g
-    "protein" :  0.00,  // in g
-    "fat" :  0.00,  // in g
-    "vitamin_C" :  29.25,  // in mg
-    ...
- };
-*/
-
-
 var daily_calories_goal = 2000;
 var daily_carbohydrate_goal = 130;
 var daily_protein_goal = 56;
@@ -60,91 +158,7 @@ var aiFood_calories = 500;
 var aiFood_carbohydrate = 50;
 var aiFood_protein = 35;
 var aiFood_fat = 25;
-
-
-
-
-/*  --- Food Choice Decision Making ---  */
-// --- Variables ---
-var foods_localData = [];
-
-var userFood_name;
-var userFood_calories;
-var userFood_carbohydrate;
-var userFood_protein;
-var userFood_fat;
-
-var userPref_calories_threshold = 50;
-var userPref_carbohydrate_threshold = 30;
-var userPref_protein_threshold = 20;
-var userPref_fat_threshold = 10;
-
-
-var foodChoice_decision = "Good Food";
-var foodchoice_reason = [];
-
-// --- Functions ---
-//helper function for find a food's nutrition facts from local database
-function findFoodFacts(food){
-    for(i = 0; i < foods_localData.length; i++) {
-        if(foods_localData[i]["name"] == food){
-            return foods_localData[i];
-        }
-    }
-    return null;
-}
-
-function foodChoiceEvaluation(userFood) {
-
-    $.get("/food-database", function(data){
-        foods_localData = data;
-    });
-
-    var food_nutrition = findFoodFacts(userFood);
-    if(food_nutrition == null){
-        return "Couldn't Find Food";
-    }
-
-    userFood_name = food_nutrition["name"];
-    userFood_calories = food_nutrition["calories"]; 
-    userFood_carbohydrate = food_nutrition["carbohydrates"];
-    userFood_protein = food_nutrition["proteins"];
-    userFood_fat = food_nutrition["fats"];
-
-    if (userFood_calories > userPref_calories_threshold) {
-        // calories_reason[calories_reason_count] =  "has calories > that of "
-        // calories_reason_count++;
-
-        foodChoice_decision = "Bad Food";
-    }
-
-
-    if (userFood_carbohydrate > userPref_carbohydrate_threshold) {
-        // calories_reason[calories_reason_count] =  "has calories > that of "
-        // calories_reason_count++;
-
-        foodChoice_decision = "Bad Food";
-    }
-
-
-    if (userFood_protein > userPref_protein_threshold) {
-        // calories_reason[calories_reason_count] =  "has calories > that of "
-        // calories_reason_count++;
-
-        foodChoice_decision = "Bad Food";
-    }
-
-    if (userFood_fat > userPref_fat_threshold) {
-        // calories_reason[calories_reason_count] =  "has calories > that of "
-        // calories_reason_count++;
-
-        foodChoice_decision = "Bad Food";
-    }
-
-    return foodChoice_decision;
-}
-
-
+*/
 
 
 
@@ -164,7 +178,7 @@ var calories_reason_count = 0;
 var calories_explain = "";
 var calories_suggest = "";
 
-if (userFood_calories > userPref_calories_threshold) {
+if (userFood_calories > userPref_calories_cutoff) {
     calories_reason[calories_reason_count] =  "has calories > that of "
     calories_reason_count++;
        

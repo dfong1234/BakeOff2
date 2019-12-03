@@ -26,7 +26,7 @@ openTab(tabName, color)
 
 
 
-/*  --- Loading Diet Profile ---  */
+/*  --- Load Diet Profile ---  */
 // --- Variables ---
 var userDietProfile = {};
 
@@ -269,7 +269,7 @@ $("#add-micronutrient-button").click(function() {
     $("#rules-table").DataTable().row.add([rule["micronutrient"], rule["operator"], rule["amount"], "0"]).draw();
 });
 
-/*  --- Saving Diet Profile ---  */
+/*  --- Save Diet Profile ---  */
 // --- In-Use ---
 $("#preference-save-button").click(function() {
     //create user's diet profile object
