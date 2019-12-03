@@ -156,6 +156,7 @@ function findVitaminValue(attribute_ID){
             return food_nutritionData["full_nutrients"][i]["value"];
         }
     }
+    return "Not Found";
 }
 
 // --- In-Use ---
@@ -187,6 +188,11 @@ $("#result-table tbody").on('click', 'button', function(){
     food_mealData["carbohydrates"] = row_data[3];
     food_mealData["proteins"] = row_data[4];
     food_mealData["fats"] = row_data[5];
+    food_mealData["iron"] = findVitaminValue(303);
+    food_mealData["vitaminD"] = findVitaminValue(324);
+    food_mealData["vitaminB12"] = findVitaminValue(418);
+    food_mealData["calcium"] = findVitaminValue(301);
+    food_mealData["magnesium"] = findVitaminValue(304);
 
     //food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({

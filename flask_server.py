@@ -148,6 +148,7 @@ def processFoodData(received_data, stored_data, method):
             if received_data["meal"] in stored_data[received_data["date"]]:
                 if method == 'POST':
                     stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
+                    print("Received:", received_data);
                 elif method == 'DELETE':
                     for index in range(len(stored_data[received_data["date"]][received_data["meal"]])):
                         if(stored_data[received_data["date"]][received_data["meal"]][index]["name"] == received_data["name"]):
