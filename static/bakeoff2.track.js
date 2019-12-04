@@ -86,7 +86,7 @@ var plan_proteins = 0;
 var plan_fats = 0;  
 
 var aiFood_cutoff_nutrient;
-var aiFood_cutoff_value;
+var aiFood_cutoff_condition;
 
 
 // --- Functions ---
@@ -100,8 +100,8 @@ function loadDietProfile() {
             plan_proteins  = parseFloat(data["plan"]["plan_proteins"]); 
             plan_fats = parseFloat(data["plan"]["plan_fats"]);
 
-            $("#suggest-cutoff-nutrients").val(data["plan"]["required-nutrient"]);
-            $("#suggest-cutoff-value").val(data["plan"]["required-nutrient-value"]);
+            $("#suggest-cutoff-conditions").val(data["plan"]["required_condition"]);
+            $("#suggest-cutoff-nutrients").val(data["plan"]["required_nutrient"]);
         }
     });
 
@@ -391,6 +391,12 @@ function bar_getNewTargetLine(targetValue, targetColor) {
 // --- In-Use ---
 $("#track-search-icon").click(function(){
 
+    /*
+    $.get("/food-tag-query" + window.location.search, function(data){
+
+
+    });
+*/
     $.get("/food-log" + window.location.search, function(data){
         var sel_date = $("#datepicker").val()
 

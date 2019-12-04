@@ -3,7 +3,7 @@
  *	Style Sheet for BakeOff2:
  *  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
  *  Date Created: 10/15/2019
- *  Last Modified: 11/27/2019
+ *  Last Modified: 12/03/2019
  *	................................................................................
  */
 /* --- head CSS settings --- */
@@ -323,6 +323,7 @@ tr:nth-child(even) {
 .chart-container {
   text-align: center;
   width: 35%;
+  min-height: 60vh;
   height: 60vh; 
   box-sizing: border-box; 
   background-color: white;
@@ -352,7 +353,7 @@ tr:nth-child(even) {
  */
 #nutrition-chart-container {
   width: 90%;
-  min-height: 50vh;
+  height: 65%;
   margin: auto;
   margin-bottom: 1vw;
   display: block;
@@ -369,6 +370,7 @@ tr:nth-child(even) {
 .suggest-container {
   text-align: center;
   width: 60%;
+  min-height: 60vh;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -430,6 +432,7 @@ tr:nth-child(even) {
 .userInfo-container {
   text-align: left;
   width: 30%;
+  min-height: 60vh;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -475,6 +478,7 @@ tr:nth-child(even) {
 .plan-container {
   text-align: left;
   width: 30%;
+  min-height: 60vh;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -521,6 +525,7 @@ tr:nth-child(even) {
 .pref-cutoff-container {
   text-align: left;
   width: 30%;
+  min-height: 60vh;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -537,7 +542,7 @@ tr:nth-child(even) {
   margin-bottom: 1vh;
   margin-left: 1.5vw;
 }
-.pref-cutoff-container select, input {
+.pref-cutoff-container input {
   font-size: 16px;
   min-width: 150px;
   cursor: pointer;
@@ -547,11 +552,33 @@ tr:nth-child(even) {
   margin-left: 0.5vw;
   margin-bottom: 1vh;
 }
-.pref-cutoff-container select {
-  margin-left: 0;
+#suggest-cutoff-conditions {
+  font-size: 16px;
+  width: 12.5vw;
+  min-width: 150px;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  margin-left: 0.5vw;
   margin-bottom: 1vh;
-  margin-right: 0;
+  display: inline-block;
 }
+
+
+#suggest-cutoff-nutrients {
+  font-size: 16px;
+  width: 12.5vw;
+  min-width: 150px;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  margin-left: 0.5vw;
+  margin-bottom: 1vh;
+  display: inline-block;
+}
+
 .pref-cutoff-container button {
   text-align: center;
   font-size: 16px;
@@ -564,8 +591,6 @@ tr:nth-child(even) {
   margin-bottom: 1vh;
   display: block;
 }
-
-
 #diet-plan-save-button {
   text-align: center;
   font-size: 16px;

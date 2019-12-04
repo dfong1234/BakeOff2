@@ -3,7 +3,7 @@
 #   Python code of a flask sever for local Web development 
 #   Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 #   Date Created: 10/15/2019
-#   Last Modified: 11/26/2019
+#   Last Modified: 12/03/2019
 #   ................................................................................
 
 import os
@@ -150,13 +150,13 @@ def processFoodData(received_data, stored_data, method):
 
     if received_data["name"] != "":
         received_data["tags"] = json.loads(received_data["tags"])
-        remove = ["meal", "date", "user"];
+        remove = ["meal", "date", "user"]
         food_temp = {x: received_data[x] for x in received_data if x not in remove}
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
                 if method == 'POST':
                     stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
-                    print("Received:", received_data);
+                    print("Received:", received_data)
                 elif method == 'DELETE':
                     for index in range(len(stored_data[received_data["date"]][received_data["meal"]])):
                         if(stored_data[received_data["date"]][received_data["meal"]][index]["name"] == received_data["name"]):
@@ -221,10 +221,8 @@ def foodDislike():
             file.truncate()
             return json_data
 
-@app.route("/food-tag-query", methods = ['GET', 'POST', 'DELETE'])
+@app.route("/food-tag-query", methods = ['POST'])
 def foodTagQuery():
-    user = request.args.get('user', default = 'test', type = str)
-
     if request.method == 'POST':
         json_file = os.path.join(app.root_path, 'food_data', 'localFoods.json')
 
@@ -234,7 +232,7 @@ def foodTagQuery():
             print(received_data)
             nutrient = received_data["nutrient"]
             amt = received_data["amount"]
-            query = nutrient + ' ' + amt
+            # query = nutrient + ' ' + amt
             food_array = []
 
             for food_dict in stored_data:

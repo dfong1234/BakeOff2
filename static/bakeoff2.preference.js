@@ -25,7 +25,7 @@ var color = 'dodgerblue';
 openTab(tabName, color) 
 
 
-//Wait till document is "loaded" before starting data stuff, just in case of bugs or something
+// Load the html elements of the web page before the local data
 $(document).ready(function() {
     $("#slider-user-carbohydrates").slider({
         max: 100,
@@ -84,15 +84,13 @@ $(document).ready(function() {
         "searching": false,
         "info": false
     }).clear().draw();
-
-    loadDietProfile();
 });
 
 
 
 
 
-/*  --- Loading Diet Profile ---  */
+/*  --- Load Diet Profile ---  */
 // --- Variables ---
 var userDietProfile = {};
 
@@ -123,8 +121,8 @@ function loadDietProfile() {
             $("#cutoff-magnesium").val(data["plan"]["cutoff_magnesium"]);
             $("#cutoff-vitaminD").val(data["plan"]["cutoff_vitaminD"]);
             $("#cutoff-vitaminB12").val(data["plan"]["cutoff_vitaminB12"]);
-            $("#suggest-cutoff-nutrients").val(data["plan"]["required-nutrient"]);
-            $("#suggest-cutoff-value").val(data["plan"]["required-nutrient-value"]);
+            $("#suggest-cutoff-conditions").val(data["plan"]["required_condition"]);
+            $("#suggest-cutoff-nutrients").val(data["plan"]["required_nutrient"]);
 
 
             userAge = $("#age").val();
@@ -149,18 +147,19 @@ function loadDietProfile() {
             userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
             userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
         
+            aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
             aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
-            aiFood_cutoff_value = $("#suggest-cutoff-value").val();
+
 
             $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
             $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
             $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
-
-            
         }
     });
 }
 
+// --- In-Use ---
+loadDietProfile();
 
 
 
@@ -192,8 +191,8 @@ var userFood_calcium_cutoff;
 var userFood_magnesium_cutoff;
 var userFood_vitaminD_cutoff;
 var userFood_vitaminB12_cutoff;
+var aiFood_cutoff_condition;
 var aiFood_cutoff_nutrient;
-var aiFood_cutoff_value;
 
 
 
@@ -355,7 +354,7 @@ $("#dri-calculate-button").click(function() {
     $("#slider-user-proteins").slider("value", 25);
     $("#slider-user-fats").slider("value", 25);
 
-    alert("Diet Plan updated!");
+    alert("Diet Plan computed!");
 });
 
 
@@ -387,6 +386,46 @@ $("#user-fats").change(function() {
 });
 
 
+/*  --- Food Criteria Planner ---  */
+// --- In-Use ---
+$("#food-pref-cutoff-button").click(function() {
+    userFood_calories_cutoff = $("#cutoff-calories").val();
+    userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
+    userFood_protein_cutoff = $("#cutoff-proteins").val();
+    userFood_fat_cutoff = $("#cutoff-fats").val();
+    userFood_iron_cutoff = $("#cutoff-iron").val();
+    userFood_calcium_cutoff = $("#cutoff-calcium").val();
+    userFood_magnesium_cutoff = $("#cutoff-magnesium").val();
+    userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
+    userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
+
+    aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
+    aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
+
+    //update user's diet profile object
+    userDietProfile["cutoff_calories"] = $("#cutoff-calories").val();
+    userDietProfile["cutoff_carbohydrates"] = $("#cutoff-carbohydrates").val();
+    userDietProfile["cutoff_proteins"] = $("#cutoff-proteins").val();
+    userDietProfile["cutoff_fats"] = $("#cutoff-fats").val();
+    userDietProfile["cutoff_iron"] = $("#cutoff-iron").val();
+    userDietProfile["cutoff_calcium"] = $("#cutoff-calcium").val();
+    userDietProfile["cutoff_magnesium"] = $("#cutoff-magnesium").val();
+    userDietProfile["cutoff_vitaminD"] = $("#cutoff-vitaminD").val();
+    userDietProfile["cutoff_vitaminB12"] = $("#cutoff-vitaminB12").val();
+
+    userDietProfile["required_condition"] =  $("#suggest-cutoff-conditions").val();
+    userDietProfile["required_nutrient"] = $("#suggest-cutoff-nutrients").val();
+
+    $.post("/food-pref", userDietProfile, null, "json");
+
+
+    alert("Food Criteria Saved!");
+});
+
+
+
+/*  --- Save Diet Profile ---  */
+// --- In-Use ---
 $("#diet-plan-save-button").click(function() {
 
     userAge = $("#age").val();
@@ -411,8 +450,8 @@ $("#diet-plan-save-button").click(function() {
     userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
     userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
 
+    aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
     aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
-    aiFood_cutoff_value = $("#suggest-cutoff-value").val();
 
 
     //create user's diet profile object
@@ -438,8 +477,8 @@ $("#diet-plan-save-button").click(function() {
         "cutoff_vitaminB12": userFood_vitaminB12_cutoff,
         "cutoff_calcium": userFood_calcium_cutoff,
         "cutoff_magnesium": userFood_magnesium_cutoff,
-        "required-nutrient": aiFood_cutoff_nutrient,
-        "required-nutrient-value": aiFood_cutoff_value
+        "required_condition": aiFood_cutoff_condition,
+        "required_nutrient": aiFood_cutoff_nutrient
     };
 
     $.post("/food-pref", user_newDietProfile, null, "json");
@@ -450,24 +489,6 @@ $("#diet-plan-save-button").click(function() {
 
 
 
-/*  --- All Food Criteria Planner ---  */
-// --- In-Use ---
-$("#food-pref-cutoff-button").click(function() {
-    userFood_calories_cutoff = $("#cutoff-calories").val();
-    userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
-    userFood_protein_cutoff = $("#cutoff-proteins").val();
-    userFood_fat_cutoff = $("#cutoff-fats").val();
-    userFood_iron_cutoff = $("#cutoff-iron").val();
-    userFood_calcium_cutoff = $("#cutoff-calcium").val();
-    userFood_magnesium_cutoff = $("#cutoff-magnesium").val();
-    userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
-    userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
-
-    aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
-    aiFood_cutoff_value = $("#suggest-cutoff-value").val();
-
-    alert("All Food Criteria Saved!");
-});
 
 
 

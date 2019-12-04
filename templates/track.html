@@ -43,34 +43,37 @@
         </div>
 
         <div style="margin-top: 2.5vh"></div>
-        
-        <div class="search-container">
-                <select id="chart-type" onChange="makeNutritionChart()">
-                    <option value="Line Plot">Line Plot</option>
-                    <option value="Bar Graph">Bar Graph</option>
-                    <option value="Pie Chart">Pie Chart</option>
-                </select>
-                <input type="text" id="datepicker" placeholder="date"> 
-                <button type="submit" id="track-search-icon"><i class="fa fa-search"></i></button>
-            </div> 
 
         <div id="track-wrapper">
             
             <div class="chart-container">
                 <h3>Nutrition Report</h3>
+                <div class="search-container">
+                    <select id="chart-type" onChange="makeNutritionChart()">
+                        <option value="Line Plot">Line Plot</option>
+                        <option value="Bar Graph">Bar Graph</option>
+                        <option value="Pie Chart">Pie Chart</option>
+                    </select>
+                    <input type="text" id="datepicker" placeholder="date"> 
+                    <button type="submit" id="track-search-icon"><i class="fa fa-search"></i></button>
+                </div> 
+
                 <div id="nutrition-chart-container">
                     <canvas id="nutrition-chart"></canvas>
                 </div>
+            
             </div>
 
             <div class="suggest-container">
                 <h3>Food Suggestion Criteria</h3>
                 <div>
-                    <br>
-                    <label>Min</label>
+                    <select id="suggest-cutoff-conditions">
+                        <option value="high">High</option>
+                        <option value="low">Low</option>
+                    </select>
                     <select id="suggest-cutoff-nutrients">
                         <option value="carbohydrates">Carbohydrates [g]</option>
-                        <option value="protein">Proteins [g]</option>
+                        <option value="proteins">Proteins [g]</option>
                         <option value="fats">Fats [g]</option>
                         <option value="iron">Iron [mg]</option>
                         <option value="calcium">Calcium [mg]</option>
@@ -79,13 +82,11 @@
                         <option value="vitaminB12">Vitamin B12 [µg]</option>
                         <!-- <option value="Sodium">Sodium</option> -->
                     </select>
-                    <label style="margin-left: 0;">Needed</label>
-                    <input id="suggest-cutoff-value" type = "number"  min="0" step=".01">
-                   
+
+
                     <br>
                     <br>
                     <button id="food-suggest-cutoff-button">Set Criteria</button>
-                    <button type="submit" id="food-suggest-button">Get Suggestions</button>
                 </div>
                 
                 <br>
@@ -108,6 +109,8 @@
 
         </div>
 
+        <div style="clear: both;"></div>
+        <div style="margin-top: 1vh"></div>
 
 
         <!-- Online library -->
