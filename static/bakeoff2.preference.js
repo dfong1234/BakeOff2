@@ -151,9 +151,9 @@ function loadDietProfile() {
             aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
 
 
-            $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
-            $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["plan_calories"]* 100) );
-            $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["plan_calories"] * 100) );
+            $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["target_calories"] * 100) );
+            $("#slider-user-proteins").slider("value", Math.round(data["plan"]["plan_proteins"] * 4 / data["plan"]["target_calories"]* 100) );
+            $("#slider-user-fats").slider("value", Math.round(data["plan"]["plan_fats"] * 9 / data["plan"]["target_calories"] * 100) );
         }
     });
 }
@@ -200,10 +200,10 @@ var aiFood_required_nutrient = "";
 function calculateCalories_EER() {
     // EER for ages 0 to 2
     if (userAge == 0) {
-        return (Math.round((((89 * userWeight) - 100) + 68.75) * 100) / 100);
+        return Math.round(((89 * userWeight) - 100) + 68.75);
     }
     if (userAge <= 2) {
-        return (Math.round((((89 * userWeight) - 100) + 20.00) * 100) / 100);
+        return Math.round(((89 * userWeight) - 100) + 20.00);
     }
 
     // Get PA coefficient
@@ -239,35 +239,35 @@ function calculateCalories_EER() {
     // EER for ages 3 to 18
     if (userAge <= 8) {
         if (userSex == "Male") {
-            return (Math.round((88.5 - (61.9 * userAge) + (userPA * 
-                ((26.7 * userWeight) + (903 * userHeight))) + 20) * 100) / 100);
+            return Math.round(88.5 - (61.9 * userAge) + (userPA * 
+                ((26.7 * userWeight) + (903 * userHeight))) + 20);
         }
         if (userSex == "Female") {
-            return (Math.round((135.3 - (30.8 * userAge) + (userPA * 
-                ((10.0 * userWeight) + (934 * userHeight))) + 20) * 100) / 100);
+            return Math.round(135.3 - (30.8 * userAge) + (userPA * 
+                ((10.0 * userWeight) + (934 * userHeight))) + 20);
         }
     }
 
     if (userAge <= 18) {
         if (userSex == "Male") {
-            return (Math.round((88.5 - (61.9 * userAge) + (userPA * 
-                ((26.7 * userWeight) + (903 * userHeight))) + 25) * 100) / 100);
+            return Math.round(88.5 - (61.9 * userAge) + (userPA * 
+                ((26.7 * userWeight) + (903 * userHeight))) + 25);
         }
         if (userSex == "Female") {
-            return (Math.round((135.3 - (30.8 * userAge) + (userPA * 
-                ((10.0 * userWeight) + (934 * userHeight))) + 25) * 100) / 100);
+            return Math.round(135.3 - (30.8 * userAge) + (userPA * 
+                ((10.0 * userWeight) + (934 * userHeight))) + 25);
         }
     }
     
     // EER for ages 19+
     if (userAge > 18) {
         if (userSex == "Male") {
-            return (Math.round((662 - (9.53 * userAge) + (userPA * 
-                ((15.91 * userWeight) + (539.6 * userHeight)))) * 100) / 100);
+            return Math.round(662 - (9.53 * userAge) + (userPA * 
+                ((15.91 * userWeight) + (539.6 * userHeight))));
         }
         if (userSex == "Female") {
-            return (Math.round((354 - (6.91 * userAge) + (userPA * 
-                ((9.36 * userWeight) + (726 * userHeight)))) * 100) / 100);
+            return Math.round(354 - (6.91 * userAge) + (userPA * 
+                ((9.36 * userWeight) + (726 * userHeight)))) ;
         }
     }
 
@@ -277,8 +277,8 @@ function calculateCarbohydrate() {
     // 1 gram carbohydrate gives 4 calories
 
     // Carbohydrate for all ages 
-    // Account for 45% to 65% of EER --> use 55%
-    return (Math.round((0.55 * dailyTarget_calories / 4) * 100) / 100);
+    // Account for 45% to 65% of EER --> use 50% so it adds to 100%
+    return Math.round(0.50 * dailyTarget_calories / 4);
 }
 
 function calculateProtein() {
@@ -287,19 +287,19 @@ function calculateProtein() {
     // Protein for ages 0 to 3:
     // Account for 5% to 20% of EER (extrapolated)--> use 15%
     if (userAge <= 3) {
-        return (Math.round((0.15 * dailyTarget_calories / 4) * 100) / 100);
+        return Math.round(0.15 * dailyTarget_calories / 4);
     }
 
     // Protein for ages 4 to 18
     // Account for 10% to 30% of EER --> use 20%
-    if (userAge <= 18) {
-        return (Math.round((0.2 * dailyTarget_calories / 4) * 100) / 100);
+    else if (userAge <= 18) {
+        return Math.round(0.2 * dailyTarget_calories / 4);
     }
 
     // Protein for ages 19+
     // Account for 10% to 35% of EER --> use 22.5%
-    if (userAge > 18) {
-        return (Math.round((0.225 * dailyTarget_calories / 4) * 100) / 100);
+    else if (userAge > 18) {
+        return Math.round(0.225 * dailyTarget_calories / 4);
     }
 }
 
@@ -309,19 +309,19 @@ function calculateFat() {
     // Fat for ages 0 to 3:
     // Account for 30% to 40% of EER (extrapolated)--> use 35%
     if (userAge <= 3) {
-        return (Math.round((0.35 * dailyTarget_calories / 9) * 100) / 100);
+        return Math.round(0.35 * dailyTarget_calories / 9);
     }
 
     // Fat for ages 4 to 18
     // Account for 25% to 35% of EER --> use 30%
-    if (userAge <= 18) {
-        return (Math.round((0.3 * dailyTarget_calories / 9) * 100) / 100);
+    else if (userAge <= 18) {
+        return Math.round(0.3 * dailyTarget_calories / 9);
     }
 
     // Fat for ages 19+
     // Account for 20% to 35% of EER --> use 27.5%
-    if (userAge > 18) {
-        return (Math.round((0.275 * dailyTarget_calories / 9) * 100) / 100);
+    else if (userAge > 18) {
+        return Math.round(0.275 * dailyTarget_calories / 9);
     }
 }
 
