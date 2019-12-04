@@ -147,16 +147,16 @@ function addFoodToLocalDatabase(food) {
     //first, normalize to 100g serving sizes
     var food_localData = {
         "name": food["food_name"],
-        "serving": 100,
-        "calories": helperNormalize(food["nf_calories"]),
-        "carbohydrates": helperNormalize(food["nf_total_carbohydrate"]),
-        "proteins": helperNormalize(food["nf_protein"]),
-        "fats": helperNormalize(food["nf_total_fat"]),
-        "iron": helperNormalize(helperVitID(303)),
-        "vitaminD": helperNormalize(helperVitID(324)),
-        "vitaminB12": helperNormalize(helperVitID(418)),
-        "calcium": helperNormalize(helperVitID(301)),
-        "magnesium": helperNormalize(helperVitID(304)),
+        "serving": food["serving_weight_grams"],
+        "calories": food["nf_calories"],
+        "carbohydrates": food["nf_total_carbohydrate"],
+        "proteins": food["nf_protein"],
+        "fats": food["nf_total_fat"],
+        "iron": helperVitID(303),
+        "vitaminD": helperVitID(324),
+        "vitaminB12": helperVitID(418),
+        "calcium": helperVitID(301),
+        "magnesium": helperVitID(304),
     };
     
     //next, try to determine tags
