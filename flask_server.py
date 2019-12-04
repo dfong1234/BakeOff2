@@ -149,6 +149,7 @@ def processFoodData(received_data, stored_data, method):
         raise Exception("not all required data was present in received_data")
 
     if received_data["name"] != "":
+        received_data["tags"] = json.loads(received_data["tags"])
         remove = ["meal", "date", "user"];
         food_temp = {x: received_data[x] for x in received_data if x not in remove}
         if received_data["date"] in stored_data:

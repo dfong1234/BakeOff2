@@ -66,6 +66,7 @@ var nutrient_url = "https://trackapi.nutritionix.com/v2/natural/nutrients";
 var instant_url = "https://trackapi.nutritionix.com/v2/search/instant";         
 
 var foods_onlineData = {};  // Data of multiple foods obtained from online database
+var generatedTags = {};
 
 // --- Functions ---
 function searchFood(searchTerm) {
@@ -133,7 +134,7 @@ function addFoodToLocalDatabase(food) {
         for(let i = 0; i < food["full_nutrients"].length; i++) {
             if(attribute_ID == food["full_nutrients"][i]["attr_id"]){
                 return food["full_nutrients"][i]["value"];
-            }
+            }	
         }
         return "Not Found";
     }
@@ -197,6 +198,7 @@ function addFoodToLocalDatabase(food) {
         tags.push("Low Fat");
     }
     food_localData_original["tags"] = JSON.stringify(tags);
+    generatedTags[food["food_name"]] = JSON.stringify(tags);
     return food_localData_original;
     //$.post('/food-database', food_localData, null, "json");
 }
@@ -258,6 +260,7 @@ $("#result-table tbody").on('click', 'button', function(){
     food_mealData["vitaminB12"] = findVitaminValue(418);
     food_mealData["calcium"] = findVitaminValue(301);
     food_mealData["magnesium"] = findVitaminValue(304);
+    food_mealData["tags"] = generatedTags[row_data[0]];
 
     //food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({
