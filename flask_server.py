@@ -248,7 +248,7 @@ def foodTagQuery():
             for food_dict in stored_data:
                 # print(food_dict)
                 if target_nutrient == "proteins" and target_condition == "high":
-                    if ("High Protein" in food_dict["tags"]): #and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                    if ("High Protein" in food_dict["tags"]): 
                         foods_qualified.append(food_dict.copy())
                         print(foods_qualified)
                 elif target_nutrient == "proteins" and target_condition == "low":
@@ -257,7 +257,7 @@ def foodTagQuery():
                         print(foods_qualified)
 
                 elif target_nutrient == "carbohydrates" and target_condition == "high":
-                    if ("High Protein" not in food_dict["tags"]): #and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
+                    if ("High Carbohydrates" in food_dict["tags"]): 
                         foods_qualified.append(food_dict.copy())
                         print(foods_qualified)                       
                 elif target_nutrient == "carbohydrates" and target_condition == "low":
@@ -266,13 +266,13 @@ def foodTagQuery():
                         print(foods_qualified)
 
                 elif target_nutrient == "fats" and target_condition == "high":
-                    if ("High Protein" not in food_dict["tags"]): #and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                    if ("High Fat" in food_dict["tags"]):
                         foods_qualified.append(food_dict.copy())
                         print(foods_qualified)
                 elif target_nutrient == "fats" and target_condition == "low":
                     if ("Low Fat" in food_dict["tags"]):
                         foods_qualified.append(food_dict.copy())
-                        print(foods_qualified)                    
+                        print(foods_qualified)                        
 
             json_foods_qualified = json.dumps(foods_qualified)
             print(json_foods_qualified)
