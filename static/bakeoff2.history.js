@@ -149,7 +149,6 @@ $("#history-search-icon").click(function(){
         //clear all meal tables
         $('table.display').DataTable().clear().draw();
 
-
         // Get the selected day's Food Log
         sel_date = $("#datepicker").val()
         user = data["user"];
@@ -160,37 +159,36 @@ $("#history-search-icon").click(function(){
 
         /* Display calories and nutrients for Food Log Tables */
         // Load breakfast table
-        for(i = 0; i < foods_breakfast.length; i++){
+        for(let i = 0; i < foods_breakfast.length; i++){
             var food_nutrition = foods_breakfast[i];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
             var tags = food_nutrition["tags"].join(", ")
-
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+											           food_nutrition["calories"], food_nutrition["carbohydrates"], 
+											           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load lunch table
-        for(i = 0; i < foods_lunch.length; i++){
-            var food_nutrition = foods_lunch[i];
+        for(let j = 0; j < foods_lunch.length; j++){
+            var food_nutrition = foods_lunch[j];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-
+            var tags = food_nutrition["tags"].join(", ");
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
+										           food_nutrition["calories"], food_nutrition["carbohydrates"], 
+										           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load dinner table
-        for(i = 0; i < foods_dinner.length; i++){
-            var food_nutrition = foods_dinner[i];
+        for(let k = 0; k < foods_dinner.length; k++){
+            var food_nutrition = foods_dinner[k];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-
+            var tags = food_nutrition["tags"].join(", ");
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
+										            food_nutrition["calories"], food_nutrition["carbohydrates"], 
+										            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
 
