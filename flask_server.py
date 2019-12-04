@@ -221,6 +221,36 @@ def foodDislike():
             file.truncate()
             return json_data
 
+@app.route("/food-tag-query", methods = ['GET', 'POST', 'DELETE'])
+def foodTagQuery():
+    user = request.args.get('user', default = 'test', type = str)
+
+    if request.method == 'POST':
+        json_file = os.path.join(app.root_path, 'food_data', 'localFoods.json')
+
+        with open(json_file, 'r') as file:
+            stored_data = json.load(file)
+            received_data = request.form.to_dict()
+            print(received_data)
+            nutrient = received_data["nutrient"]
+            amt = received_data["amount"]
+            query = nutrient + ' ' + amt
+            food_array = []
+
+            for food_dict in stored_data:
+                if nutrient == "protein" and amt == "high":
+                    if ("High Protein" in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                        food_array.append(food_dict)
+                elif nutrient == "carbohydrates" and amt == "high":
+                    if ("High Protein" not in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
+                        food_array.append(food_dict)
+                elif nutrient == "fat" and amt == "high":
+                    if ("High Protein" not in food_dict["tags"]) and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                        food_array.append(food_dict)
+
+            json_data = json.dumps({"foods": food_array})
+            return json_data
+
 
 # --- Initialize a local Web server --- #
 if __name__ == "__main__":
