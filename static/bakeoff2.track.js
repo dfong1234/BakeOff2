@@ -61,7 +61,7 @@ $(document).ready(function() {
             "info": false
     })  //Default clear the table until filled
     .clear().draw();
-    $('table.display').DataTable().row.add([0, 0, 0]).draw(); 
+    //$('table.display').DataTable().row.add([0, 0, 0]).draw(); 
     
     // Initialize a Chart
     // https://www.chartjs.org/docs/latest/getting-started/usage.html
@@ -339,7 +339,7 @@ function getNewCalories(chartType){
     }
 
     if (chartType == 'Bar Graph' || chartType == 'Pie Chart') {
-        return (breakfast_calories + lunch_calories + dinner_calories);
+        return (breakfast_calories + lunch_calories + dinner_calories + getAdded("calories"));
     }
     return null;
 }
@@ -350,10 +350,10 @@ function getNewCarbohydrates(chartType){
             breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates]);
     }
     if (chartType == 'Bar Graph') {
-        return (breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates);
+        return (breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates + getAdded("carbohydrates"));
     }
     if (chartType == 'Pie Chart') {
-        return ((breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates) * 4);
+        return ((breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates + getAdded("carbohydrates")) * 4);
     }
     return null;
 }
@@ -364,10 +364,10 @@ function getNewProteins(chartType){
             breakfast_proteins + lunch_proteins + dinner_proteins]);
     }
     if (chartType == 'Bar Graph') {
-        return (breakfast_proteins + lunch_proteins + dinner_proteins);
+        return (breakfast_proteins + lunch_proteins + dinner_proteins + getAdded("proteins"));
     }
     if (chartType == 'Pie Chart') {
-        return ((breakfast_proteins + lunch_proteins + dinner_proteins) * 4);
+        return ((breakfast_proteins + lunch_proteins + dinner_proteins + getAdded("proteins")) * 4);
     }
     return null;
 }
@@ -378,13 +378,14 @@ function getNewFats(chartType){
             breakfast_fats + lunch_fats + dinner_fats]);
     }
     if (chartType == 'Bar Graph') {
-        return (breakfast_fats + lunch_fats + dinner_fats);
+        return (breakfast_fats + lunch_fats + dinner_fats + getAdded("fats"));
     }
     if (chartType == 'Pie Chart') {
-        return ((breakfast_fats + lunch_fats + dinner_fats) * 9);
+        return ((breakfast_fats + lunch_fats + dinner_fats + getAdded("fats")) * 9);
     }
     return null;
 }
+
 
 function bar_getNewTargetLine(targetValue, targetColor) {
     targetLine = {
@@ -502,8 +503,13 @@ $("#track-search-icon").click(function(){
         total_intake_proteins += dinner_proteins;
         total_intake_fats += dinner_fats;
 
+        updateNutritionCharts();
+        alert("Data was retrieved for user: " + user);
+    });
+});
 
-        // Update nutritionChart datas
+function updateNutritionCharts(){
+            // Update nutritionChart datas
         line_data.datasets[0].data = getNewCalories("Line Plot");
         line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
         line_data.datasets[2].data = getNewProteins("Line Plot");
@@ -552,10 +558,44 @@ $("#track-search-icon").click(function(){
         }   
 
         nutritionChart.update();
+}
 
-        alert("Data was retrieved for user: " + user);
-    });
+/*  --- Suggestion Checkbox Code ---  */
+var addedFoods = [];
+
+$("#table-suggest tbody").on('change', 'input:checkbox', function(){
+    //if checkbox is checked, add data to calorie total
+    let data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
+    let name = data[0];
+    let food = {};
+    if($(this).prop( 'checked' )) {
+        for(let i = 0; i < foods_localData.length; i++){
+            if(name == foods_localData[i]["name"]){
+                food = foods_localData[i];
+                break;
+            }
+        }
+        addedFoods.push(food);
+    }
+    //Unchecked, so subtract out from array
+    else {
+        for(let i = 0; i < addedFoods.length; i++){
+            if(name == addedFoods[i]["name"]){
+                addedFoods.splice(i, 1);
+                break;
+            }
+        }
+    }
+    updateNutritionCharts();
 });
+
+function getAdded(nutrient){
+    let added = 0;
+    for(let i = 0; i<addedFoods.length; i++){
+        added = added + parseFloat(addedFoods[i][nutrient]);
+    }
+    return added;
+}
 
 
 
