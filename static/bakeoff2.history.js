@@ -180,8 +180,8 @@ $("#history-search-icon").click(function(){
             var tags = food_nutrition["tags"].join(",");
             //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-											           food_nutrition["calories"], food_nutrition["carbohydrates"], 
-											           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load lunch table
@@ -192,8 +192,8 @@ $("#history-search-icon").click(function(){
             var tags = food_nutrition["tags"].join(",");
             //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-										           food_nutrition["calories"], food_nutrition["carbohydrates"], 
-										           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load dinner table
@@ -204,8 +204,8 @@ $("#history-search-icon").click(function(){
             var tags = food_nutrition["tags"].join(",");
             //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-										            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-										            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
 
@@ -466,9 +466,9 @@ $("#table_dinner tbody").on('click', 'label', function () {
 } );
 
 
-
-
-
+$("#table_breakfast tbody").on('click', 'button', function () {
+    deleteItem('#table_breakfast', 'Lunch', $(this).parents('tr'));
+} );
 
 $("#table_lunch tbody").on('click', 'button', function () {
     deleteItem('#table_lunch', 'Lunch', $(this).parents('tr'));

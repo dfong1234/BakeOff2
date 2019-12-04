@@ -329,7 +329,6 @@ tr:nth-child(even) {
   text-align: center;
   width: 35%;
   min-height: 60vh;
-  height: 60vh; 
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -358,7 +357,7 @@ tr:nth-child(even) {
  */
 #nutrition-chart-container {
   width: 90%;
-  height: 65%;
+  height: 60vh;
   margin: auto;
   margin-bottom: 1vw;
   display: block;
@@ -370,6 +369,15 @@ tr:nth-child(even) {
   border-color: silver;
 }
 
+#extra-food {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 1vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 1vh;
+}
 
 /* Food Suggestion Board */
 .suggest-container {
@@ -412,10 +420,13 @@ tr:nth-child(even) {
   display: inline-block;
 }
 #table-suggest-container {
+  text-align: center;
   width: 90%;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 1.5vh;
+  border-collapse: collapse;
+  overflow: auto;
 }
 
 #table-suggest {

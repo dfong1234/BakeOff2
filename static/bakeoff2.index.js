@@ -41,7 +41,7 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": -1,
             "data": null,
-            "defaultContent": "<button type=\"submit\" id=\"b_expand_food\"><i class=\"fas fa-angle-double-right\"></i></button>"
+            "defaultContent": "<button type=\"submit\" class=\"b_expand_food\"><i class=\"fas fa-angle-double-right\"></i></button>"
         }],
         "searching": false,
         "info": false

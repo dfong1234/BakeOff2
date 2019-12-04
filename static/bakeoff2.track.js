@@ -54,7 +54,7 @@ $(document).ready(function() {
             {
                     "targets": -1,
                     "data": null,
-                    "defaultContent": "<input type=\"checkbox\" class=\"b_check_item\" id=\"b_check_item\"></input><button class=\"b_remove_item\" id=\"b_remove_item\"><i class=\"fas fa-trash-alt\"></i></button>",
+                    "defaultContent": "<button type=\"submit\" class=\"b_add_food\"><i class=\"fas fa-angle-double-left\"></i></button><button type=\"submit\" class=\"b_remove_food\"><i class=\"fas fa-angle-double-right\"></i></button></input><button class=\"b_remove_item\"><i class=\"fas fa-trash-alt\"></i></button>",
             }
         ],
         "searching": false,
@@ -215,7 +215,8 @@ var line_options = {
                   ticks: {
                       beginAtZero: true,
                       suggestedMin: 0,
-                      suggestedMax: 1000
+                      suggestedMax: 250,
+                      stepSize: 100
                   },
                   scaleLabel: {
                        display: true,
@@ -226,21 +227,23 @@ var line_options = {
 
 
 var bar_data = {
-    labels: ["Carbohydrate [g]", "Protein [g]", "Fat [g]"],
+    labels: ["Calories [kcal]", "Carbohydrate [g]", "Protein [g]", "Fat [g]"],
     datasets: [{
         data: [0, 0, 0, 0],
         backgroundColor: [
-            'rgba(75, 192, 192, 0.5)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)'
         ],
         borderColor: [
+            'rgba(255, 99, 132, 1)',
             'rgba(75, 192, 192, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)'
         ]
       }]
-  };
+};
 
 var bar_options = {
     responsive: true,
@@ -258,7 +261,8 @@ var bar_options = {
             ticks: {
                 beginAtZero: true,
                 suggestedMin: 0,
-                suggestedMax: 250
+                suggestedMax: 250,
+                stepSize: 100
             },
             scaleLabel: {
                 display: true,
@@ -336,7 +340,7 @@ function makeNutritionChart(chart) {
 function getNewCalories(chartType){
     if (chartType == "Line Plot") {
         return ([breakfast_calories, breakfast_calories + lunch_calories, 
-            breakfast_calories + lunch_calories + dinner_calories]);
+            breakfast_calories + lunch_calories + dinner_calories  + getAdded("calories")]);
     }
 
     if (chartType == 'Bar Graph' || chartType == 'Pie Chart') {
@@ -348,7 +352,7 @@ function getNewCalories(chartType){
 function getNewCarbohydrates(chartType){
     if (chartType == "Line Plot") {
         return ([breakfast_carbohydrates, breakfast_carbohydrates + lunch_carbohydrates, 
-            breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates]);
+            breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates + getAdded("carbohydrates")]);
     }
     if (chartType == 'Bar Graph') {
         return (breakfast_carbohydrates + lunch_carbohydrates + dinner_carbohydrates + getAdded("carbohydrates"));
@@ -362,7 +366,7 @@ function getNewCarbohydrates(chartType){
 function getNewProteins(chartType){
     if (chartType == "Line Plot") {
         return ([breakfast_proteins, breakfast_proteins + lunch_proteins, 
-            breakfast_proteins + lunch_proteins + dinner_proteins]);
+            breakfast_proteins + lunch_proteins + dinner_proteins  + getAdded("proteins")]);
     }
     if (chartType == 'Bar Graph') {
         return (breakfast_proteins + lunch_proteins + dinner_proteins + getAdded("proteins"));
@@ -376,7 +380,7 @@ function getNewProteins(chartType){
 function getNewFats(chartType){
     if (chartType == "Line Plot") {
         return ([breakfast_fats, breakfast_fats + lunch_fats, 
-            breakfast_fats + lunch_fats + dinner_fats]);
+            breakfast_fats + lunch_fats + dinner_fats  + getAdded("fats")]);
     }
     if (chartType == 'Bar Graph') {
         return (breakfast_fats + lunch_fats + dinner_fats + getAdded("fats"));
@@ -504,9 +508,11 @@ $("#track-search-icon").click(function(){
             aiFood_selected_tags_string = aiFoods_selected[i]["tags"].join();
 
             $("#table-suggest").DataTable().row.add([aiFoods_selected[i]["name"], aiFoods_selected[i]["serving"],
+            aiFoods_selected[i]["calories"], aiFoods_selected[i]["carbohydrates"], 
+            aiFoods_selected[i]["proteins"], aiFoods_selected[i]["fats"],
             aiFood_selected_tags_string]).draw();
 
-            console.log("print one row");
+            //console.log("print one row");
 
         }
 
@@ -558,14 +564,15 @@ $("#track-search-icon").click(function(){
 });
 
 function updateNutritionCharts(){
-    // Update the data of Nutrition Chart 
+    // Update nutritionChart datas
     line_data.datasets[0].data = getNewCalories("Line Plot");
     line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
     line_data.datasets[2].data = getNewProteins("Line Plot");
     line_data.datasets[3].data = getNewFats("Line Plot");
-    bar_data.datasets[0].data[0] = getNewCarbohydrates("Bar Graph");
-    bar_data.datasets[0].data[1] = getNewProteins("Bar Graph");
-    bar_data.datasets[0].data[2] = getNewFats("Bar Graph");
+    bar_data.datasets[0].data[0] = getNewCalories("Bar Graph");
+    bar_data.datasets[0].data[1] = getNewCarbohydrates("Bar Graph");
+    bar_data.datasets[0].data[2] = getNewProteins("Bar Graph");
+    bar_data.datasets[0].data[3] = getNewFats("Bar Graph");
     // bar_options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
     // bar_options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
     // bar_options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
@@ -582,15 +589,19 @@ function updateNutritionCharts(){
         nutritionChart.data.datasets[2].data = getNewProteins("Line Plot");
         nutritionChart.data.datasets[3].data = getNewFats("Line Plot");
     }       
+
     if (chart_box.value == 'Bar Graph') {
-        nutritionChart.data.datasets[0].data[0] = getNewCarbohydrates(chart_box.value);
-        nutritionChart.data.datasets[0].data[1] = getNewProteins(chart_box.value);
-        nutritionChart.data.datasets[0].data[2] = getNewFats(chart_box.value);
+        nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
+        nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
+        nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
+        nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
+
         // nutritionChart.options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
         // nutritionChart.options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
         // nutritionChart.options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
         // nutritionChart.options.annotation.annotations[3] = bar_getNewTargetLine(plan_fats, "rgb(255, 206, 86)");
     } 
+
     if (chart_box.value == 'Pie Chart') {
         nutritionChart.data.datasets[0].data[0] = getNewCarbohydrates(chart_box.value);
         nutritionChart.data.datasets[0].data[1] = getNewProteins(chart_box.value);
@@ -611,28 +622,28 @@ $("#table-suggest").on('click', 'label', function () {
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " carbohydrates accounts for more than 40% of calories" +  "<br />" + "<br />";
+            " carbohydrates accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "High Proteins"){
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " proteins accounts for more than 40% of calories" +  "<br />" + "<br />";
+            " proteins accounts for more than 40% of calories";
     }
     
     if ($(this).attr("class") == "High Fats"){
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " fats accounts for more than 40% of calories" +  "<br />" + "<br />";
+            " fats accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "Low Carbohydrates"){
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " carbohydrates accounts for less than 20% of calories" +  "<br />" + "<br />";
+            " carbohydrates accounts for less than 20% of calories";
 
     }
 
@@ -640,14 +651,14 @@ $("#table-suggest").on('click', 'label', function () {
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " proteins accounts for less than 20% of calories" +  "<br />" + "<br />";
+            " proteins accounts for less than 20% of calories";
     }
 
     if ($(this).attr("class") == "Low Fats"){
         //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
         document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
-            " fats accounts for less than 20% of calories" +  "<br />" + "<br />";
+            " fats accounts for less than 20% of calories";
     }
 
 } );
@@ -675,9 +686,64 @@ $("#food-suggest-cutoff-button").click(function() {
 
 
 
-/*  --- Suggestion Checkbox Code ---  */
+/*  --- Add, Remove, Delete Suggested Foods ---  */
+// --- Variables ---
 var addedFoods = [];
+var addedFoods_names = [];
+// --- Functions ---
+function getAdded(nutrient){
+    let added = 0;
+    for(let i = 0; i<addedFoods.length; i++){
+        added = added + parseFloat(addedFoods[i][nutrient]);
+    }
+    return added;
+}
 
+function updateExtraFood(){
+
+    var extraFood_string = addedFoods_names.join();
+
+    document.getElementById("extra-food").innerHTML = "Additional Foods from AI Food Suggestions:" + "<br />"; 
+    document.getElementById("extra-food").innerHTML += extraFood_string;
+}
+
+// --- In-Use ---
+$("#table-suggest tbody").on('click', 'button.b_add_food', function(){
+    // this.disabled = true;
+    let data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
+    let name = data[0];
+    let food = {};
+
+    for(let i = 0; i < foods_localData.length; i++){
+        if(name == foods_localData[i]["name"]){
+            food = foods_localData[i];
+            break;
+        }
+    }
+    addedFoods.push(food);
+    addedFoods_names.push(food["name"]);
+    updateNutritionCharts();
+    updateExtraFood();
+});
+
+
+$("#table-suggest tbody").on('click', 'button.b_remove_food', function(){
+    let data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
+    let name = data[0];
+    let food = {};
+
+    for(let i = 0; i < addedFoods.length; i++){
+        if(name == addedFoods[i]["name"]){
+            addedFoods.splice(i, 1);
+            addedFoods_names.splice(addedFoods_names.indexOf(name), 1);
+            break;
+        }
+    }
+    updateNutritionCharts();
+    updateExtraFood();
+});
+
+/*
 $("#table-suggest tbody").on('change', 'input:checkbox', function(){
     //if checkbox is checked, add data to calorie total
     let data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
@@ -703,14 +769,8 @@ $("#table-suggest tbody").on('change', 'input:checkbox', function(){
     }
     updateNutritionCharts();
 });
+*/
 
-function getAdded(nutrient){
-    let added = 0;
-    for(let i = 0; i<addedFoods.length; i++){
-        added = added + parseFloat(addedFoods[i][nutrient]);
-    }
-    return added;
-}
 
 
 
