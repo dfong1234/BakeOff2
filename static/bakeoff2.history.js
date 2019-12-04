@@ -164,10 +164,11 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_breakfast[i];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
+            var tags = food_nutrition["tags"].join(", ")
 
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
+            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load lunch table
