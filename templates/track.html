@@ -3,7 +3,7 @@
     Markup for track page of BakeOff2:
     Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
     Date Created: 10/15/2019
-    Last Modified: 10/23/2019
+    Last Modified: 12/03/2019
      .............................................................................. --> 
 <!DOCTYPE html>
 <html>
@@ -55,6 +55,7 @@
             </div> 
 
         <div id="track-wrapper">
+            
             <div class="chart-container">
                 <h3>Nutrition Report</h3>
                 <div id="nutrition-chart-container">
@@ -62,15 +63,40 @@
                 </div>
             </div>
 
-
             <div class="suggest-container">
+                <h3>Food Suggestion Criteria</h3>
+                <div>
+                    <br>
+                    <label>Min</label>
+                    <select id="suggest-cutoff-nutrients">
+                        <option value="carbohydrates">Carbohydrates [g]</option>
+                        <option value="protein">Proteins [g]</option>
+                        <option value="fats">Fats [g]</option>
+                        <option value="iron">Iron [mg]</option>
+                        <option value="calcium">Calcium [mg]</option>
+                        <option value="magnesium">Magnesium [mg]</option>
+                        <option value="vitaminD">Vitamin D [µg]</option>
+                        <option value="vitaminB12">Vitamin B12 [µg]</option>
+                        <!-- <option value="Sodium">Sodium</option> -->
+                    </select>
+                    <label style="margin-left: 0;">Needed</label>
+                    <input id="suggest-cutoff-value" type = "number"  min="0" step=".01">
+                   
+                    <br>
+                    <br>
+                    <button id="food-suggest-cutoff-button">Set Criteria</button>
+                    <button type="submit" id="food-suggest-button">Get Suggestions</button>
+                </div>
+                
+                <br>
+                
                 <h3>Food Suggestion</h3>
                 <div id="table-suggest-container">
                     <table id="table-suggest" class="display">
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Tags</th>
+                                    <th>AI Suggestion</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -78,28 +104,8 @@
                             </tbody>
                         </table>
                 </div>
-
-                <br>
-                <button type="submit" id="food-suggest-button">Get Food Suggestion</button>
             </div>
 
-            <div class="suggest-cutoff-container">
-                <h3>Suggestion Criteria</h3>
-                <div id="table-suggest-container">
-                    <select>
-                        <option value="Carbohydrates">Carbohydrates</option>
-                        <option value="Fats">Fats</option>
-                        <option value="Protein">Protein</option>
-                        <option value="VitaminD">Vitamin D</option>
-                        <option value="VitaminB12">Vitamin B12</option>
-                        <option value="Calcium">Calcium</option>
-                        <option value="Iron">Iron</option>
-                        <option value="Magnesium">Magnesium</option>
-                        <option value="Sodium">Sodium</option>
-                    </select>
-                    <input type="text" name="cutoff-value">
-                </div>
-            </div>
         </div>
 
 

@@ -3,7 +3,7 @@
   	Markup for history page of BakeOff2:
     Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
     Date Created: 10/15/2019
-    Last Modified: 10/23/2019
+    Last Modified: 12/02/2019
   	 .............................................................................. -->	
 <!DOCTYPE html>
 <html>
@@ -50,68 +50,117 @@
             <button type="submit" id="history-search-icon"><i class="fa fa-search"></i></button>
         </div>
 
+        <div id="history-wrapper">
 
-        <div class="history-container">
-            <div id="Breakfast-container" class="meal-container">
-                <h3>Breakfast</h3>
-                <table id="table_breakfast" class="display">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Serving Size[g]</th>
-                            <th>Calories[kcal]</th>
-                            <th>Carbohydrate[g]</th>
-                            <th>Protein[g]</th>
-                            <th>Fat[g]</th>
-                            <th>Tags</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+            <div class="history-container">
+                <h3>Food Log + Evaluation</h3>
+                <div id="Breakfast-container" class="meal-container">
+                    <h3>Breakfast</h3>
+                    <table id="table_breakfast" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Serving Size[g]</th>
+                                <th>Calories[kcal]</th>
+                                <th>Carbohydrate[g]</th>
+                                <th>Protein[g]</th>
+                                <th>Fat[g]</th>
+                                <th>AI Evaluation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="Lunch-continer" class="meal-container">
+                    <h3>Lunch</h3>
+                    <table id="table_lunch" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Serving Size[g]</th>
+                                <th>Calories[kcal]</th>
+                                <th>Carbohydrate[g]</th>
+                                <th>Protein[g]</th>
+                                <th>Fat[g]</th>
+                                <th>AI Evaluation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="Dinner-container" class="meal-container">
+                    <h3>Dinner</h3>
+                    <table id="table_dinner" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Serving Size[g]</th>
+                                <th>Calories[kcal]</th>
+                                <th>Carbohydrate[g]</th>
+                                <th>Protein[g]</th>
+                                <th>Fat[g]</th>
+                                <th>AI Evaluation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id="Lunch-continer" class="meal-container">
-                <h3>Lunch</h3>
-                <table id="table_lunch" class="display">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Serving Size[g]</th>
-                            <th>Calories[kcal]</th>
-                            <th>Carbohydrate[g]</th>
-                            <th>Protein[g]</th>
-                            <th>Fat[g]</th>
-                            <th>Tags</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+
+            <div class="cutoff-container">
+                <h3>Food Evaluation Criteria</h3>
+
+                <label>Max Allowed Calories [kcal]:</label>
+                <input id="cutoff-calories" type = "number" min="0" step=".01"> 
+
+                <br>
+                <label>Max Allowed Carbohydrates [g]:</label>
+                <input id="cutoff-carbohydrates" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Max Allowed Proteins [g]:</label>
+                <input id="cutoff-proteins" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Max Allowed Fats [g]:</label>
+                <input id="cutoff-fats" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Max Allowed Iron [mg]:</label>
+                <input id="cutoff-iron" type = "number" min="0" step=".01"> 
+
+                <br>
+                <label>Max Allowed Calcium [mg]:</label>
+                <input id="cutoff-calcium" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Max Allowed Magnesium [mg]:</label>
+                <input id="cutoff-magnesium" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Max Allowed Vitamin D [µg]:</label>
+                <input id="cutoff-vitaminD" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Max Allowed Vitamin B12 [µg]:</label>
+                <input id="cutoff-vitaminB12" type = "number" min="0" step=".01">
+
+                <br>
+                <br>
+                <button id="food-cutoff-button">Set Criteria</button>
+                <button type="submit" id="food-evaluate-button">Get Evaluations</button>
             </div>
-            <div id="Dinner-container" class="meal-container">
-                <h3>Dinner</h3>
-                <table id="table_dinner" class="display">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Serving Size[g]</th>
-                            <th>Calories[kcal]</th>
-                            <th>Carbohydrate[g]</th>
-                            <th>Protein[g]</th>
-                            <th>Fat[g]</th>
-                            <th>Tags</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+
         </div>
         
-        <div style="margin-top: 5vh"></div>   
+        <div style="clear: both;"></div>
+        <div style="margin-top: 5vh"></div> 
 
 
         <!-- Online library -->

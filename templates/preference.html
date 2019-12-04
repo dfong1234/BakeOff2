@@ -1,9 +1,10 @@
+
 <!-- ..............................................................................
   preference.html
   	Markup for preference page of BakeOff2:
     Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
     Date Created: 10/15/2019
-    Last Modified: 11/30/2019
+    Last Modified: 12/03/2019
   	 .............................................................................. -->	
 <!DOCTYPE html>
 <html>
@@ -83,7 +84,7 @@
 
                 <br>
                 <br>
-                <button type="submit" id="dri-calculate-button">Get Diet Plan</button>
+                <button type="submit" id="dri-calculate-button">Get Calulated Diet Plan</button>
             </div>
 
             <div class="plan-container">
@@ -106,60 +107,72 @@
                 <label>Your Daily Fats [g]:</label>
                 <input id="user-fats" type = "number" min="0" step="1">
                 <div id="slider-user-fats" class="nutrient-slider"></div>
-
-                <br>
-                <br>
-                <button id="dri-adjust-button">Adjust Diet Plan</button>
             </div>
 
-            <div class="cutoff-container">
-                <h3>Single Food Cutoffs</h3>
+            <div class="pref-cutoff-container">
+                <h3>All Food Criteria</h3>
 
-                <label>Calories Cutoff [kcal]:</label>
+                <label>Max Allowed Calories [kcal]:</label>
                 <input id="cutoff-calories" type = "number" min="0" step=".01"> 
 
                 <br>
-                <label>Carbohydrates Cutoff [g]:</label>
+                <label>Max Allowed Carbohydrates [g]:</label>
                 <input id="cutoff-carbohydrates" type = "number" min="0" step=".01">
                 
                 <br>
-                <label>Proteins Cutoff [g]:</label>
+                <label>Max Allowed Proteins [g]:</label>
                 <input id="cutoff-proteins" type = "number" min="0" step=".01">
 
                 <br>
-                <label>Fats Cutoff [g]:</label>
+                <label>Max Allowed Fats [g]:</label>
                 <input id="cutoff-fats" type = "number" min="0" step=".01">
 
                 <br>
-                <label>Iron [mg]:</label>
+                <label>Max Allowed Iron [mg]:</label>
                 <input id="cutoff-iron" type = "number" min="0" step=".01"> 
 
                 <br>
-                <label>Vitamin D [IU]:</label>
-                <input id="cutoff-vitaminD" type = "number" min="0" step=".01">
-                
-                <br>
-                <label>Vitamin B12 [Âµg]:</label>
-                <input id="cutoff-vitaminB12" type = "number" min="0" step=".01">
-
-                <br>
-                <label>Calcium [mg]:</label>
+                <label>Max Allowed Calcium [mg]:</label>
                 <input id="cutoff-calcium" type = "number" min="0" step=".01">
 
                 <br>
-                <label>Magnesium [mg]:</label>
+                <label>Max Allowed Magnesium [mg]:</label>
                 <input id="cutoff-magnesium" type = "number" min="0" step=".01">
+
+                <br>
+                <label>Max Allowed Vitamin D [µg]:</label>
+                <input id="cutoff-vitaminD" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Max Allowed Vitamin B12 [µg]:</label>
+                <input id="cutoff-vitaminB12" type = "number" min="0" step=".01">
+                
+                <br>
+                <label>Min</label>
+                <select id="suggest-cutoff-nutrients">
+                    <option value="carbohydrates">Carbohydrates [g]</option>
+                    <option value="protein">Proteins [g]</option>
+                    <option value="fats">Fats [g]</option>
+                    <option value="iron">Iron [mg]</option>
+                    <option value="calcium">Calcium [mg]</option>
+                    <option value="magnesium">Magnesium [mg]</option>
+                    <option value="vitaminD">Vitamin D [µg]</option>
+                    <option value="vitaminB12">Vitamin B12 [µg]</option>
+                    <!-- <option value="Sodium">Sodium</option> -->
+                </select>
+                <label style="margin-left: 0;">Needed</label>
+                <input id="suggest-cutoff-value" type = "number"  min="0" step=".01">
+                
                 <br>
                 <br>
-                <button id="food-cutoff-button">Set Food Cutoffs</button>
+                <button type="submit" id="food-pref-cutoff-button">Set Criteria</button>
             </div>
         </div>
 
         <div style="clear: both;"></div>
         <div style="margin-top: 5vh"></div>
 
-        <button id="preference-save-button">Save Preferences</button>
-        <button id="preference-restore-button">Restore Preferences</button>
+        <button id="diet-plan-save-button">Save Adjusted Diet Plan</button>
 
 
         <!-- Online library -->
@@ -176,4 +189,3 @@
 
     </body>
 </html>
-
