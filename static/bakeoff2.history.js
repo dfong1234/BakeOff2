@@ -62,6 +62,7 @@ $(document).ready(function() {
             	targets: -3,
             	render: function(data, type, full){
                     var data_array = data.split(",");
+		    var render_string = "";
                     for(let i = 0; i < data_array.length; i++){
                     	render_string += "<label class=\"label_protein\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>"
                     }
