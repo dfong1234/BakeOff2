@@ -241,12 +241,23 @@ def foodTagQuery():
                 if nutrient == "protein" and amt == "high":
                     if ("High Protein" in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
                         food_array.append(food_dict)
+                elif nutrient == "protein" and amt == "low":
+                    if ("Low Protein" in food_dict["tags"]):
+                        food_array.append(food_dict)
+
                 elif nutrient == "carbohydrates" and amt == "high":
                     if ("High Protein" not in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
                         food_array.append(food_dict)
+                elif nutrient == "carbohydrates" and amt == "low":
+                    if ("Low Carbohydrates" in food_dict["tags"]):
+                        food_array.append(food_dict)
+
                 elif nutrient == "fat" and amt == "high":
                     if ("High Protein" not in food_dict["tags"]) and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
                         food_array.append(food_dict)
+                elif nutrient == "fat" and amt == "low":
+                    if ("Low Fat" in food_dict["tags"]):
+                        food_array.append(food_dict)                    
 
             json_data = json.dumps({"foods": food_array})
             return json_data
