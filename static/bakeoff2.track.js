@@ -227,15 +227,17 @@ var line_options = {
 
 
 var bar_data = {
-    labels: ["Carbohydrate [g]", "Protein [g]", "Fat [g]"],
+    labels: ["Calories [kcal]", "Carbohydrate [g]", "Protein [g]", "Fat [g]"],
     datasets: [{
         data: [0, 0, 0, 0],
         backgroundColor: [
-            'rgba(75, 192, 192, 0.5)',
-            'rgba(54, 162, 235, 0.5)',
-            'rgba(255, 206, 86, 0.5)'
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)'
         ],
         borderColor: [
+            'rgba(255, 99, 132, 1)',
             'rgba(75, 192, 192, 1)',
             'rgba(54, 162, 235, 1)',
             'rgba(255, 206, 86, 1)'
@@ -567,9 +569,10 @@ function updateNutritionCharts(){
     line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
     line_data.datasets[2].data = getNewProteins("Line Plot");
     line_data.datasets[3].data = getNewFats("Line Plot");
-    bar_data.datasets[0].data[0] = getNewCarbohydrates("Bar Graph");
-    bar_data.datasets[0].data[1] = getNewProteins("Bar Graph");
-    bar_data.datasets[0].data[2] = getNewFats("Bar Graph");
+    bar_data.datasets[0].data[0] = getNewCalories("Bar Graph");
+    bar_data.datasets[0].data[1] = getNewCarbohydrates("Bar Graph");
+    bar_data.datasets[0].data[2] = getNewProteins("Bar Graph");
+    bar_data.datasets[0].data[3] = getNewFats("Bar Graph");
     // bar_options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
     // bar_options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
     // bar_options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
@@ -588,9 +591,10 @@ function updateNutritionCharts(){
     }       
 
     if (chart_box.value == 'Bar Graph') {
-        nutritionChart.data.datasets[0].data[0] = getNewCarbohydrates(chart_box.value);
-        nutritionChart.data.datasets[0].data[1] = getNewProteins(chart_box.value);
-        nutritionChart.data.datasets[0].data[2] = getNewFats(chart_box.value);
+        nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
+        nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
+        nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
+        nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
 
         // nutritionChart.options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
         // nutritionChart.options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
