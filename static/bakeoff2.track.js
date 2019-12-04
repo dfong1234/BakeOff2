@@ -1,6 +1,6 @@
 //	................................................................................
-//  bakeoff2.index.js
-//	javascript for index page of BakeOff2:
+//  bakeoff2.track.js
+//	javascript for track page of BakeOff2:
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
 //  Last Modified: 12/03/2019
@@ -25,7 +25,7 @@ var color = 'lightseagreen';
 openTab(tabName, color) 
 
 
-//Wait till document is "loaded" before starting data stuff, just in case of bugs or something
+// Load the html elements of the web page before the local data
 $(document).ready(function() {
     /*  --- Datepiacker ---  */
     // --- Initialization ---
@@ -61,7 +61,7 @@ $(document).ready(function() {
             "info": false
     })  //Default clear the table until filled
     .clear().draw();
-    //$('table.display').DataTable().row.add([0, 0, 0]).draw(); 
+    // $('table.display').DataTable().row.add([0, 0, 0]).draw(); 
     
     // Initialize a Chart
     // https://www.chartjs.org/docs/latest/getting-started/usage.html
@@ -99,10 +99,10 @@ function loadDietProfile() {
         userDietProfile = data["plan"];
 
         if (data["plan"] != null) {
-            plan_calories = parseFloat(data["plan"]["plan_calories"]);
-            plan_carbohydrates = parseFloat(data["plan"]["plan_carbohydrates"]);
-            plan_proteins  = parseFloat(data["plan"]["plan_proteins"]); 
-            plan_fats = parseFloat(data["plan"]["plan_fats"]);
+            dailyPlan_calories = parseFloat(data["plan"]["plan_calories"]);
+            dailyPlan_carbohydrates = parseFloat(data["plan"]["plan_carbohydrates"]);
+            dailyPlan_proteins  = parseFloat(data["plan"]["plan_proteins"]); 
+            dailyPlan_fats = parseFloat(data["plan"]["plan_fats"]);
             aiFood_required_condition = data["plan"]["required_condition"]; 
             aiFood_required_nutrient = data["plan"]["required_nutrient"];
 
@@ -123,20 +123,25 @@ loadDietProfile();
 /*  --- Nutrition Chart Report ---  */
 // --- Variables ---
 // From User Diet Profile:
-var plan_calories = 0; 
-var plan_carbohydrates = 0; 
-var plan_proteins = 0;  
-var plan_fats = 0;  
+var dailyPlan_calories = 0; 
+var dailyPlan_carbohydrates = 0; 
+var dailyPlan_proteins = 0;  
+var dailyPlan_fats = 0;  
 
 var aiFood_required_condition = "";
 var aiFood_required_nutrient = "";
-var aiFoods_result = [];
+var aiFoods_passed = [];
 
 // From User Food Log:
 var user = "";
 var foods_breakfast = [];
 var foods_lunch = [];
 var foods_dinner = [];
+
+var allMeals_calories = 0;
+var allMeals_carbohydrates = 0;
+var allMeals_proteins = 0;
+var allMeals_fats = 0;
 
 var breakfast_calories = 0;
 var breakfast_carbohydrates = 0;
@@ -153,10 +158,7 @@ var dinner_carbohydrates = 0;
 var dinner_proteins = 0;
 var dinner_fats = 0;
 
-var total_intake_calories = 0;
-var total_intake_carbohydrates = 0;
-var total_intake_proteins = 0;
-var total_intake_fats = 0;
+
 
 // For Nutrition Chart:
 // 10 Chart.js example charts to get you started:
@@ -414,29 +416,26 @@ $("#track-search-icon").click(function(){
         "nutrient": aiFood_required_nutrient
     }
 
-
     $.post("/food-tag-query" + window.location.search, aiFood_query).done(function(data){
-        aiFoods_result = data["selected_foods"];
+        aiFoods_passed = data["selected_foods"];
     });
 
-
-
     $.get("/food-log" + window.location.search, function(data){
+        // Get the selected day's Food Log
         var sel_date = $("#datepicker").val()
-
         user = data["user"];
         foods_breakfast = data[sel_date]["Breakfast"];
         foods_lunch = data[sel_date]["Lunch"];
         foods_dinner = data[sel_date]["Dinner"];
         
-        total_intake_calories = 0;
-        total_intake_carbohydrates = 0;
-        total_intake_proteins = 0;
-        total_intake_fats = 0;
 
+        /* Compute calories and nutrients for Nutrition Chart */
+        allMeals_calories = 0;
+        allMeals_carbohydrates = 0;
+        allMeals_proteins = 0;
+        allMeals_fats = 0;
 
-
-        // compute breakfast data
+        // Process breakfast data
         breakfast_calories = 0;
         breakfast_carbohydrates = 0;
         breakfast_proteins = 0;
@@ -444,22 +443,18 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < foods_breakfast.length; i++){
             var food_nutrition = foods_breakfast[i];
-            var food_name = food_nutrition["name"];
-
             breakfast_calories += parseFloat(food_nutrition["calories"]);
             breakfast_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
             breakfast_proteins += parseFloat(food_nutrition["proteins"]);
             breakfast_fats += parseFloat(food_nutrition["fats"]);
         };
 
-        total_intake_calories += breakfast_calories;
-        total_intake_carbohydrates += breakfast_carbohydrates;
-        total_intake_proteins += breakfast_proteins;
-        total_intake_fats += breakfast_fats;
+        allMeals_calories += breakfast_calories;
+        allMeals_carbohydrates += breakfast_carbohydrates;
+        allMeals_proteins += breakfast_proteins;
+        allMeals_fats += breakfast_fats;
 
-
-
-        // compute lunch data
+        // Process lunch data
         lunch_calories = 0;
         lunch_carbohydrates = 0;
         lunch_proteins = 0;
@@ -467,22 +462,18 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < foods_lunch.length; i++){
             var food_nutrition = foods_lunch[i];
-            var food_name = food_nutrition["name"];
-        
             lunch_calories += parseFloat(food_nutrition["calories"]);
             lunch_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
             lunch_proteins += parseFloat(food_nutrition["proteins"]);
             lunch_fats += parseFloat(food_nutrition["fats"]);
         };
 
-        total_intake_calories += lunch_calories;
-        total_intake_carbohydrates += lunch_carbohydrates;
-        total_intake_proteins += lunch_proteins;
-        total_intake_fats += lunch_fats;
+        allMeals_calories += lunch_calories;
+        allMeals_carbohydrates += lunch_carbohydrates;
+        allMeals_proteins += lunch_proteins;
+        allMeals_fats += lunch_fats;
 
-
-
-        // compute dinner data
+        // Process dinner data
         dinner_calories = 0;
         dinner_carbohydrates = 0;
         dinner_proteins = 0;
@@ -490,18 +481,16 @@ $("#track-search-icon").click(function(){
         
         for(i = 0; i < foods_dinner.length; i++){
             var food_nutrition = foods_dinner[i];
-            var food_name = food_nutrition["name"];
-
             dinner_calories += parseFloat(food_nutrition["calories"]);
             dinner_carbohydrates += parseFloat(food_nutrition["carbohydrates"]);
             dinner_proteins += parseFloat(food_nutrition["proteins"]);
             dinner_fats += parseFloat(food_nutrition["fats"]);
         };
 
-        total_intake_calories += dinner_calories;
-        total_intake_carbohydrates += dinner_carbohydrates;
-        total_intake_proteins += dinner_proteins;
-        total_intake_fats += dinner_fats;
+        allMeals_calories += dinner_calories;
+        allMeals_carbohydrates += dinner_carbohydrates;
+        allMeals_proteins += dinner_proteins;
+        allMeals_fats += dinner_fats;
 
         updateNutritionCharts();
         alert("Data was retrieved for user: " + user);
@@ -509,55 +498,53 @@ $("#track-search-icon").click(function(){
 });
 
 function updateNutritionCharts(){
-            // Update nutritionChart datas
-        line_data.datasets[0].data = getNewCalories("Line Plot");
-        line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
-        line_data.datasets[2].data = getNewProteins("Line Plot");
-        line_data.datasets[3].data = getNewFats("Line Plot");
-
-        bar_data.datasets[0].data[0] = getNewCalories("Bar Graph");
-        bar_data.datasets[0].data[1] = getNewCarbohydrates("Bar Graph");
-        bar_data.datasets[0].data[2] = getNewProteins("Bar Graph");
-        bar_data.datasets[0].data[3] = getNewFats("Bar Graph");
-
-        // bar_options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
-        // bar_options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
-        // bar_options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
-        // bar_options.annotation.annotations[3] = bar_getNewTargetLine(plan_fats, "rgb(255, 206, 86)");
-
-        pie_data.datasets[0].data[0] = getNewCarbohydrates("Pie Chart");
-        pie_data.datasets[0].data[1] = getNewProteins("Pie Chart");
-        pie_data.datasets[0].data[2] = getNewFats("Pie Chart");
+    // Update the data of Nutrition Chart 
+    line_data.datasets[0].data = getNewCalories("Line Plot");
+    line_data.datasets[1].data = getNewCarbohydrates("Line Plot");
+    line_data.datasets[2].data = getNewProteins("Line Plot");
+    line_data.datasets[3].data = getNewFats("Line Plot");
+    bar_data.datasets[0].data[0] = getNewCalories("Bar Graph");
+    bar_data.datasets[0].data[1] = getNewCarbohydrates("Bar Graph");
+    bar_data.datasets[0].data[2] = getNewProteins("Bar Graph");
+    bar_data.datasets[0].data[3] = getNewFats("Bar Graph");
+    // bar_options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
+    // bar_options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
+    // bar_options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
+    // bar_options.annotation.annotations[3] = bar_getNewTargetLine(plan_fats, "rgb(255, 206, 86)");
+    pie_data.datasets[0].data[0] = getNewCarbohydrates("Pie Chart");
+    pie_data.datasets[0].data[1] = getNewProteins("Pie Chart");
+    pie_data.datasets[0].data[2] = getNewFats("Pie Chart");
 
 
-        // Update nutritionChart
-        if (chart_box.value == 'Line Plot') {
-            nutritionChart.data.datasets[0].data = getNewCalories("Line Plot");          
-            nutritionChart.data.datasets[1].data = getNewCarbohydrates("Line Plot");
-            nutritionChart.data.datasets[2].data = getNewProteins("Line Plot");
-            nutritionChart.data.datasets[3].data = getNewFats("Line Plot");
-        }       
-        
-        if (chart_box.value == 'Bar Graph') {
-            nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
-            nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
-            nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
-            nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
+    // Update the display of Nutrition Chart
+    if (chart_box.value == 'Line Plot') {
+        nutritionChart.data.datasets[0].data = getNewCalories("Line Plot");          
+        nutritionChart.data.datasets[1].data = getNewCarbohydrates("Line Plot");
+        nutritionChart.data.datasets[2].data = getNewProteins("Line Plot");
+        nutritionChart.data.datasets[3].data = getNewFats("Line Plot");
+    }       
+    if (chart_box.value == 'Bar Graph') {
+        nutritionChart.data.datasets[0].data[0] = getNewCalories(chart_box.value);
+        nutritionChart.data.datasets[0].data[1] = getNewCarbohydrates(chart_box.value);
+        nutritionChart.data.datasets[0].data[2] = getNewProteins(chart_box.value);
+        nutritionChart.data.datasets[0].data[3] = getNewFats(chart_box.value);
+        // nutritionChart.options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
+        // nutritionChart.options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
+        // nutritionChart.options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
+        // nutritionChart.options.annotation.annotations[3] = bar_getNewTargetLine(plan_fats, "rgb(255, 206, 86)");
+    } 
+    if (chart_box.value == 'Pie Chart') {
+        nutritionChart.data.datasets[0].data[0] = getNewCarbohydrates(chart_box.value);
+        nutritionChart.data.datasets[0].data[1] = getNewProteins(chart_box.value);
+        nutritionChart.data.datasets[0].data[2] = getNewFats(chart_box.value);
+    }   
 
-            // nutritionChart.options.annotation.annotations[0] = bar_getNewTargetLine(plan_calories, "rgb(255, 99, 132)");
-            // nutritionChart.options.annotation.annotations[1] = bar_getNewTargetLine(plan_carbohydrates, "rgb(75, 192, 192)");
-            // nutritionChart.options.annotation.annotations[2] = bar_getNewTargetLine(plan_proteins, "rgb(54, 162, 235)");
-            // nutritionChart.options.annotation.annotations[3] = bar_getNewTargetLine(plan_fats, "rgb(255, 206, 86)");
-        } 
-        
-        if (chart_box.value == 'Pie Chart') {
-            nutritionChart.data.datasets[0].data[0] = getNewCarbohydrates(chart_box.value);
-            nutritionChart.data.datasets[0].data[1] = getNewProteins(chart_box.value);
-            nutritionChart.data.datasets[0].data[2] = getNewFats(chart_box.value);
+    nutritionChart.update();
 
-        }   
-
-        nutritionChart.update();
+    // Call AI for Food Suggestion
+    /* Important! Currently working on this.
+    var aiFoods_selected = foods_SuggestionByAI(aiFoods_passed, aiFood_query);
+    */
 }
 
 /*  --- Suggestion Checkbox Code ---  */
@@ -602,9 +589,12 @@ function getAdded(nutrient){
 /*  --- Food Suggestion Criteria Planner ---  */
 // --- In-Use ---
 $("#food-suggest-cutoff-button").click(function() {
-    //update user's diet profile object
-    userDietProfile["required-nutrient"] = $("#suggest-cutoff-nutrients").val();
-    userDietProfile["required-nutrient-value"] = $("#suggest-cutoff-value").val();
+    // Update user's diet profile object
+    userDietProfile["required_condition"] = $("#suggest-cutoff-conditions").val();
+    userDietProfile["required_nutrient"] = $("#suggest-cutoff-nutrients").val();
+
+    aiFood_required_condition = $("#suggest-cutoff-conditions").val();
+    aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
 
     $.post("/food-pref", userDietProfile, null, "json");
 

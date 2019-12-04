@@ -236,6 +236,8 @@ def foodTagQuery():
 
         with open(json_file, 'r') as file:
             stored_data = json.load(file)
+            # print(stored_data)
+
             received_data = request.form.to_dict()
             print(received_data)
             target_nutrient = received_data["nutrient"]
@@ -243,29 +245,37 @@ def foodTagQuery():
             foods_qualified = []
 
             for food_dict in stored_data:
+                # print(food_dict)
                 if target_nutrient == "proteins" and target_condition == "high":
-                    if ("High Protein" in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
-                        foods_qualified.append(food_dict)
+                    if ("High Protein" in food_dict["tags"]): #and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)
                 elif target_nutrient == "proteins" and target_condition == "low":
                     if ("Low Protein" in food_dict["tags"]):
-                        foods_qualified.append(food_dict)
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)
 
                 elif target_nutrient == "carbohydrates" and target_condition == "high":
-                    if ("High Protein" not in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
-                        foods_qualified.append(food_dict)
+                    if ("High Protein" not in food_dict["tags"]): #and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)                       
                 elif target_nutrient == "carbohydrates" and target_condition == "low":
                     if ("Low Carbohydrates" in food_dict["tags"]):
-                        foods_qualified.append(food_dict)
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)
 
                 elif target_nutrient == "fats" and target_condition == "high":
-                    if ("High Protein" not in food_dict["tags"]) and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
-                        foods_qualified.append(food_dict)
+                    if ("High Protein" not in food_dict["tags"]): #and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)
                 elif target_nutrient == "fats" and target_condition == "low":
                     if ("Low Fat" in food_dict["tags"]):
-                        foods_qualified.append(food_dict)                    
+                        foods_qualified.append(food_dict.copy())
+                        print(foods_qualified)                    
 
-            json_data = json.dumps({"selected_foods": foods_qualified})
-            return json_data
+            json_foods_qualified = json.dumps(foods_qualified)
+            print(json_foods_qualified)
+            return json_foods_qualified
 
 
 # --- Initialize a local Web server --- #

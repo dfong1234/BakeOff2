@@ -1,6 +1,6 @@
 //  ................................................................................
 //  bakeoff2.history.js
-//  javascript for index page of BakeOff2:
+//  javascript for Food Log page of BakeOff2:
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
 //  Last Modified: 12/02/2019
@@ -44,6 +44,7 @@ $(document).ready(function() {
                 // https://datatables.net/reference/option/columns.createdCell
                 createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
                 },
+                // https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
                 // https://datatables.net/reference/option/columns.render
                 // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
                 render: function(data, type, full){
@@ -145,60 +146,53 @@ function deleteItem(meal_ID, meal, row_selector) {
 $("#history-search-icon").click(function(){
 
     $.get("/food-log" + window.location.search, function(data){
-        sel_date = $("#datepicker").val()
-
         //clear all meal tables
         $('table.display').DataTable().clear().draw();
 
+
+        // Get the selected day's Food Log
+        sel_date = $("#datepicker").val()
         user = data["user"];
         foods_breakfast = data[sel_date]["Breakfast"];
         foods_lunch = data[sel_date]["Lunch"];
         foods_dinner = data[sel_date]["Dinner"];
 
 
-        //load breakfast table
-        // https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
-        // https://datatables.net/forums/discussion/48165/how-to-get-row-index-of-recently-added-row
-        // https://datatables.net/forums/discussion/49576/get-specific-cell-value-using-row-col-index-coordinates
-        // http://live.datatables.net/poyoqoda/1/edit
-        // https://datatables.net/reference/api/cell()
-        // https://datatables.net/reference/api/cell().data()
-        // https://datatables.net/reference/api/cells()
-        // https://www.geeksforgeeks.org/jquery-css-method/
-
+        /* Display calories and nutrients for Food Log Tables */
+        // Load breakfast table
         for(i = 0; i < foods_breakfast.length; i++){
             var food_nutrition = foods_breakfast[i];
-            var food_name = food_nutrition["name"];
-            var food_decision = foodChoiceEvaluation(food_nutrition);
+            // Call AI for Food Evaluation
+            var food_decision = food_EvaluationByAI(food_nutrition);
 
-            // https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
         };
 
-
-        //load lunch table
+        // Load lunch table
         for(i = 0; i < foods_lunch.length; i++){
             var food_nutrition = foods_lunch[i];
-            var food_name = food_nutrition["name"];
-            var food_decision = foodChoiceEvaluation(food_nutrition);
+            // Call AI for Food Evaluation
+            var food_decision = food_EvaluationByAI(food_nutrition);
 
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
         };
 
-        //load dinner table
+        // Load dinner table
         for(i = 0; i < foods_dinner.length; i++){
             var food_nutrition = foods_dinner[i];
-            var food_name = food_nutrition["name"];
-            var food_decision = foodChoiceEvaluation(food_nutrition);
+            // Call AI for Food Evaluation
+            var food_decision = food_EvaluationByAI(food_nutrition);
 
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
             food_nutrition["calories"], food_nutrition["carbohydrates"], 
             food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
         };
+
+
 
         // style food tags
         $("label:contains('Good Food')").css( "color", "white");
