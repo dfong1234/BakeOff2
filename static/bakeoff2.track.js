@@ -121,6 +121,20 @@ loadDietProfile();
 
 
 
+/*  --- Load Dislike Foods ---  */
+// --- Variables ---
+var foods_Dislike = [];
+
+// --- Functions ---
+function loadFoodsDislike() { 
+    $.get("/food-dislike" + window.location.search, function(data){
+        foods_Dislike = data["dislike"];
+    });
+}
+
+
+
+
 /*  --- Nutrition Chart Report ---  */
 // --- Variables ---
 // From User Diet Profile:
@@ -743,48 +757,11 @@ $("#table-suggest tbody").on('click', 'button.b_remove_food', function(){
     updateExtraFood();
 });
 
-/*
-$("#table-suggest tbody").on('change', 'input:checkbox', function(){
-    //if checkbox is checked, add data to calorie total
-    let data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
-    let name = data[0];
-    let food = {};
-    if($(this).prop( 'checked' )) {
-        for(let i = 0; i < foods_localData.length; i++){
-            if(name == foods_localData[i]["name"]){
-                food = foods_localData[i];
-                break;
-            }
-        }
-        addedFoods.push(food);
-    }
-    //Unchecked, so subtract out from array
-    else {
-        for(let i = 0; i < addedFoods.length; i++){
-            if(name == addedFoods[i]["name"]){
-                addedFoods.splice(i, 1);
-                break;
-            }
-        }
-    }
-    updateNutritionCharts();
-});
-*/
 
-
-
-
-
-
-
-
-
-
-
-/*  --- Dislike food for suggestions ---  */
+/*  --- Collect User Dislike Foods from suggestions ---  */
 $("#table-suggest tbody").on('click', 'button.b_remove_item', function(){
     var data = $("#table-suggest").DataTable().row($(this).parents('tr')).data();
-    var my_data = {"user": "tester",
+    var my_data = {"user": "test",
         "dislike": data[0]
     };
     $("#table-suggest").DataTable().row($(this).parents('tr')).remove().draw();

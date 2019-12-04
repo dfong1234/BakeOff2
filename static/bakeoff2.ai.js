@@ -74,6 +74,23 @@ loadDietProfile();
 
 
 
+/*  --- Load Dislike Foods ---  */
+// --- Variables ---
+var foods_Dislike = [];
+
+// --- Functions ---
+function loadFoodsDislike() { 
+    $.get("/food-dislike" + window.location.search, function(data){
+        foods_Dislike = data["dislike"];
+    });
+}
+
+// --- In-Use ---
+loadFoodsDislike();
+
+
+
+
 
 /*  --- Food Choice Decision Making ---  */
 // --- Variables ---
@@ -280,6 +297,10 @@ function makeSuggestExplanation(foodName, nutrientName, foodNutrientValue, Nutri
 // Major function:
 function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
 
+
+    // Level 0: Get Disliked Foods
+    loadFoodsDislike();
+
     // Level 1: check the requested tag --> if ask high carb, check existence of high carb tag
     // Done in flask
 
@@ -341,30 +362,46 @@ function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
     }
 
     // Level 3: get first three foods based on least amount of other same-condition tags
+    // Ignore any that is also in Foods_dislike
     var aiFoods_selected = [];
-    var otherSameCOnditionCounter = 0;
+    var otherSameConditionCounter = 0;
     var numberOfFoodSelected = 0;
 
     for (i = 0; i < aiFoods.length ; i++){
-        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
-            aiFoods_selected.push(aiFoods[i]);
-            numberOfFoodSelected += 1;
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameConditionCounter && numberOfFoodSelected < 3) {
+            console.log(aiFoods[i]["name"]);
+            var food_name = aiFoods[i]["name"];
+
+            if ( foods_Dislike.includes(food_name) == false) {
+                aiFoods_selected.push(aiFoods[i]);
+                numberOfFoodSelected += 1;
+            }
         }
     }
 
-    otherSameCOnditionCounter = 1;
+    otherSameConditionCounter = 1;
     for (i = 0; i < aiFoods.length ; i++){
-        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
-            aiFoods_selected.push(aiFoods[i]);
-            numberOfFoodSelected += 1;
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameConditionCounter && numberOfFoodSelected < 3) {
+            console.log(aiFoods[i]["name"]);
+            var food_name = aiFoods[i]["name"];
+
+            if ( foods_Dislike.includes(food_name) == false) {
+                aiFoods_selected.push(aiFoods[i]);
+                numberOfFoodSelected += 1;
+            }
         }
     }
 
-    otherSameCOnditionCounter = 2;
+    otherSameConditionCounter = 2;
     for (i = 0; i < aiFoods.length ; i++){
-        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
-            aiFoods_selected.push(aiFoods[i]);
-            numberOfFoodSelected += 1;
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameConditionCounter && numberOfFoodSelected < 3) {
+            console.log(aiFoods[i]["name"]);
+            var food_name = aiFoods[i]["name"];
+
+            if ( foods_Dislike.includes(food_name) == false) {
+                aiFoods_selected.push(aiFoods[i]);
+                numberOfFoodSelected += 1;
+            }
         }
     }
 

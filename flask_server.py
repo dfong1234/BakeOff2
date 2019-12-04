@@ -42,7 +42,10 @@ def preference():
     message = "Welcome to preference.html!"   
     return render_template('preference.html', message=message)
 
-
+@app.route("/Recipes.html")
+def Recipes():
+    message = "Welcome to Recipes.html!"  
+    return render_template('Recipes.html', message=message)
 
 @app.route("/food-database", methods = ['GET', 'POST'])
 def foodDatabase():
@@ -208,6 +211,11 @@ def foodPref():
 def foodDislike():
     user = request.args.get('user', default = 'test', type = str)
     if request.method == 'GET':
+        json_file = os.path.join(app.root_path, 'user_data', '{}_dislike.txt'.format(user))	
+        if not os.path.isfile(json_file):	
+            with open(json_file, 'w') as file:	
+                json.dump({"user": "test", "dislike": []}, file)
+
         with open('user_data/{}_dislike.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
@@ -284,4 +292,4 @@ def foodTagQuery():
 if __name__ == "__main__":
     app.debug = True
     # access the website through http://localhost:8080/
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8888)

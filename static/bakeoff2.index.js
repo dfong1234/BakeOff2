@@ -51,6 +51,19 @@ $(document).ready(function() {
 });
 
 
+/*  --- Load Dislike Foods ---  */
+// --- Variables ---
+var foods_Dislike = [];
+
+// --- Functions ---
+function loadFoodsDislike() { 
+    $.get("/food-dislike" + window.location.search, function(data){
+        foods_Dislike = data["dislike"];
+    });
+}
+
+
+
 
 /*  --- Nutrition Database Access ---  
  *  Nutritionix - Largest Verified Nutrition Database
@@ -139,6 +152,7 @@ function addFoodToLocalDatabase(food) {
         return "0"; //not found probably means zero amount
     }
 
+    
     let serving = food["serving_weight_grams"];
     function helperNormalize(item){
         return Math.round((item * 100 / serving) * 100) / 100;
@@ -173,6 +187,7 @@ function addFoodToLocalDatabase(food) {
         "calcium": helperVitID(301),
         "magnesium": helperVitID(304),
     };
+
 
     //next, try to determine tags
     let tags = [];
@@ -245,7 +260,7 @@ function findVitaminValue(attribute_ID){
             return food_nutritionData["full_nutrients"][i]["value"];
         }
     }
-    return "Not Found";
+    return "0";
 }
 
 // --- In-Use ---
