@@ -57,6 +57,14 @@ $(document).ready(function() {
                 targets: -1,
                 data: null,
                 defaultContent: "<button type=\"submit\" id=\"b_delete_item\"><i class=\"fas fa-trash-alt\"></i></button>",
+            },
+            {
+            	targets: -3,
+            	render: function(data, type, full){
+                    var data_array = data.split(",");
+                    return ("<label class=\"label_protein\">" + data_array[0] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_carbs\">" + data_array[1] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_fat\">" + data_array[2] + "</label>");
+                },
+                className: "dt-nowrap"
             }
         ],
         "searching": false,
@@ -149,7 +157,6 @@ $("#history-search-icon").click(function(){
         //clear all meal tables
         $('table.display').DataTable().clear().draw();
 
-
         // Get the selected day's Food Log
         sel_date = $("#datepicker").val()
         user = data["user"];
@@ -160,37 +167,39 @@ $("#history-search-icon").click(function(){
 
         /* Display calories and nutrients for Food Log Tables */
         // Load breakfast table
-        for(i = 0; i < foods_breakfast.length; i++){
+        for(let i = 0; i < foods_breakfast.length; i++){
             var food_nutrition = foods_breakfast[i];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-            var tags = food_nutrition["tags"].join(", ")
-
+            var tags = food_nutrition["tags"].join(", ");
+            tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+											           food_nutrition["calories"], food_nutrition["carbohydrates"], 
+											           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load lunch table
-        for(i = 0; i < foods_lunch.length; i++){
-            var food_nutrition = foods_lunch[i];
+        for(let j = 0; j < foods_lunch.length; j++){
+            var food_nutrition = foods_lunch[j];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-
+            var tags = food_nutrition["tags"].join(", ");
+            tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
+										           food_nutrition["calories"], food_nutrition["carbohydrates"], 
+										           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load dinner table
-        for(i = 0; i < foods_dinner.length; i++){
-            var food_nutrition = foods_dinner[i];
+        for(let k = 0; k < foods_dinner.length; k++){
+            var food_nutrition = foods_dinner[k];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-
+            var tags = food_nutrition["tags"].join(", ");
+            tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-            food_nutrition["proteins"], food_nutrition["fats"], food_decision]).draw();
+										            food_nutrition["calories"], food_nutrition["carbohydrates"], 
+										            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
 
@@ -203,6 +212,42 @@ $("#history-search-icon").click(function(){
         // https://api.jquery.com/contains-selector/
         $("label:contains('Good Food')").css( "background-color", "lightseagreen" );
         $("label:contains('Bad Food')").css( "background-color", "tomato" );
+
+        $("label:contains('High Protein')").css( "background-color", "lightseagreen" );
+        $("label:contains('High Protein')").css( "color", "white");
+        $("label:contains('High Protein')").css( "padding", "3px");
+        $("label:contains('High Protein')").css( "display", "inline-block");
+        $("label:contains('High Protein')").css( "width", "100px");
+
+        $("label:contains('Low Carbs')").css( "background-color", "lightseagreen" );
+        $("label:contains('Low Carbs')").css( "color", "white");
+        $("label:contains('Low Carbs')").css( "padding", "3px");
+        $("label:contains('Low Carbs')").css( "display", "inline-block");
+        $("label:contains('Low Carbs')").css( "width", "100px");
+
+        $("label:contains('Low Fat')").css( "background-color", "lightseagreen" );
+        $("label:contains('Low Fat')").css( "color", "white");
+        $("label:contains('Low Fat')").css( "padding", "3px");
+        $("label:contains('Low Fat')").css( "display", "inline-block");
+        $("label:contains('Low Fat')").css( "width", "100px");
+
+        $("label:contains('Low Protein')").css( "background-color", "tomato" );
+        $("label:contains('Low Protein')").css( "color", "white");
+        $("label:contains('Low Protein')").css( "padding", "3px");
+        $("label:contains('Low Protein')").css( "display", "inline-block");
+        $("label:contains('Low Protein')").css( "width", "100px");
+
+        $("label:contains('High Carbs')").css( "background-color", "tomato" );
+        $("label:contains('High Carbs')").css( "color", "white");
+        $("label:contains('High Carbs')").css( "padding", "3px");
+        $("label:contains('High Carbs')").css( "display", "inline-block");
+        $("label:contains('High Carbs')").css( "width", "100px");
+
+        $("label:contains('High Fat')").css( "background-color", "tomato" );
+        $("label:contains('High Fat')").css( "color", "white");
+        $("label:contains('High Fat')").css( "padding", "3px");
+        $("label:contains('High Fat')").css( "display", "inline-block");
+        $("label:contains('High Fat')").css( "width", "100px");
 
         alert("Data was retrieved for user: " + user);
     });
@@ -227,7 +272,7 @@ $("#table_breakfast tbody").on('click', 'label', function () {
     }
 
     if (cell_data_array[1] == "Good Food") alert('Good Food Label Clicked!');
-    if (cell_data_array[1] == "Bad Food")  lert('Bad Food Label Clicked!');
+    if (cell_data_array[1] == "Bad Food")  alert('Bad Food Label Clicked!');
 
 } );
 
