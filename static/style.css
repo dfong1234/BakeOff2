@@ -55,6 +55,7 @@ body {
 }
 
 /* Notification Box */
+/*
 #search-alert {
   color: White;
   text-align: center;
@@ -64,7 +65,7 @@ body {
   margin-bottom: 0;
   background-color: #f44336;
 }
-
+*/
 #history-alert {
   color: black;
   text-align: left;
@@ -79,15 +80,19 @@ body {
 }
 
 #track-alert {
-  color: White;
-  text-align: center;
+  color: black;
+  text-align: left;
   padding: 20px;
   width: 50vw;
   margin: auto;
   margin-bottom: 0;
-  background-color: #4CAF50;
+  background-color: white;
+  border-style: solid;
+  border-color: #4CAF50;
+  border-width: thick
 }
 
+/*
 #preference-alert {
   color: White;
   text-align: center;
@@ -97,7 +102,7 @@ body {
   margin-bottom: 0;
   background-color: #2196F3;
 }
-
+*/
 /* Table */
 td, th {
   border: 1px solid #dddddd;

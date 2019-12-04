@@ -36,29 +36,30 @@ $(document).ready(function() {
     // https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
     // --- Initialization ---
     $('table.display').DataTable({
-            "columnDefs": [
-                /*{
-                    targets: -2,
-                    // https://datatables.net/reference/option/columns.createdCell
-                    createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
-                    },
-                    // https://datatables.net/reference/option/columns.render
-                    // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
-                    render: function(data, type, full){
-                        var data_array = data.split(",");
-                        var data_class = "food-tag-" + data_array[1].replace(" ", "-");
-                        return ("<label class=\""+ data_class + "\" for=\""+ data_array[0] + "\">" + data_array[1] + "</label>");
+        "columnDefs": [
+            {
+                targets: -2,
+                // https://datatables.net/reference/option/columns.render
+                // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
+            	render: function(data, type, full){
+                    var data_array = data.split(",");
+                    var return_string = ""
+                    for (i = 0; i < data_array.length; i++) {
+                        return_string += "<label class=\""+ data_array[i] + "\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>";
                     }
-                },*/
-                {
+                    return return_string;
+                    //return ("<label class=\""+ data_array[0] + "\">" + data_array[0] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_carbs\">" + data_array[1] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_fat\">" + data_array[2] + "</label>");
+                }
+            },
+            {
                     "targets": -1,
                     "data": null,
                     "defaultContent": "<input type=\"checkbox\" class=\"b_check_item\" id=\"b_check_item\"></input><button class=\"b_remove_item\" id=\"b_remove_item\"><i class=\"fas fa-trash-alt\"></i></button>",
-                }
-            ],
-            "searching": false,
-            "paging": false,
-            "info": false
+            }
+        ],
+        "searching": false,
+        "paging": false,
+        "info": false
     })  //Default clear the table until filled
     .clear().draw();
     // $('table.display').DataTable().row.add([0, 0, 0]).draw(); 
@@ -491,6 +492,67 @@ $("#track-search-icon").click(function(){
         allMeals_fats += dinner_fats;
 
         updateNutritionCharts();
+
+
+        //clear all meal tables
+        $('table.display').DataTable().clear().draw();
+
+        // Call AI for Food Suggestion
+        var aiFoods_selected = foods_SuggestionByAI(aiFoods_passed, aiFood_query);
+
+        for (var i = 0; i < aiFoods_selected.length; i++) {
+            aiFood_selected_tags_string = aiFoods_selected[i]["tags"].join();
+
+            $("#table-suggest").DataTable().row.add([aiFoods_selected[i]["name"], aiFoods_selected[i]["serving"],
+            aiFood_selected_tags_string]).draw();
+
+            console.log("print one row");
+
+        }
+
+        // style food tags
+        // https://api.jquery.com/contains-selector/
+        $("label:contains('Good Food')").css( "background-color", "lightseagreen" );
+        $("label:contains('Bad Food')").css( "background-color", "tomato" );
+
+        $("label:contains('High Proteins')").css( "background-color", "darkorange" );
+        $("label:contains('High Proteins')").css( "color", "white");
+        $("label:contains('High Proteins')").css( "padding", "5px");
+        $("label:contains('High Proteins')").css( "display", "inline-block");
+        $("label:contains('High Proteins')").css( "width", "100px");
+
+        $("label:contains('Low Carbohydrates')").css( "background-color", "skyblue" );
+        $("label:contains('Low Carbohydrates')").css( "color", "white");
+        $("label:contains('Low Carbohydrates')").css( "padding", "5px");
+        $("label:contains('Low Carbohydrates')").css( "display", "inline-block");
+        $("label:contains('Low Carbohydrates')").css( "width", "120px");
+
+        $("label:contains('Low Fats')").css( "background-color", "skyblue" );
+        $("label:contains('Low Fats')").css( "color", "white");
+        $("label:contains('Low Fats')").css( "padding", "5px");
+        $("label:contains('Low Fats')").css( "display", "inline-block");
+        $("label:contains('Low Fats')").css( "width", "100px");
+
+        $("label:contains('Low Proteins')").css( "background-color", "skyblue" );
+        $("label:contains('Low Proteins')").css( "color", "white");
+        $("label:contains('Low Proteins')").css( "padding", "5px");
+        $("label:contains('Low Proteins')").css( "display", "inline-block");
+        $("label:contains('Low Proteins')").css( "width", "100px");
+
+        $("label:contains('High Carbohydrates')").css( "background-color", "darkorange" );
+        $("label:contains('High Carbohydrates')").css( "color", "white");
+        $("label:contains('High Carbohydrates')").css( "padding", "5px");
+        $("label:contains('High Carbohydrates')").css( "display", "inline-block");
+        $("label:contains('High Carbohydrates')").css( "width", "120px");
+
+        $("label:contains('High Fats')").css( "background-color", "darkorange" );
+        $("label:contains('High Fats')").css( "color", "white");
+        $("label:contains('High Fats')").css( "padding", "5px");
+        $("label:contains('High Fats')").css( "display", "inline-block");
+        $("label:contains('High Fats')").css( "width", "100px");
+
+
+
         alert("Data was retrieved for user: " + user);
     });
 });
@@ -536,12 +598,82 @@ function updateNutritionCharts(){
     }   
 
     nutritionChart.update();
-
-    // Call AI for Food Suggestion
-    /* Important! Currently working on this.
-    var aiFoods_selected = foods_SuggestionByAI(aiFoods_passed, aiFood_query);
-    */
 }
+
+
+$("#table-suggest").on('click', 'label', function () {
+    var cell_row = $(this).parents('tr');
+    var food_of_cell = $("#table-suggest").DataTable().cell(cell_row, 0).data();
+    var cell_data = $("#table-suggest").DataTable().cell(cell_row, -2).data();
+    var cell_data_array = cell_data.split(",");
+
+    if ($(this).attr("class") == "High Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for more than 40% of calories" +  "<br />" + "<br />";
+    }
+
+    if ($(this).attr("class") == "High Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for more than 40% of calories" +  "<br />" + "<br />";
+    }
+    
+    if ($(this).attr("class") == "High Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for more than 40% of calories" +  "<br />" + "<br />";
+    }
+
+    if ($(this).attr("class") == "Low Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for less than 20% of calories" +  "<br />" + "<br />";
+
+    }
+
+    if ($(this).attr("class") == "Low Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for less than 20% of calories" +  "<br />" + "<br />";
+    }
+
+    if ($(this).attr("class") == "Low Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("track-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
+        document.getElementById("track-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for less than 20% of calories" +  "<br />" + "<br />";
+    }
+
+} );
+
+
+
+
+/*  --- Food Suggestion Criteria Planner ---  */
+// --- In-Use ---
+$("#food-suggest-cutoff-button").click(function() {
+    // Update user's diet profile object
+    userDietProfile["required_condition"] = $("#suggest-cutoff-conditions").val();
+    userDietProfile["required_nutrient"] = $("#suggest-cutoff-nutrients").val();
+
+    aiFood_required_condition = $("#suggest-cutoff-conditions").val();
+    aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
+
+    $.post("/food-pref", userDietProfile, null, "json");
+
+    alert("Suggestion Criteria Saved!");
+});
+
+
+/* ----------------------------------------------------------------------- */
+
+
 
 /*  --- Suggestion Checkbox Code ---  */
 var addedFoods = [];
@@ -579,28 +711,6 @@ function getAdded(nutrient){
     }
     return added;
 }
-
-
-
-/*  --- Food Suggestion Criteria Planner ---  */
-// --- In-Use ---
-$("#food-suggest-cutoff-button").click(function() {
-    // Update user's diet profile object
-    userDietProfile["required_condition"] = $("#suggest-cutoff-conditions").val();
-    userDietProfile["required_nutrient"] = $("#suggest-cutoff-nutrients").val();
-
-    aiFood_required_condition = $("#suggest-cutoff-conditions").val();
-    aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
-
-    $.post("/food-pref", userDietProfile, null, "json");
-
-    alert("Suggestion Criteria Saved!");
-});
-
-
-
-
-
 
 
 
