@@ -36,10 +36,10 @@ $(document).ready(function() {
             calories = Math.round(calories);
             var percentage = ui.value;
             
-            carbohydrate = Math.round(percentage * 0.01 * calories / 4);
-            $("#user-carbohydrates").val(carbohydrate);
-            user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-            $("#user-calories").val(user_calories);
+            plan_carbohydrates = Math.round(percentage * 0.01 * calories / 4);
+            $("#user-carbohydrates").val(plan_carbohydrates);
+            plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+            $("#user-calories").val(plan_calories);
         }
     });
  
@@ -52,10 +52,10 @@ $(document).ready(function() {
             calories = Math.round(calories);
             var percentage = parseInt(ui.value);
 
-            protein = Math.round(percentage * 0.01 * calories / 4);
-            $("#user-proteins").val(protein);
-            user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-            $("#user-calories").val(user_calories);
+            plan_proteins = Math.round(percentage * 0.01 * calories / 4);
+            $("#user-proteins").val(plan_proteins);
+            plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+            $("#user-calories").val(plan_calories);
         },
     });
 
@@ -68,10 +68,10 @@ $(document).ready(function() {
             calories = Math.round(calories);
             var percentage = ui.value;
 
-            fat = Math.round(percentage * 0.01 * calories / 9);
-            $("#user-fats").val(fat);
-            user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-            $("#user-calories").val(user_calories);
+            plan_fats = Math.round(percentage * 0.01 * calories / 9);
+            $("#user-fats").val(plan_fats);
+            plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+            $("#user-calories").val(plan_calories);
         }
     });
 
@@ -131,11 +131,11 @@ function loadDietProfile() {
             userSex = $("#sex").val();
             userActivityLevel = $("#activity").val();
             
-            dri_calories = $("#dri-calories").val();
-            user_calories = $("#user-calories").val();
-            carbohydrate = $("#user-carbohydrates").val();
-            protein = $("#user-proteins").val();
-            fat = $("#user-fats").val();
+            target_calories = $("#dri-calories").val();
+            plan_calories = $("#user-calories").val();
+            plan_carbohydrates = $("#user-carbohydrates").val();
+            plan_proteins = $("#user-proteins").val();
+            plan_fats = $("#user-fats").val();
         
             userFood_calories_cutoff = $("#cutoff-calories").val();
             userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
@@ -147,8 +147,8 @@ function loadDietProfile() {
             userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
             userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
         
-            aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
-            aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
+            aiFood_required_condition = $("#suggest-cutoff-conditions").val();
+            aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
 
 
             $("#slider-user-carbohydrates").slider("value", Math.round(data["plan"]["plan_carbohydrates"] * 4 / data["plan"]["plan_calories"] * 100) );
@@ -168,7 +168,6 @@ loadDietProfile();
 // Dietary Reference Intakes: The Essential Guide to Nutrient Requirements (2006)
 // https://www.nap.edu/read/11537/chapter/8
 // http://www.nationalacademies.org/hmd/~/media/Files/Activity%20Files/Nutrition/DRI-Tables/8_Macronutrient%20Summary.pdf
-
 // --- Variables ---
 var userSex;
 var userAge;
@@ -176,11 +175,11 @@ var userHeight;
 var userWeight;
 var userActivityLevel;
 
-var dri_calories;
-var user_calories;
-var carbohydrate;
-var protein;
-var fat;
+var target_calories;
+var plan_calories;
+var plan_carbohydrates;
+var plan_proteins;
+var plan_fats;
 
 var userFood_calories_cutoff;
 var userFood_carbohydrate_cutoff;
@@ -191,8 +190,8 @@ var userFood_calcium_cutoff;
 var userFood_magnesium_cutoff;
 var userFood_vitaminD_cutoff;
 var userFood_vitaminB12_cutoff;
-var aiFood_cutoff_condition;
-var aiFood_cutoff_nutrient;
+var aiFood_required_condition;
+var aiFood_required_nutrient;
 
 
 
@@ -278,7 +277,7 @@ function calculateCarbohydrate() {
 
     // Carbohydrate for all ages 
     // Account for 45% to 65% of EER --> use 55%
-    return (Math.round((0.55 * dri_calories / 4) * 100) / 100);
+    return (Math.round((0.55 * target_calories / 4) * 100) / 100);
 }
 
 function calculateProtein() {
@@ -287,19 +286,19 @@ function calculateProtein() {
     // Protein for ages 0 to 3:
     // Account for 5% to 20% of EER (extrapolated)--> use 15%
     if (userAge <= 3) {
-        return (Math.round((0.15 * dri_calories / 4) * 100) / 100);
+        return (Math.round((0.15 * target_calories / 4) * 100) / 100);
     }
 
     // Protein for ages 4 to 18
     // Account for 10% to 30% of EER --> use 20%
     if (userAge <= 18) {
-        return (Math.round((0.2 * dri_calories / 4) * 100) / 100);
+        return (Math.round((0.2 * target_calories / 4) * 100) / 100);
     }
 
     // Protein for ages 19+
     // Account for 10% to 35% of EER --> use 22.5%
     if (userAge > 18) {
-        return (Math.round((0.225 * dri_calories / 4) * 100) / 100);
+        return (Math.round((0.225 * target_calories / 4) * 100) / 100);
     }
 }
 
@@ -309,19 +308,19 @@ function calculateFat() {
     // Fat for ages 0 to 3:
     // Account for 30% to 40% of EER (extrapolated)--> use 35%
     if (userAge <= 3) {
-        return (Math.round((0.35 * dri_calories / 9) * 100) / 100);
+        return (Math.round((0.35 * target_calories / 9) * 100) / 100);
     }
 
     // Fat for ages 4 to 18
     // Account for 25% to 35% of EER --> use 30%
     if (userAge <= 18) {
-        return (Math.round((0.3 * dri_calories / 9) * 100) / 100);
+        return (Math.round((0.3 * target_calories / 9) * 100) / 100);
     }
 
     // Fat for ages 19+
     // Account for 20% to 35% of EER --> use 27.5%
     if (userAge > 18) {
-        return (Math.round((0.275 * dri_calories / 9) * 100) / 100);
+        return (Math.round((0.275 * target_calories / 9) * 100) / 100);
     }
 }
 
@@ -335,18 +334,18 @@ $("#dri-calculate-button").click(function() {
     userSex = $("#sex").val();
     userActivityLevel = $("#activity").val();
     
-	dri_calories = calculateCalories_EER();
-    $("#dri-calories").val(dri_calories);
+	target_calories = calculateCalories_EER();
+    $("#dri-calories").val(target_calories);
     
-    carbohydrate = calculateCarbohydrate();
-    $("#user-carbohydrates").val(carbohydrate);
-    protein = calculateProtein();
-    $("#user-proteins").val(protein);
-    fat = calculateFat();
-    $("#user-fats").val(fat);
+    plan_carbohydrates = calculateCarbohydrate();
+    $("#user-carbohydrates").val(plan_carbohydrates);
+    plan_proteins = calculateProtein();
+    $("#user-proteins").val(plan_proteins);
+    plan_fats = calculateFat();
+    $("#user-fats").val(plan_fats);
 
-    user_calories = dri_calories;
-    $("#user-calories").val(user_calories);
+    plan_calories = target_calories;
+    $("#user-calories").val(plan_calories);
 
 
     // https://api.jqueryui.com/slider/#method-option
@@ -359,30 +358,30 @@ $("#dri-calculate-button").click(function() {
 
 
 $("#user-carbohydrates").change(function() {
-    carbohydrate = $("#user-carbohydrates").val();
-    protein = $("#user-proteins").val();
-    fat = $("#user-fats").val();
+    plan_carbohydrates = $("#user-carbohydrates").val();
+    plan_proteins = $("#user-proteins").val();
+    plan_fats = $("#user-fats").val();
 
-    user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-    $("#user-calories").val(user_calories);
+    plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+    $("#user-calories").val(plan_calories);
 });
 
 $("#user-proteins").change(function() {
-    carbohydrate = $("#user-carbohydrates").val();
-    protein = $("#user-proteins").val();
-    fat = $("#user-fats").val();
+    plan_carbohydrates = $("#user-carbohydrates").val();
+    plan_proteins = $("#user-proteins").val();
+    plan_fats = $("#user-fats").val();
 
-    user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-    $("#user-calories").val(user_calories);
+    plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+    $("#user-calories").val(plan_calories);
 });
 
 $("#user-fats").change(function() {
-    carbohydrate = $("#user-carbohydrates").val();
-    protein = $("#user-proteins").val();
-    fat = $("#user-fats").val();
+    plan_carbohydrates = $("#user-carbohydrates").val();
+    plan_proteins = $("#user-proteins").val();
+    plan_fats = $("#user-fats").val();
 
-    user_calories = Math.round((4 * carbohydrate + 4 * protein + 9 * fat) / 10) * 10;
-    $("#user-calories").val(user_calories);
+    plan_calories = Math.round((4 * plan_carbohydrates + 4 * plan_proteins + 9 * plan_fats) / 10) * 10;
+    $("#user-calories").val(plan_calories);
 });
 
 
@@ -399,8 +398,8 @@ $("#food-pref-cutoff-button").click(function() {
     userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
     userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
 
-    aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
-    aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
+    aiFood_required_condition = $("#suggest-cutoff-conditions").val();
+    aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
 
     //update user's diet profile object
     userDietProfile["cutoff_calories"] = $("#cutoff-calories").val();
@@ -434,11 +433,11 @@ $("#diet-plan-save-button").click(function() {
     userSex = $("#sex").val();
     userActivityLevel = $("#activity").val();
     
-	dri_calories = $("#dri-calories").val();
-    user_calories = $("#user-calories").val();
-    carbohydrate = $("#user-carbohydrates").val();
-    protein = $("#user-proteins").val();
-    fat = $("#user-fats").val();
+	target_calories = $("#dri-calories").val();
+    plan_calories = $("#user-calories").val();
+    plan_carbohydrates = $("#user-carbohydrates").val();
+    plan_proteins = $("#user-proteins").val();
+    plan_fats = $("#user-fats").val();
 
     userFood_calories_cutoff = $("#cutoff-calories").val();
     userFood_carbohydrate_cutoff = $("#cutoff-carbohydrates").val();
@@ -450,8 +449,8 @@ $("#diet-plan-save-button").click(function() {
     userFood_vitaminD_cutoff = $("#cutoff-vitaminD").val();
     userFood_vitaminB12_cutoff = $("#cutoff-vitaminB12").val();
 
-    aiFood_cutoff_condition = $("#suggest-cutoff-conditions").val();
-    aiFood_cutoff_nutrient = $("#suggest-cutoff-nutrients").val();
+    aiFood_required_condition = $("#suggest-cutoff-conditions").val();
+    aiFood_required_nutrient = $("#suggest-cutoff-nutrients").val();
 
 
     //create user's diet profile object
@@ -462,11 +461,11 @@ $("#diet-plan-save-button").click(function() {
 		"weight"		 : userWeight,
 		"activity_level" : userActivityLevel,
 
-        "target_calories": dri_calories,
-        "plan_calories": user_calories,
-        "plan_carbohydrates": carbohydrate,
-        "plan_proteins": protein,
-        "plan_fats": fat,
+        "target_calories": target_calories,
+        "plan_calories": plan_calories,
+        "plan_carbohydrates": plan_carbohydrates,
+        "plan_proteins": plan_proteins,
+        "plan_fats": plan_fats,
 
         "cutoff_calories": userFood_calories_cutoff,
         "cutoff_carbohydrates": userFood_carbohydrate_cutoff,
@@ -477,8 +476,8 @@ $("#diet-plan-save-button").click(function() {
         "cutoff_vitaminB12": userFood_vitaminB12_cutoff,
         "cutoff_calcium": userFood_calcium_cutoff,
         "cutoff_magnesium": userFood_magnesium_cutoff,
-        "required_condition": aiFood_cutoff_condition,
-        "required_nutrient": aiFood_cutoff_nutrient
+        "required_condition": aiFood_required_condition,
+        "required_nutrient": aiFood_required_nutrient
     };
 
     $.post("/food-pref", user_newDietProfile, null, "json");

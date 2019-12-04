@@ -37,6 +37,19 @@ $(document).ready(function() {
     // --- Initialization ---
     $('table.display').DataTable({
             "columnDefs": [
+                /*{
+                    targets: -2,
+                    // https://datatables.net/reference/option/columns.createdCell
+                    createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
+                    },
+                    // https://datatables.net/reference/option/columns.render
+                    // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
+                    render: function(data, type, full){
+                        var data_array = data.split(",");
+                        var data_class = "food-tag-" + data_array[1].replace(" ", "-");
+                        return ("<label class=\""+ data_class + "\" for=\""+ data_array[0] + "\">" + data_array[1] + "</label>");
+                    }
+                },*/
                 {
                     "targets": -1,
                     "data": null,
@@ -48,7 +61,7 @@ $(document).ready(function() {
             "info": false
     })  //Default clear the table until filled
     .clear().draw();
-    $('table.display').DataTable().row.add([0, 0]).draw(); 
+    $('table.display').DataTable().row.add([0, 0, 0]).draw(); 
     
     // Initialize a Chart
     // https://www.chartjs.org/docs/latest/getting-started/usage.html
@@ -80,15 +93,6 @@ loadLocalFoodDatabase();
 // --- Variables ---
 var userDietProfile = {};
 
-var plan_calories = 0; 
-var plan_carbohydrates = 0; 
-var plan_proteins = 0;  
-var plan_fats = 0;  
-
-var aiFood_cutoff_nutrient;
-var aiFood_cutoff_condition;
-
-
 // --- Functions ---
 function loadDietProfile() {
     $.get("/food-pref", function(data){
@@ -99,10 +103,20 @@ function loadDietProfile() {
             plan_carbohydrates = parseFloat(data["plan"]["plan_carbohydrates"]);
             plan_proteins  = parseFloat(data["plan"]["plan_proteins"]); 
             plan_fats = parseFloat(data["plan"]["plan_fats"]);
+            aiFood_required_condition = data["plan"]["required_condition"]; 
+            aiFood_required_nutrient = data["plan"]["required_nutrient"];
 
             $("#suggest-cutoff-conditions").val(data["plan"]["required_condition"]);
             $("#suggest-cutoff-nutrients").val(data["plan"]["required_nutrient"]);
         }
+
+        if (plan_calories = null) plan_calories = 0;
+        if (plan_carbohydrates = null) plan_carbohydrates = 0;
+        if (plan_proteins = null) plan_proteins = 0;
+        if (plan_fats = null) plan_fats = 0;
+        if (aiFood_required_condition = null) aiFood_required_condition = "";
+        if (aiFood_required_nutrient = null) aiFood_required_nutrient = "";
+
     });
 
 }
@@ -114,14 +128,17 @@ loadDietProfile();
 
 
 /*  --- Nutrition Chart Report ---  */
-// 10 Chart.js example charts to get you started
-// https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/
 // --- Variables ---
-var chart_box = document.getElementById('chart-type');
-var ctx = document.getElementById('nutrition-chart').getContext('2d');
-var nutritionChart;
+// From User Diet Profile
+var plan_calories; 
+var plan_carbohydrates; 
+var plan_proteins;  
+var plan_fats;  
 
+var aiFood_required_condition;
+var aiFood_required_nutrient;
 
+// From User Food Log
 var user;
 var foods_breakfast = [];
 var foods_lunch = [];
@@ -147,6 +164,12 @@ var total_intake_carbohydrates;
 var total_intake_proteins;
 var total_intake_fats;
 
+// For Butrition Chart
+// 10 Chart.js example charts to get you started:
+// https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/
+var chart_box = document.getElementById('chart-type');
+var ctx = document.getElementById('nutrition-chart').getContext('2d');
+var nutritionChart;
 
 var line_data = {
     labels: ["After Breakfast", " After Lunch", "After Dinner"],
@@ -391,12 +414,24 @@ function bar_getNewTargetLine(targetValue, targetColor) {
 // --- In-Use ---
 $("#track-search-icon").click(function(){
 
-    /*
-    $.get("/food-tag-query" + window.location.search, function(data){
+    var aiFood_query = {
+        "condition": aiFood_required_condition,
+        "nutrient": aiFood_required_nutrient
+    }
 
+    var aiFoods_result;
 
+    $.post("/food-tag-query" + window.location.search, aiFood_query).done(function(data){
+        aiFoods_result = data["selected_foods"];
     });
-*/
+
+
+
+
+
+
+
+
     $.get("/food-log" + window.location.search, function(data){
         var sel_date = $("#datepicker").val()
 

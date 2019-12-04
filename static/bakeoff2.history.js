@@ -294,6 +294,7 @@ $("#table_dinner tbody").on('click', 'button', function () {
 /*  --- Food Evaluation Criteria Planner ---  */
 // --- In-Use ---
 $("#food-cutoff-button").click(function() {
+
     //update user's diet profile object
     userDietProfile["cutoff_calories"] = $("#cutoff-calories").val();
     userDietProfile["cutoff_carbohydrates"] = $("#cutoff-carbohydrates").val();

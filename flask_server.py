@@ -175,6 +175,11 @@ def processFoodData(received_data, stored_data, method):
 def foodPref():
     user = request.args.get('user', default = 'test', type = str)
     if request.method == 'GET':
+        json_file = os.path.join(app.root_path, 'user_data', '{}_pref.txt'.format(user))
+        if not os.path.isfile(json_file):
+            with open(json_file, 'w') as file:
+                json.dump({"user": "test", "plan": None}, file)
+
         with open('user_data/{}_pref.txt'.format(user)) as file:
             data = json.load(file)
             return jsonify(data)
@@ -195,6 +200,7 @@ def foodPref():
             file.write(json_data)
             file.truncate()
             return json_data
+
 
 @app.route("/food-dislike", methods = ['GET', 'POST', 'DELETE'])
 def foodDislike():
@@ -221,6 +227,8 @@ def foodDislike():
             file.truncate()
             return json_data
 
+
+
 @app.route("/food-tag-query", methods = ['POST'])
 def foodTagQuery():
     if request.method == 'POST':
@@ -230,34 +238,33 @@ def foodTagQuery():
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             print(received_data)
-            nutrient = received_data["nutrient"]
-            amt = received_data["amount"]
-            # query = nutrient + ' ' + amt
-            food_array = []
+            target_nutrient = received_data["nutrient"]
+            target_condition = received_data["condition"]
+            foods_qualified = []
 
             for food_dict in stored_data:
-                if nutrient == "protein" and amt == "high":
+                if target_nutrient == "proteins" and target_condition == "high":
                     if ("High Protein" in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
-                        food_array.append(food_dict)
-                elif nutrient == "protein" and amt == "low":
+                        foods_qualified.append(food_dict)
+                elif target_nutrient == "proteins" and target_condition == "low":
                     if ("Low Protein" in food_dict["tags"]):
-                        food_array.append(food_dict)
+                        foods_qualified.append(food_dict)
 
-                elif nutrient == "carbohydrates" and amt == "high":
+                elif target_nutrient == "carbohydrates" and target_condition == "high":
                     if ("High Protein" not in food_dict["tags"]) and ("High Fat" not in food_dict["tags"]) and ("High Carbohydrates" in food_dict["tags"]):
-                        food_array.append(food_dict)
-                elif nutrient == "carbohydrates" and amt == "low":
+                        foods_qualified.append(food_dict)
+                elif target_nutrient == "carbohydrates" and target_condition == "low":
                     if ("Low Carbohydrates" in food_dict["tags"]):
-                        food_array.append(food_dict)
+                        foods_qualified.append(food_dict)
 
-                elif nutrient == "fat" and amt == "high":
+                elif target_nutrient == "fats" and target_condition == "high":
                     if ("High Protein" not in food_dict["tags"]) and ("High Fat" in food_dict["tags"]) and ("High Carbohydrates" not in food_dict["tags"]):
-                        food_array.append(food_dict)
-                elif nutrient == "fat" and amt == "low":
+                        foods_qualified.append(food_dict)
+                elif target_nutrient == "fats" and target_condition == "low":
                     if ("Low Fat" in food_dict["tags"]):
-                        food_array.append(food_dict)                    
+                        foods_qualified.append(food_dict)                    
 
-            json_data = json.dumps({"foods": food_array})
+            json_data = json.dumps({"selected_foods": foods_qualified})
             return json_data
 
 
