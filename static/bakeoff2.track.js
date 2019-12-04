@@ -408,15 +408,15 @@ function bar_getNewTargetLine(targetValue, targetColor) {
 
 // --- In-Use ---
 $("#track-search-icon").click(function(){
-
     var aiFood_query = {
         "condition": aiFood_required_condition,
         "nutrient": aiFood_required_nutrient
     }
 
-    $.post("/food-tag-query" + window.location.search, aiFood_query).done(function(data){
+    $.post("/food-tag-query" + window.location.search, aiFood_query, function(data) {
         aiFoods_passed = data["selected_foods"];
-    });
+        console.log(data["selected_foods"]);
+    }, "json");
 
     $.get("/food-log" + window.location.search, function(data){
         // Get the selected day's Food Log
