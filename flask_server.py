@@ -65,48 +65,41 @@ def foodDatabase():
         with open(json_file, 'r') as file:
             stored_data = json.load(file)  # in python list
 
-        # print("STORED DATA ____________________________")
-        # print(type(stored_data))
-        # print(stored_data)
+        print(type(stored_data))
+        print(stored_data)
 
         received_data = request.form.to_dict()  # in python dict
-        received_data["tags"] = json.loads(received_data["tags"])
-        # print("RECEIVED DATA______________________________")
-        # print(type(received_data))
-        # print(received_data)
+        print(type(received_data))
+        print(received_data)
 
-        if not any(temp["name"] == received_data["name"] for temp in stored_data):
-        	stored_data.append(received_data.copy())
-        
-        # print("NEW STORED DATA______________________________________")
-        # print(type(stored_data))
-        # print(stored_data)
+        stored_data.append(received_data.copy())
+        print(type(stored_data))
+        print(stored_data)
 
         # Remove duplicate dicts
         # https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
-        # seen = set()
-        # combined_data = []
-        # for dictionary in stored_data:
-        #     dictionary_tuple = tuple(dictionary.items())
-        #     if dictionary_tuple not in seen:
-        #         seen.add(dictionary_tuple)
-        #         combined_data.append(dictionary)
+        seen = set()
+        combined_data = []
+        for dictionary in stored_data:
+            dictionary_tuple = tuple(dictionary.items())
+            if dictionary_tuple not in seen:
+                seen.add(dictionary_tuple)
+                combined_data.append(dictionary)
 
-        # print("COMBINED DATA________________________________")
-        # print(type(combined_data))
-        # print(combined_data)
+        print(type(combined_data))
+        print(combined_data)
 
         # dictonary to string
-        # json_combined_data = json.dumps(combined_data)
-        # print(type(json_combined_data))
-        # print(json_combined_data)
-        json_stored_data = json.dumps(stored_data)
+        json_combined_data = json.dumps(combined_data)
+        print(type(json_combined_data))
+        print(json_combined_data)
+
         with open(json_file, 'w') as file:
             file.seek(0)
-            file.write(json_stored_data) 
+            file.write(json_combined_data) 
             file.truncate()
         
-        return json_stored_data
+        return json_combined_data
 
  
 
@@ -149,13 +142,13 @@ def processFoodData(received_data, stored_data, method):
         raise Exception("not all required data was present in received_data")
 
     if received_data["name"] != "":
-        remove = ["meal", "date", "user"];
+        remove = ["meal", "date", "user"]
         food_temp = {x: received_data[x] for x in received_data if x not in remove}
         if received_data["date"] in stored_data:
             if received_data["meal"] in stored_data[received_data["date"]]:
                 if method == 'POST':
                     stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
-                    print("Received:", received_data);
+                    print("Received:", received_data)
                 elif method == 'DELETE':
                     for index in range(len(stored_data[received_data["date"]][received_data["meal"]])):
                         if(stored_data[received_data["date"]][received_data["meal"]][index]["name"] == received_data["name"]):
@@ -188,7 +181,7 @@ def foodPref():
             stored_data = json.load(file)
             received_data = request.form.to_dict()
             print(received_data)
-            stored_data["plan"] = received_data.copy()
+            processPrefData(received_data, stored_data, request.method)
             json_data = json.dumps(stored_data)
             file.seek(0)
             file.write(json_data)
@@ -220,9 +213,13 @@ def foodDislike():
             file.truncate()
             return json_data
 
+def processPrefData(received_data, stored_data, method):
+    stored_data["plan"] = received_data.copy()
+
+
 
 # --- Initialize a local Web server --- #
 if __name__ == "__main__":
     app.debug = True
     # access the website through http://localhost:8080/
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8888)

@@ -50,11 +50,9 @@ body {
   font-size: 16px;
   width: 25%;
 }
-
 .tablink:hover {
   background-color: #777777;
 }
-
 
 /* Notification Box */
 #search-alert {
@@ -68,14 +66,16 @@ body {
 }
 
 #history-alert {
-  color: White;
-  text-align: center;
+  color: black;
+  text-align: left;
   padding: 20px;
   width: 50vw;
   margin: auto;
   margin-bottom: 0;
-  background-color: #ff9800;
-;
+  background-color: white;
+  border-style: solid;
+  border-color: #ff9800;
+  border-width: thick
 }
 
 #track-alert {
@@ -97,7 +97,6 @@ body {
   margin-bottom: 0;
   background-color: #2196F3;
 }
-
 
 /* Table */
 td, th {
@@ -140,19 +139,25 @@ tr:nth-child(even) {
 
 
 /* --- index.html CSS settings --- */
-/* Nutrition Fact Board */
-.food-fact-container {
-  text-align: left;
-  margin: auto;
-  width: 90vw;
-  height: 60vh;
+#index-wrapper {
+  overflow: auto;
+}
+
+
+/* Food Results Board */
+.food-result-container {
+  text-align: center;
+  width: 65%;
+  box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
+  margin-left: 1.5vw;
+  margin-bottom: 1vh;
+  float:left; 
 }
-
-.food-fact-container #meal-time {
+#meal-time {
   font-size: 16px;
   width: 15vw;
   padding: 10px;
@@ -161,8 +166,7 @@ tr:nth-child(even) {
   box-shadow: inset 0px 0px 5px lightgray;
   cursor: pointer;
 }
-
-.food-fact-container #datepicker {
+ #datepicker {
   font-size: 16px;
   width: 20vw;
   padding: 10px;
@@ -171,8 +175,7 @@ tr:nth-child(even) {
   box-shadow: inset 0px 0px 5px lightgray;
   cursor: pointer;
 }
-
-.food-fact-container button {
+#food-add-icon {
   font-size: 16px;
   width: 5vw;
   padding: 10px;
@@ -180,57 +183,125 @@ tr:nth-child(even) {
   border: none;
   cursor: pointer;
 }
-
-.food-fact-container button:hover {
+#food-add-icon:hover {
   background: silver;
 }
-
-#foods-container {
+#result-container{
   text-align: center;
-  width: 50vw;
-  margin: 0px 1vw 0px 1vw;
-  float: left;
+  width: 90%;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 1.5vh;
+  border-collapse: collapse;
+  overflow: auto;
 }
 
 
-#result-container{
-  width: 50vw;
-  border-collapse: collapse;
-  overflow: auto;
+/* Nutrition Label Board */
+.nutrition-label-container {
+  text-align: center;
+  width: 30%;
+  box-sizing: border-box; 
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+  margin-bottom: 1vh;
+  margin-right: 1.5vw;
+  float:right; 
 }
 
 #nutrition-facts {
   text-align: left;
   padding: 10px;
-  width: 20vw;
+  width: 80%;
   height: auto;
-  margin: 2vh 2vw 0vh 0vw;
-  float: right;
+  margin: auto;
+  display: block;
 }
 
 
 
 /* --- history.html CSS settings --- */
+#history-wrapper {
+  overflow: auto;
+}
+
+
 /* Food History Table */
 .history-container {
   text-align: center;
-  margin: auto;
-  width: 90vw;
+  width: 65%;
+  box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
+  margin-left: 1.5vw;
+  margin-bottom: 1vh;
+  float:left; 
 }
-
+.history-container h3{
+  margin-bottom: 1vh;
+}
 .meal-container {
   text-align: center;
-  width: 80vw;
+  width: 90%;
   margin-left:auto; 
   margin-right:auto;
-  margin-bottom: 2vh;
+  margin-bottom: 1.5vh;
   border-collapse: collapse;
   overflow: auto;
 }
+
+
+/* Nutrient Cutoff Board */
+.cutoff-container {
+  text-align: left;
+  width: 30%;
+  box-sizing: border-box; 
+  background-color: white;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: wheat;
+  margin-bottom: 1vh;
+  margin-right: 1.5vw;
+  float:right; 
+}
+.cutoff-container h3 {
+  text-align: center;
+}
+.cutoff-container label {
+  margin-bottom: 1vh;
+  margin-left: 1.5vw;
+}
+.cutoff-container input {
+  font-size: 16px;
+  width: 10vw;
+  min-width: 150px;
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  box-shadow: inset 0px 0px 5px lightgray;
+  margin-left: 0.5vw;
+  margin-bottom: 1vh;
+}
+.cutoff-container button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  min-width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+
+
+
+
 
 
 /* --- track.html CSS settings --- */
@@ -248,10 +319,10 @@ tr:nth-child(even) {
   overflow: auto;
 }
 
-/* Nutrition Chart Board*/
+/* Nutrition Chart Board */
 .chart-container {
   text-align: center;
-  width: 30%;
+  width: 35%;
   height: 60vh; 
   box-sizing: border-box; 
   background-color: white;
@@ -260,7 +331,6 @@ tr:nth-child(even) {
   border-color: wheat;
   margin-left: 1.5vw;
   margin-bottom: 1vw;
-  margin-right: 1.5vw;
   float:left; 
 }
 .chart-container h3 {
@@ -277,7 +347,6 @@ tr:nth-child(even) {
   margin-left: 0.5vw;
   margin-bottom: 1vw;
 }
-
 /* Responsive Charts:
  * https://www.chartjs.org/docs/latest/general/responsive.html
  */
@@ -295,125 +364,61 @@ tr:nth-child(even) {
   border-color: silver;
 }
 
+
 /* Food Suggestion Board */
 .suggest-container {
-  text-align: left;
-  width: 30%;
+  text-align: center;
+  width: 60%;
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
   border-style: solid;
-  border-color: wheat; 
-  margin-left: 1.5vw;
-  margin-bottom: 1vw;
+  border-color: wheat;
+  margin-bottom: 1vh;
   margin-right: 1.5vw;
-  display: inline-block;
+  float:right; 
 }
 .suggest-container h3 {
   text-align: center;
 }
-.suggest-container button {
-  text-align: center;
+.suggest-container select, input {
   font-size: 16px;
-  padding: 10px;
+  width: 12.5vw;
+  min-width: 150px;
   cursor: pointer;
-  width: 150px;
-  border: none;
-  background: lightgray;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
-}
-#table-suggest-container {
-  width: 90%;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
-}
-
-#table-suggest {
-  text-align: center;
-  border-collapse: collapse;
-  overflow: auto;
-
-}
-
-/* Food Suggestion Board */
-.suggest-container {
-  text-align: left;
-  width: 30%;
-  box-sizing: border-box; 
-  background-color: white;
-  border-radius: 6px;
-  border-style: solid;
-  border-color: wheat; 
-  margin-left: 1.5vw;
-  margin-bottom: 1vw;
-  margin-right: 1.5vw;
-  display: inline-block;
-}
-.suggest-container h3 {
-  text-align: center;
-}
-.suggest-container button {
-  text-align: center;
-  font-size: 16px;
-  padding: 10px;
-  cursor: pointer;
-  width: 150px;
-  border: none;
-  background: lightgray;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
-}
-#table-suggest-container {
-  width: 90%;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
-}
-
-#table-suggest {
-  text-align: center;
-  border-collapse: collapse;
-  overflow: auto;
-}
-
-.suggest-cutoff-container{
-  text-align: left;
-  width: 30%;
-  box-sizing: border-box; 
-  background-color: white;
-  border-radius: 6px;
-  border-style: solid;
-  border-color: wheat; 
-  margin-left: 1.5vw;
-  margin-bottom: 1vw;
-  margin-right: 1.5vw;
-  display: inline-block;
-}
-.suggest-cutoff-container h3 {
-  text-align: center;
-}
-.suggest-cutoff-container button {
-  text-align: center;
-  font-size: 16px;
-  padding: 10px;
-  cursor: pointer;
-  width: 150px;
-  border: none;
-  background: lightgray;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
-}
-.suggest-cutoff-container select, input{
-  font-size: 16px;
   padding: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
+  margin-left: 0.5vw;
+  margin-bottom: 1vh;
 }
+.suggest-container button {
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+  min-width: 150px;
+  border: none;
+  background: lightgray;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: inline-block;
+}
+#table-suggest-container {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 1vw;
+  display: block;
+}
+
+#table-suggest {
+  text-align: center;
+  border-collapse: collapse;
+  overflow: auto;
+}
+
+
+
 
 
 /* --- preference.html CSS settings --- */
@@ -458,7 +463,7 @@ tr:nth-child(even) {
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
-  width: 120px;
+  width: 200px;
   border: none;
   background: lightgray;
   margin: auto;
@@ -503,7 +508,7 @@ tr:nth-child(even) {
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
-  width: 150px;
+  width: 200px;
   border: none;
   background: lightgray;
   margin: auto;
@@ -512,9 +517,8 @@ tr:nth-child(even) {
 }
 
 
-
-/* Nutrient Cutoff Board */
-.cutoff-container {
+/* All Cutoffs Board */
+.pref-cutoff-container {
   text-align: left;
   width: 30%;
   box-sizing: border-box; 
@@ -522,30 +526,33 @@ tr:nth-child(even) {
   border-radius: 6px;
   border-style: solid;
   border-color: wheat;
-  margin-left: 1.5vw;
-  margin-bottom: 1vw;
+  margin-bottom: 1vh;
   margin-right: 1.5vw;
   float:right; 
 }
-.cutoff-container h3 {
+.pref-cutoff-container h3 {
   text-align: center;
 }
-.cutoff-container label {
-  margin-bottom: 1vw;
+.pref-cutoff-container label {
+  margin-bottom: 1vh;
   margin-left: 1.5vw;
 }
-.cutoff-container input {
+.pref-cutoff-container select, input {
   font-size: 16px;
-  width: 10vw;
-  min-width: 100px;
+  min-width: 150px;
   cursor: pointer;
   padding: 10px;
   border: none;
   box-shadow: inset 0px 0px 5px lightgray;
   margin-left: 0.5vw;
-  margin-bottom: 1vw;
+  margin-bottom: 1vh;
 }
-.cutoff-container button {
+.pref-cutoff-container select {
+  margin-left: 0;
+  margin-bottom: 1vh;
+  margin-right: 0;
+}
+.pref-cutoff-container button {
   text-align: center;
   font-size: 16px;
   padding: 10px;
@@ -554,16 +561,17 @@ tr:nth-child(even) {
   border: none;
   background: lightgray;
   margin: auto;
-  margin-bottom: 1vw;
+  margin-bottom: 1vh;
   display: block;
 }
 
-#preference-save-button {
+
+#diet-plan-save-button {
   text-align: center;
   font-size: 16px;
   padding: 10px;
   cursor: pointer;
-  width: 150px;
+  width: 200px;
   border: none;
   background: lightgray;
   margin: auto;
