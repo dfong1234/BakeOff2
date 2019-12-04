@@ -11,6 +11,7 @@ function changeTab(tabName, color) {
     if (tabName == 'History') window.location.href = 'history.html' + window.location.search;
     if (tabName == 'Track') window.location.href = 'track.html' + window.location.search;
     if (tabName == 'Preference') window.location.href = 'preference.html' + window.location.search;
+    if (tabName == 'Recipes') window.location.href = 'Recipes.html' + window.location.search;
 }
 
 function openTab(cityName, color) {
@@ -19,6 +20,7 @@ function openTab(cityName, color) {
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
     	tabcontent[i].style.display = "none";
+        console.log(tabcontent[i])
     }
   
     // Remove the background color of all tablinks/buttons
@@ -29,6 +31,7 @@ function openTab(cityName, color) {
   
     // Show the specific tab content
     document.getElementById(cityName).style.display = "block";
+    console.log(document.getElementById(cityName));
 
     // Add the specific color to the button used to open the tab content
     var tabID = cityName + '-tab'

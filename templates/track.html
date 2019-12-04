@@ -33,13 +33,16 @@
             <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
             <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
             <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
+            <button id="Recipes-tab" class="tablink" onclick="changeTab('Recipes')">Recipes</button>
         </nav>
 
         <div style="margin-top: 7.5vh"></div>   
      
         <div id="track-alert">
-                <strong>Success!</strong> Indicates a successful or positive action.
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                <!-- <strong>Success!</strong> Indicates a successful or positive action. -->
+
+                Click AI-generated Labels to see AI Explanations on its decision!
+                <!-- <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> -->
         </div>
 
         <div style="margin-top: 2.5vh"></div>
@@ -58,10 +61,15 @@
                     <button type="submit" id="track-search-icon"><i class="fa fa-search"></i></button>
                 </div> 
 
+                <br>
+                <div id="extra-food">
+                    Additional Foods from AI Food Suggestions:
+                </div>
+
+                <br>
                 <div id="nutrition-chart-container">
                     <canvas id="nutrition-chart"></canvas>
-                </div>
-            
+                </div>    
             </div>
 
             <div class="suggest-container">
@@ -98,6 +106,10 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Serving Size[g]</th>
+                                    <th>Calories[kcal]</th>
+                                    <th>Carbohydrate[g]</th>
+                                    <th>Protein[g]</th>
+                                    <th>Fat[g]</th>
                                     <th>AI Suggestion</th>
                                     <th>Action</th>
                                 </tr>

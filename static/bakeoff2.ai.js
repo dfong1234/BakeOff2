@@ -279,51 +279,94 @@ function makeSuggestExplanation(foodName, nutrientName, foodNutrientValue, Nutri
 
 // Major function:
 function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
-    // Get the food's nutrition data
-
-
-    aiFood_required_nutrient = nutrientCriteria["nutrient"];
-    aiFood_required_condition = nutrientCriteria["condition"];
-
-    aiFoods_otherHighTags_numbers = [];
-
-    decisionData = [aiFood_name];
-
-
 
     // Level 1: check the requested tag --> if ask high carb, check existence of high carb tag
+    // Done in flask
 
-    // Level 2: check the number of other high tags exist for each passed foods.
+
+    // Get the food's nutrition criteria
+    aiFood_required_nutrient = nutrientCriteria["nutrient"];
+
+    //aiFood_required_nutrient = aiFood_required_nutrient[0].toUpperCase() + aiFood_required_nutrient.substring(1)
+
+    aiFood_required_condition = nutrientCriteria["condition"];
+    //aiFood_required_condition = aiFood_required_condition[0].toUpperCase() + aiFood_required_condition.substring(1)
+
+    // decisionData = [aiFood_name];
+    var aiFoods_othersameConditionTags_numbers = [];
+
+    // Level 2: check the number of existing other same-condition tags for each passed foods.
     for (i = 0; i < aiFoods.length ; i++){
-       // if (aiFoods[i])
+        if (aiFood_required_condition == "high") {
+            if (aiFood_required_nutrient == "carbohydrates") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("High Proteins")) counter += 1;
+                if (aiFoods[i]["tags"].includes("High Fats")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+            if (aiFood_required_nutrient == "proteins") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("High Carbohydrates")) counter += 1;
+                if (aiFoods[i]["tags"].includes("High Fats")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+            if (aiFood_required_nutrient == "fats") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("High Carbohydrates")) counter += 1;
+                if (aiFoods[i]["tags"].includes("High Proteins")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+        }
+        
+        if (aiFood_required_condition == "low") {
+            if (aiFood_required_nutrient == "carbohydrates") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("Low Proteins")) counter += 1;
+                if (aiFoods[i]["tags"].includes("Low Fats")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+            if (aiFood_required_nutrient == "proteins") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("Low Carbohydrates")) counter += 1;
+                if (aiFoods[i]["tags"].includes("Low Fats")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+            if (aiFood_required_nutrient == "fats") {
+                var counter = 0;
+                if (aiFoods[i]["tags"].includes("Low Carbohydrates")) counter += 1;
+                if (aiFoods[i]["tags"].includes("Low Proteins")) counter += 1;
+                aiFoods_othersameConditionTags_numbers.push(counter);
+            }
+        }
     }
 
-    /*
-    if (aiFood_tags.includes(aiFood_required_tag)) {
-        decisionData.push(aiFood_required_tag);
+    // Level 3: get first three foods based on least amount of other same-condition tags
+    var aiFoods_selected = [];
+    var otherSameCOnditionCounter = 0;
+    var numberOfFoodSelected = 0;
 
-        food_explain_nutrient = makeSuggestExplanation(userFood_name, "calories", userFood_calories, userFood_calories_cutoff, "<=");
-
-        decisionData.push(food_explain_calories);
+    for (i = 0; i < aiFoods.length ; i++){
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
+            aiFoods_selected.push(aiFoods[i]);
+            numberOfFoodSelected += 1;
+        }
     }
 
-
-    if (aiFood_tags.includes(aiFood_required_tag)) {
-        decisionData.push(aiFood_required_tag);
-
-        food_explain_nutrient = makeSuggestExplanation(userFood_name, "calories", userFood_calories, userFood_calories_cutoff, "<=");
-
-        decisionData.push(food_explain_calories);
+    otherSameCOnditionCounter = 1;
+    for (i = 0; i < aiFoods.length ; i++){
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
+            aiFoods_selected.push(aiFoods[i]);
+            numberOfFoodSelected += 1;
+        }
     }
-*/
 
+    otherSameCOnditionCounter = 2;
+    for (i = 0; i < aiFoods.length ; i++){
+        if (aiFoods_othersameConditionTags_numbers[i] == otherSameCOnditionCounter && numberOfFoodSelected < 3) {
+            aiFoods_selected.push(aiFoods[i]);
+            numberOfFoodSelected += 1;
+        }
+    }
 
-
-
-    // ...
-
-
-    
-    decisionData_string = decisionData.join();
-    return decisionData_string;
+    return aiFoods_selected;
 }

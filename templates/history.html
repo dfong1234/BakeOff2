@@ -1,10 +1,10 @@
 <!-- ..............................................................................
-  history.html
-  	Markup for history page of BakeOff2:
-    Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
-    Date Created: 10/15/2019
-    Last Modified: 12/02/2019
-  	 .............................................................................. -->	
+history.html
+Markup for history page of BakeOff2:
+Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+Date Created: 10/15/2019
+Last Modified: 12/02/2019
+.............................................................................. -->	
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,14 +33,18 @@
             <button id="History-tab" class="tablink" onclick="changeTab('History')">Meal History</button>
             <button id="Track-tab" class="tablink" onclick="changeTab('Track')">Track Nutrition</button>
             <button id="Preference-tab" class="tablink" onclick="changeTab('Preference')">Diet Preference</button>
+            <button id="Recipes-tab" class="tablink" onclick="changeTab('Recipes')">Recipes</button>
         </nav>
     
         <div style="margin-top: 7.5vh"></div>   
-     
+    
         <!-- https://www.w3schools.com/howto/howto_js_alert.asp -->
         <div id="history-alert">
-                <strong>Warning!</strong> Indicates a warning that might need attention.
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                <!-- <strong>Warning!</strong> Indicates a warning that might need attention.-->
+
+                Click AI-generated Labels to see AI Explanations on its decision!
+
+                <!-- <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> -->
         </div>
 
         <div style="margin-top: 2.5vh"></div>
@@ -65,7 +69,7 @@
                                 <th>Carbohydrate[g]</th>
                                 <th>Protein[g]</th>
                                 <th>Fat[g]</th>
-                                <th>Tags</th>
+                                <th>AI Suggestion</th>
                                 <th>AI Evaluation</th>
                                 <th>Action</th>
                             </tr>
@@ -85,7 +89,7 @@
                                 <th>Carbohydrate[g]</th>
                                 <th>Protein[g]</th>
                                 <th>Fat[g]</th>
-                                <th>Tags</th>
+                                <th>AI Suggestion</th>
                                 <th>AI Evaluation</th>
                                 <th>Action</th>
                             </tr>
@@ -105,7 +109,7 @@
                                 <th>Carbohydrate[g]</th>
                                 <th>Protein[g]</th>
                                 <th>Fat[g]</th>
-                                <th>Tags</th>
+                                <th>AI Suggestion</th>
                                 <th>AI Evaluation</th>
                                 <th>Action</th>
                             </tr>
@@ -180,4 +184,3 @@
 
     </body>
 </html>
-       

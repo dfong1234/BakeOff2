@@ -41,7 +41,7 @@ $(document).ready(function() {
         "columnDefs": [{
             "targets": -1,
             "data": null,
-            "defaultContent": "<button type=\"submit\" id=\"b_expand_food\"><i class=\"fas fa-angle-double-right\"></i></button>"
+            "defaultContent": "<button type=\"submit\" class=\"b_expand_food\"><i class=\"fas fa-angle-double-right\"></i></button>"
         }],
         "searching": false,
         "info": false
@@ -136,7 +136,7 @@ function addFoodToLocalDatabase(food) {
                 return food["full_nutrients"][i]["value"];
             }	
         }
-        return "Not Found";
+        return "0"; //not found probably means zero amount
     }
 
     let serving = food["serving_weight_grams"];
@@ -178,10 +178,10 @@ function addFoodToLocalDatabase(food) {
     let tags = [];
 
     if( ((food_localData["proteins"] * 4) > (0.4 * food_localData["calories"])) || (food_localData["proteins"] > 20)){
-        tags.push("High Protein");
+        tags.push("High Proteins");
     }
     else if( (food_localData["proteins"] * 4) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
-        tags.push("Low Protein");
+        tags.push("Low Proteins");
     }
 
     if( (food_localData["carbohydrates"] * 4) > (0.4 * food_localData["calories"]) || (food_localData["carbohydrates"] > 30)){
@@ -192,11 +192,33 @@ function addFoodToLocalDatabase(food) {
     }
 
     if( (food_localData["fats"] * 9) > (0.4 * food_localData["calories"]) || (food_localData["fats"] > 20)){
-        tags.push("High Fat");
+        tags.push("High Fats");
     }
     else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
-        tags.push("Low Fat");
+        tags.push("Low Fats");
     }
+    /*
+    if( ((food_localData["proteins"] * 4) > (0.4 * food_localData["calories"])) ){
+        tags.push("High Proteins");
+    }
+    else if( (food_localData["proteins"] * 4) < (0.2 * food_localData["calories"]) ){
+        tags.push("Low Proteins");
+    }
+
+    if( (food_localData["carbohydrates"] * 4) > (0.4 * food_localData["calories"]) ){
+        tags.push("High Carbohydrates");
+    }
+    else if( (food_localData["carbohydrates"] * 4) < (0.2 * food_localData["calories"]) ){
+        tags.push("Low Carbohydrates");
+    }
+
+    if( (food_localData["fats"] * 9) > (0.4 * food_localData["calories"]) ){
+        tags.push("High Fats");
+    }
+    else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) ){
+        tags.push("Low Fats");
+    }
+    */
     food_localData_original["tags"] = JSON.stringify(tags);
     generatedTags[food["food_name"]] = JSON.stringify(tags);
     return food_localData_original;

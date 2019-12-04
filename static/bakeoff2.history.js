@@ -60,15 +60,17 @@ $(document).ready(function() {
             },
             {
             	targets: -3,
+                // https://datatables.net/reference/option/columns.render
+                // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
             	render: function(data, type, full){
                     var data_array = data.split(",");
-		    var render_string = "";
-                    for(let i = 0; i < data_array.length; i++){
-                    	render_string += "<label class=\"label_protein\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>"
+                    var return_string = ""
+                    for (i = 0; i < data_array.length; i++) {
+                        return_string += "<label class=\""+ data_array[i] + "\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>";
                     }
-                    return (render_string);
-                },
-                className: "dt-nowrap"
+                    return return_string;
+                    //return ("<label class=\""+ data_array[0] + "\">" + data_array[0] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_carbs\">" + data_array[1] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_fat\">" + data_array[2] + "</label>");
+                }
             }
         ],
         "searching": false,
@@ -175,11 +177,11 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_breakfast[i];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-            var tags = food_nutrition["tags"].join(", ");
-            tags = tags.replace("Carbohydrates", "Carbs");
+            var tags = food_nutrition["tags"].join(",");
+            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-											           food_nutrition["calories"], food_nutrition["carbohydrates"], 
-											           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load lunch table
@@ -187,11 +189,11 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_lunch[j];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-            var tags = food_nutrition["tags"].join(", ");
-            tags = tags.replace("Carbohydrates", "Carbs");
+            var tags = food_nutrition["tags"].join(",");
+            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-										           food_nutrition["calories"], food_nutrition["carbohydrates"], 
-										           food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
         // Load dinner table
@@ -199,11 +201,11 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_dinner[k];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
-            var tags = food_nutrition["tags"].join(", ");
-            tags = tags.replace("Carbohydrates", "Carbs");
+            var tags = food_nutrition["tags"].join(",");
+            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
-										            food_nutrition["calories"], food_nutrition["carbohydrates"], 
-										            food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
+                    food_nutrition["calories"], food_nutrition["carbohydrates"], 
+                    food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
 
 
@@ -217,111 +219,256 @@ $("#history-search-icon").click(function(){
         $("label:contains('Good Food')").css( "background-color", "lightseagreen" );
         $("label:contains('Bad Food')").css( "background-color", "tomato" );
 
-        $("label:contains('High Protein')").css( "background-color", "lightseagreen" );
-        $("label:contains('High Protein')").css( "color", "white");
-        $("label:contains('High Protein')").css( "padding", "3px");
-        $("label:contains('High Protein')").css( "display", "inline-block");
-        $("label:contains('High Protein')").css( "width", "100px");
+        $("label:contains('High Proteins')").css( "background-color", "darkorange" );
+        $("label:contains('High Proteins')").css( "color", "white");
+        $("label:contains('High Proteins')").css( "padding", "5px");
+        $("label:contains('High Proteins')").css( "display", "inline-block");
+        $("label:contains('High Proteins')").css( "width", "100px");
 
-        $("label:contains('Low Carbs')").css( "background-color", "lightseagreen" );
-        $("label:contains('Low Carbs')").css( "color", "white");
-        $("label:contains('Low Carbs')").css( "padding", "3px");
-        $("label:contains('Low Carbs')").css( "display", "inline-block");
-        $("label:contains('Low Carbs')").css( "width", "100px");
+        $("label:contains('Low Carbohydrates')").css( "background-color", "skyblue" );
+        $("label:contains('Low Carbohydrates')").css( "color", "white");
+        $("label:contains('Low Carbohydrates')").css( "padding", "5px");
+        $("label:contains('Low Carbohydrates')").css( "display", "inline-block");
+        $("label:contains('Low Carbohydrates')").css( "width", "120px");
 
-        $("label:contains('Low Fat')").css( "background-color", "lightseagreen" );
-        $("label:contains('Low Fat')").css( "color", "white");
-        $("label:contains('Low Fat')").css( "padding", "3px");
-        $("label:contains('Low Fat')").css( "display", "inline-block");
-        $("label:contains('Low Fat')").css( "width", "100px");
+        $("label:contains('Low Fats')").css( "background-color", "skyblue" );
+        $("label:contains('Low Fats')").css( "color", "white");
+        $("label:contains('Low Fats')").css( "padding", "5px");
+        $("label:contains('Low Fats')").css( "display", "inline-block");
+        $("label:contains('Low Fats')").css( "width", "100px");
 
-        $("label:contains('Low Protein')").css( "background-color", "tomato" );
-        $("label:contains('Low Protein')").css( "color", "white");
-        $("label:contains('Low Protein')").css( "padding", "3px");
-        $("label:contains('Low Protein')").css( "display", "inline-block");
-        $("label:contains('Low Protein')").css( "width", "100px");
+        $("label:contains('Low Proteins')").css( "background-color", "skyblue" );
+        $("label:contains('Low Proteins')").css( "color", "white");
+        $("label:contains('Low Proteins')").css( "padding", "5px");
+        $("label:contains('Low Proteins')").css( "display", "inline-block");
+        $("label:contains('Low Proteins')").css( "width", "100px");
 
-        $("label:contains('High Carbs')").css( "background-color", "tomato" );
-        $("label:contains('High Carbs')").css( "color", "white");
-        $("label:contains('High Carbs')").css( "padding", "3px");
-        $("label:contains('High Carbs')").css( "display", "inline-block");
-        $("label:contains('High Carbs')").css( "width", "100px");
+        $("label:contains('High Carbohydrates')").css( "background-color", "darkorange" );
+        $("label:contains('High Carbohydrates')").css( "color", "white");
+        $("label:contains('High Carbohydrates')").css( "padding", "5px");
+        $("label:contains('High Carbohydrates')").css( "display", "inline-block");
+        $("label:contains('High Carbohydrates')").css( "width", "120px");
 
-        $("label:contains('High Fat')").css( "background-color", "tomato" );
-        $("label:contains('High Fat')").css( "color", "white");
-        $("label:contains('High Fat')").css( "padding", "3px");
-        $("label:contains('High Fat')").css( "display", "inline-block");
-        $("label:contains('High Fat')").css( "width", "100px");
+        $("label:contains('High Fats')").css( "background-color", "darkorange" );
+        $("label:contains('High Fats')").css( "color", "white");
+        $("label:contains('High Fats')").css( "padding", "5px");
+        $("label:contains('High Fats')").css( "display", "inline-block");
+        $("label:contains('High Fats')").css( "width", "100px");
 
         alert("Data was retrieved for user: " + user);
     });
 });
 
-$("#table_breakfast tbody").on('click', 'button', function () {
-    deleteItem('#table_breakfast', 'Breakfast', $(this).parents('tr'));
-} );
-
-
 $("#table_breakfast tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
-    var cell_data = $("#table_breakfast").DataTable().cell(cell_row, -2).data();
-    var cell_data_array = cell_data.split(",");
+    var food_of_cell = $("#table_breakfast").DataTable().cell(cell_row, 0).data();
+    var cell_data_Tags = $("#table_breakfast").DataTable().cell(cell_row, -3).data();
+    var cell_data_abstractTag = $("#table_breakfast").DataTable().cell(cell_row, -2).data();
+    var cell_data_Tags_array = cell_data_Tags.split(",");
+    var cell_data_abstractTag_array = cell_data_abstractTag.split(",");
 
-    //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
-    document.getElementById("history-alert").innerHTML =  cell_data_array[0] + " is " + cell_data_array[1] + " because:" + "<br />";
-    
-    // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
-    for (var i = 2; i < cell_data_array.length; i++) {
-        document.getElementById("history-alert").innerHTML += "• " + cell_data_array[i] + "<br />";
+    console.log($(this).attr("class"));
+
+    if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
+        
+        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
+        for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
+            document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
+        }
+
+        if (cell_data_abstractTag_array[1] == "Good Food") alert('Good Food Label Clicked!');
+        if (cell_data_abstractTag_array[1] == "Bad Food")  alert('Bad Food Label Clicked!');
     }
 
-    if (cell_data_array[1] == "Good Food") alert('Good Food Label Clicked!');
-    if (cell_data_array[1] == "Bad Food")  alert('Bad Food Label Clicked!');
+    if ($(this).attr("class") == "High Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for more than 40% of calories";
+    }
+
+    if ($(this).attr("class") == "High Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for more than 40% of calories";
+    }
+    
+    if ($(this).attr("class") == "High Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for more than 40% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for less than 20% of calories";
+
+    }
+
+    if ($(this).attr("class") == "Low Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for less than 20% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for less than 20% of calories";
+    }
 
 } );
 
 $("#table_lunch tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
-    var cell_data = $("#table_lunch").DataTable().cell(cell_row, -2).data();
-    var cell_data_array = cell_data.split(",");
+    var food_of_cell = $("#table_lunch").DataTable().cell(cell_row, 0).data();
+    var cell_data_Tags = $("#table_lunch").DataTable().cell(cell_row, -3).data();
+    var cell_data_abstractTag = $("#table_lunch").DataTable().cell(cell_row, -2).data();
+    var cell_data_Tags_array = cell_data_Tags.split(",");
+    var cell_data_abstractTag_array = cell_data_abstractTag.split(",");
 
-    //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
-    document.getElementById("history-alert").innerHTML =  cell_data_array[0] + " is " + cell_data_array[1] + " because:" + "<br />";
-    
-    // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
-    for (var i = 2; i < cell_data_array.length; i++) {
-        document.getElementById("history-alert").innerHTML += "• " + cell_data_array[i] + "<br />";
+
+    console.log($(this).attr("class"));
+
+    if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
+        
+        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
+        for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
+            document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
+        }
+
+        if (cell_data_abstractTag_array[1] == "Good Food") alert('Good Food Label Clicked!');
+        if (cell_data_abstractTag_array[1] == "Bad Food")  alert('Bad Food Label Clicked!');
     }
 
-    if (cell_data_array[1] == "Good Food") alert('Good Food Label Clicked!');
-    if (cell_data_array[1] == "Bad Food") alert('Bad Food Label Clicked!');
 
+    if ($(this).attr("class") == "High Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for more than 40% of calories";
+    }
+
+    if ($(this).attr("class") == "High Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for more than 40% of calories";
+    }
+    
+    if ($(this).attr("class") == "High Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for more than 40% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for less than 20% of calories";
+
+    }
+
+    if ($(this).attr("class") == "Low Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for less than 20% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for less than 20% of calories";
+    }
 } );
 
 
 
 $("#table_dinner tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
-    var cell_data = $("#table_dinner").DataTable().cell(cell_row, -2).data();
-    var cell_data_array = cell_data.split(",");
+    var food_of_cell = $("#table_dinner").DataTable().cell(cell_row, 0).data();
+    var cell_data_Tags = $("#table_dinner").DataTable().cell(cell_row, -3).data();
+    var cell_data_abstractTag = $("#table_dinner").DataTable().cell(cell_row, -2).data();
+    var cell_data_Tags_array = cell_data_Tags.split(",");
+    var cell_data_abstractTag_array = cell_data_abstractTag.split(",");
 
-    //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
-    document.getElementById("history-alert").innerHTML =  cell_data_array[0] + " is " + cell_data_array[1] + " because:" + "<br />";
-    
-    // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
-    for (var i = 2; i < cell_data_array.length; i++) {
-        document.getElementById("history-alert").innerHTML += "• " + cell_data_array[i] + "<br />";
+    console.log($(this).attr("class"));
+
+    if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
+        
+        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
+        for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
+            document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
+        }
+
+        if (cell_data_abstractTag_array[1] == "Good Food") alert('Good Food Label Clicked!');
+        if (cell_data_abstractTag_array[1] == "Bad Food")  alert('Bad Food Label Clicked!');
     }
 
-    if (cell_data_array[1] == "Good Food") alert('Good Food Label Clicked!');
-    if (cell_data_array[1] == "Bad Food") alert('Bad Food Label Clicked!');
+    if ($(this).attr("class") == "High Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for more than 40% of calories";
+    }
 
+    if ($(this).attr("class") == "High Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for more than 40% of calories";
+    }
+    
+    if ($(this).attr("class") == "High Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for more than 40% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Carbohydrates"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " carbohydrates accounts for less than 20% of calories";
+
+    }
+
+    if ($(this).attr("class") == "Low Proteins"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " proteins accounts for less than 20% of calories";
+    }
+
+    if ($(this).attr("class") == "Low Fats"){
+        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
+        document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
+        document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
+            " fats accounts for less than 20% of calories";
+    }
 } );
 
 
-
-
-
+$("#table_breakfast tbody").on('click', 'button', function () {
+    deleteItem('#table_breakfast', 'Lunch', $(this).parents('tr'));
+} );
 
 $("#table_lunch tbody").on('click', 'button', function () {
     deleteItem('#table_lunch', 'Lunch', $(this).parents('tr'));

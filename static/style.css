@@ -37,6 +37,7 @@ body {
 #History {background-image: linear-gradient(to bottom right, gold, darkorange)}
 #Track {background-image:linear-gradient(to bottom right, turquoise, lightseagreen)}
 #Preference {background-image:linear-gradient(to bottom right, skyblue, dodgerblue)}
+#Recipes {background-image:linear-gradient(to bottom right, purple, rebeccapurple)}
 
 /* Web Navigation Tabs */
 .tablink {
@@ -48,13 +49,14 @@ body {
   cursor: pointer;
   padding: 15px;
   font-size: 16px;
-  width: 25%;
+  width: 20%;
 }
 .tablink:hover {
   background-color: #777777;
 }
 
 /* Notification Box */
+/*
 #search-alert {
   color: White;
   text-align: center;
@@ -64,7 +66,7 @@ body {
   margin-bottom: 0;
   background-color: #f44336;
 }
-
+*/
 #history-alert {
   color: black;
   text-align: left;
@@ -79,15 +81,19 @@ body {
 }
 
 #track-alert {
-  color: White;
-  text-align: center;
+  color: black;
+  text-align: left;
   padding: 20px;
   width: 50vw;
   margin: auto;
   margin-bottom: 0;
-  background-color: #4CAF50;
+  background-color: white;
+  border-style: solid;
+  border-color: #4CAF50;
+  border-width: thick
 }
 
+/*
 #preference-alert {
   color: White;
   text-align: center;
@@ -97,7 +103,7 @@ body {
   margin-bottom: 0;
   background-color: #2196F3;
 }
-
+*/
 /* Table */
 td, th {
   border: 1px solid #dddddd;
@@ -324,7 +330,6 @@ tr:nth-child(even) {
   text-align: center;
   width: 35%;
   min-height: 60vh;
-  height: 60vh; 
   box-sizing: border-box; 
   background-color: white;
   border-radius: 6px;
@@ -353,7 +358,7 @@ tr:nth-child(even) {
  */
 #nutrition-chart-container {
   width: 90%;
-  height: 65%;
+  height: 60vh;
   margin: auto;
   margin-bottom: 1vw;
   display: block;
@@ -365,6 +370,15 @@ tr:nth-child(even) {
   border-color: silver;
 }
 
+#extra-food {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 1vh;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: 1vh;
+}
 
 /* Food Suggestion Board */
 .suggest-container {
@@ -407,10 +421,13 @@ tr:nth-child(even) {
   display: inline-block;
 }
 #table-suggest-container {
+  text-align: center;
   width: 90%;
-  margin: auto;
-  margin-bottom: 1vw;
-  display: block;
+  margin-left:auto; 
+  margin-right:auto;
+  margin-bottom: 1.5vh;
+  border-collapse: collapse;
+  overflow: auto;
 }
 
 #table-suggest {
