@@ -100,9 +100,9 @@ function searchFood(searchTerm) {
             function sendRequestHelper(){
                 if(iter < foods_onlineData.length){
                     let food = foods_onlineData[iter];
-                    let food_localData = addFoodToLocalDatabase(food);
+                    let food_localData_temp = addFoodToLocalDatabase(food);
                     iter++;
-                    $.post('/food-database', food_localData, sendRequestHelper, "json");
+                    $.post('/food-database', food_localData_temp, sendRequestHelper, "json");
                 }
             }
             sendRequestHelper();
@@ -147,6 +147,20 @@ function addFoodToLocalDatabase(food) {
     //first, normalize to 100g serving sizes
     var food_localData = {
         "name": food["food_name"],
+        "serving": 100,
+        "calories": helperNormalize(food["nf_calories"]),
+        "carbohydrates": helperNormalize(food["nf_total_carbohydrate"]),
+        "proteins": helperNormalize(food["nf_protein"]),
+        "fats": helperNormalize(food["nf_total_fat"]),
+        "iron": helperNormalize(helperVitID(303)),
+        "vitaminD": helperNormalize(helperVitID(324)),
+        "vitaminB12": helperNormalize(helperVitID(418)),
+        "calcium": helperNormalize(helperVitID(301)),
+        "magnesium": helperNormalize(helperVitID(304)),
+    };
+    
+    var food_localData_original = {
+        "name": food["food_name"],
         "serving": food["serving_weight_grams"],
         "calories": food["nf_calories"],
         "carbohydrates": food["nf_total_carbohydrate"],
@@ -158,7 +172,7 @@ function addFoodToLocalDatabase(food) {
         "calcium": helperVitID(301),
         "magnesium": helperVitID(304),
     };
-    
+
     //next, try to determine tags
     let tags = [];
 
@@ -182,8 +196,8 @@ function addFoodToLocalDatabase(food) {
     else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
         tags.push("Low Fat");
     }
-    food_localData["tags"] = JSON.stringify(tags);
-    return food_localData;
+    food_localData_original["tags"] = JSON.stringify(tags);
+    return food_localData_original;
     //$.post('/food-database', food_localData, null, "json");
 }
 
