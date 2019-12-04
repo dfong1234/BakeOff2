@@ -295,7 +295,7 @@ function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
 
     // Level 2: check the number of other high tags exist for each passed foods.
     for (i = 0; i < aiFoods.length ; i++){
-        if (aiFoods[i])
+       // if (aiFoods[i])
     }
 
     /*
