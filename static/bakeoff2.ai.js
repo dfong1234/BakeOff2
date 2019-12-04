@@ -285,16 +285,20 @@ function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
     aiFood_required_nutrient = nutrientCriteria["nutrient"];
     aiFood_required_condition = nutrientCriteria["condition"];
 
+    aiFoods_otherHighTags_numbers = [];
 
     decisionData = [aiFood_name];
 
 
+
     // Level 1: check the requested tag --> if ask high carb, check existence of high carb tag
 
-    // Level 2: check if other high tags exist. if exists, ignore this food
+    // Level 2: check the number of other high tags exist for each passed foods.
+    for (i = 0; i < aiFoods.length ; i++){
+        if (aiFoods[i])
+    }
 
-
-    aiFood_required_tag = aiFood_required_nutrient + " " + aiFood_required_condition;
+    /*
     if (aiFood_tags.includes(aiFood_required_tag)) {
         decisionData.push(aiFood_required_tag);
 
@@ -311,7 +315,7 @@ function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
 
         decisionData.push(food_explain_calories);
     }
-
+*/
 
 
 
