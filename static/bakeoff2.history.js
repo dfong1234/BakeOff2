@@ -62,7 +62,10 @@ $(document).ready(function() {
             	targets: -3,
             	render: function(data, type, full){
                     var data_array = data.split(",");
-                    return ("<label class=\"label_protein\">" + data_array[0] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_carbs\">" + data_array[1] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_fat\">" + data_array[2] + "</label>");
+                    for(let i = 0; i < data_array.length; i++){
+                    	render_string += "<label class=\"label_protein\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>"
+                    }
+                    return (render_string);
                 },
                 className: "dt-nowrap"
             }
