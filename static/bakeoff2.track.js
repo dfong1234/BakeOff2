@@ -109,14 +109,7 @@ function loadDietProfile() {
             $("#suggest-cutoff-conditions").val(data["plan"]["required_condition"]);
             $("#suggest-cutoff-nutrients").val(data["plan"]["required_nutrient"]);
         }
-
-        if (plan_calories = null) plan_calories = 0;
-        if (plan_carbohydrates = null) plan_carbohydrates = 0;
-        if (plan_proteins = null) plan_proteins = 0;
-        if (plan_fats = null) plan_fats = 0;
-        if (aiFood_required_condition = null) aiFood_required_condition = "";
-        if (aiFood_required_nutrient = null) aiFood_required_nutrient = "";
-
+        
     });
 
 }
@@ -129,42 +122,43 @@ loadDietProfile();
 
 /*  --- Nutrition Chart Report ---  */
 // --- Variables ---
-// From User Diet Profile
-var plan_calories; 
-var plan_carbohydrates; 
-var plan_proteins;  
-var plan_fats;  
+// From User Diet Profile:
+var plan_calories = 0; 
+var plan_carbohydrates = 0; 
+var plan_proteins = 0;  
+var plan_fats = 0;  
 
-var aiFood_required_condition;
-var aiFood_required_nutrient;
+var aiFood_required_condition = "";
+var aiFood_required_nutrient = "";
+var aiFoods_result = [];
 
-// From User Food Log
-var user;
+// From User Food Log:
+var user = "";
 var foods_breakfast = [];
 var foods_lunch = [];
 var foods_dinner = [];
 
-var breakfast_calories;
-var breakfast_carbohydrates;
-var breakfast_proteins;
-var breakfast_fats;
+var breakfast_calories = 0;
+var breakfast_carbohydrates = 0;
+var breakfast_proteins = 0;
+var breakfast_fats = 0;
 
-var lunch_calories;
-var lunch_carbohydrates;
-var lunch_proteins;
-var lunch_fats;
+var lunch_calories = 0;
+var lunch_carbohydrates = 0;
+var lunch_proteins = 0;
+var lunch_fats = 0;
 
-var dinner_calories;
-var dinner_carbohydrates;
-var dinner_proteins;
-var dinner_fats;
+var dinner_calories = 0;
+var dinner_carbohydrates = 0;
+var dinner_proteins = 0;
+var dinner_fats = 0;
 
-var total_intake_calories;
-var total_intake_carbohydrates;
-var total_intake_proteins;
-var total_intake_fats;
+var total_intake_calories = 0;
+var total_intake_carbohydrates = 0;
+var total_intake_proteins = 0;
+var total_intake_fats = 0;
 
-// For Butrition Chart
+// For Nutrition Chart:
 // 10 Chart.js example charts to get you started:
 // https://tobiasahlin.com/blog/chartjs-charts-to-get-you-started/
 var chart_box = document.getElementById('chart-type');
@@ -419,16 +413,10 @@ $("#track-search-icon").click(function(){
         "nutrient": aiFood_required_nutrient
     }
 
-    var aiFoods_result;
 
     $.post("/food-tag-query" + window.location.search, aiFood_query).done(function(data){
         aiFoods_result = data["selected_foods"];
     });
-
-
-
-
-
 
 
 
