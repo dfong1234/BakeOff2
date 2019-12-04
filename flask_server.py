@@ -274,7 +274,7 @@ def foodTagQuery():
                         foods_qualified.append(food_dict.copy())
                         print(foods_qualified)                        
 
-            json_foods_qualified = json.dumps(foods_qualified)
+            json_foods_qualified = json.dumps({"selected_foods": foods_qualified})
             print(json_foods_qualified)
             return json_foods_qualified
 
