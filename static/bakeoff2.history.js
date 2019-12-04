@@ -129,7 +129,7 @@ var foods_dinner = [];
 function deleteItem(meal_ID, meal, row_selector) {
     var data = $(meal_ID).DataTable().row(row_selector).data();
     var my_data = {"user": "tester",
-        "food": data[0],
+        "name": data[0],
         "meal": meal,
         "date": $("#datepicker").val()
     };
