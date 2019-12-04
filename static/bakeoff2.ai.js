@@ -45,23 +45,23 @@ function loadDietProfile() {
 
         if (data["plan"] != null) {
 
-            userFood_calories_cutoff = data["plan"]["cutoff_calories"];
-            userFood_carbohydrate_cutoff = data["plan"]["cutoff_carbohydrates"];
-            userFood_protein_cutoff = data["plan"]["cutoff_proteins"];
-            userFood_fat_cutoff = data["plan"]["cutoff_fats"];
-            userFood_iron_cutoff = data["plan"]["cutoff_iron"];
-            userFood_calcium_cutoff = data["plan"]["cutoff_calcium"];
-            userFood_magnesium_cutoff = data["plan"]["cutoff_magnesium"];
-            userFood_vitaminD_cutoff = data["plan"]["cutoff_vitaminD"];
-            userFood_vitaminB12_cutoff = data["plan"]["cutoff_vitaminB12"];
+            userFood_calories_cutoff =  parseFloat(data["plan"]["cutoff_calories"]);
+            userFood_carbohydrate_cutoff =  parseFloat(data["plan"]["cutoff_carbohydrates"]);
+            userFood_protein_cutoff =  parseFloat(data["plan"]["cutoff_proteins"]);
+            userFood_fat_cutoff =  parseFloat(data["plan"]["cutoff_fats"]);
+            userFood_iron_cutoff =  parseFloat(data["plan"]["cutoff_iron"]);
+            userFood_calcium_cutoff =  parseFloat(data["plan"]["cutoff_calcium"]);
+            userFood_magnesium_cutoff =  parseFloat(data["plan"]["cutoff_magnesium"]);
+            userFood_vitaminD_cutoff =  parseFloat(data["plan"]["cutoff_vitaminD"]);
+            userFood_vitaminB12_cutoff =  parseFloat(data["plan"]["cutoff_vitaminB12"]);
             
-            aiFood_required_nutrient  = data["plan"]["required-nutrient"];
-            aiFood_required_condition = data["plan"]["required-nutrient-value"];
+            aiFood_required_condition = data["plan"]["required_condition"];
+            aiFood_required_nutrient = data["plan"]["required_nutrient"];
             
-            dailyPlan_calories = data["plan"]["target_calories"];
-            dailyPlan_carbohydrates = data["plan"]["plan_carbohydrates"];
-            dailyPlan_proteins = data["plan"]["plan_proteins"];
-            dailyPlan_Fats = data["plan"]["plan_fats"];
+            dailyPlan_calories =  parseFloat(data["plan"]["plan_calories"]);
+            dailyPlan_carbohydrates =  parseFloat(data["plan"]["plan_carbohydrates"]);
+            dailyPlan_proteins =  parseFloat(data["plan"]["plan_proteins"]);
+            dailyPlan_Fats =  parseFloat(data["plan"]["plan_fats"]);
         } 
     });
 
@@ -280,11 +280,10 @@ function makeSuggestExplanation(foodName, nutrientName, foodNutrientValue, Nutri
 // Major function:
 function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
     // Get the food's nutrition data
-    aiFood_name = aiFood["name"];
-    aiFood_tags = aiFood["nutrition-tags"];
 
-    aiFood_required_nutrient = nutrientCriteria[0];
-    aiFood_required_condition = nutrientCriteria[1];
+
+    aiFood_required_nutrient = nutrientCriteria["nutrient"];
+    aiFood_required_condition = nutrientCriteria["condition"];
 
 
     decisionData = [aiFood_name];
