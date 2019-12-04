@@ -163,6 +163,7 @@ def processFoodData(received_data, stored_data, method):
                         if(stored_data[received_data["date"]][received_data["meal"]][index]["name"] == received_data["name"]):
                             print("Deleted", received_data["name"], "at", index )
                             stored_data[received_data["date"]][received_data["meal"]].pop(index)
+                            break;
             else:
                 stored_data[received_data["date"]] = {"Breakfast": [], "Lunch": [], "Dinner": []}
                 stored_data[received_data["date"]][received_data["meal"]].append(food_temp)
