@@ -125,7 +125,7 @@ var userFood_vitaminB12;
  */
 
 var foodChoice_decision = "";
-var foodchoice_reason = [];
+var decisionData = [];
 var food_explain_calories = "";
 var food_explain_carbohydrate = "";
 var food_explain_protein = "";
@@ -274,101 +274,71 @@ function foodChoiceEvaluation(userFood) {
 
 
 
+//
+
 
 
 /*  --- Food Suggestion Decision Making ---  */
-function foodSuggestEvaluation(aiFood) {
+// --- Variables ---
 
 
 
-}
+// --- Functions ---
+//Helper Function: generate an explanation for food evaluation
+function makeFoodSuggestExplanation(foodName, nutrientName, foodNutrientValue, NutrientThreshold, operator){
 
-
-
-/* For AI on User preference
-
-
-function calculateCarbohydrate() {
-    // Carbohydrate for ages 0
-    if (userAge == 0) {
-        return (77.5)
-    }
-
-    // Carbohydrate for ages 1+
-    if (userAge >= 1) {
-        return (130)
-    }
-}
-
-
-function calculateProtein() {
-    // Protein for ages 0
-    if (userAge == 0) {
-        return (10)
-    }
-
-    // Protein for ages 1 to 3
-    if (userAge <= 3) {
-        return (13)
-    }
-
-    // Protein for ages 4 to 8
-    if (userAge <= 8) {
-        return (19)
-    }
-
-    // Protein for ages 9 to 13
-    if (userAge <= 13) {
-        return (34)
-    }
-
-    // Protein for ages 14 to 18
-    if (userAge <= 18) {
-        if (userSex == "Male") {
-            return (52)
-        }
-        if (userSex == "Female") {
-            return (46)
-        }
-    }
-
-    // Protein for ages 19+
-    if (userAge > 18) {
-        if (userSex == "Male") {
-            return (56)
-        }
-        if (userSex == "Female") {
-            return (46)
-        }
-    }
-}
-
-
-function calculateFat() {
-    // Fat for ages 0
-    if (userAge == 0) {
-        return (30)
-    }
-
-    // Fat for ages 1 to 3
-    if (userAge <= 3) {
-        return (35)
-    }
-
-    // Fat for ages 4 to 18
-    if (userAge <= 18) {
-        return (30)
-    }
+    explanation = foodName + " " + nutrientName + " = " + foodNutrientValue + " " +
+        operator + " allowed " + nutrientName + " = " + NutrientThreshold;
     
-    // Fat for ages 19+
-    if (userAge > 18) {
-        return (27.5)
-    }
+        return explanation;
 }
 
 
 
+// Major function:
+function foodSuggestEvaluation(aiFood, nutrientCriteria) {
+    // Get the food's nutrition tags
+    aiFood_name = aiFood["name"];
+    aiFood_tags = aiFood["nutrition-tags"];
+
+    aiFood_required_nutrient = nutrientCriteria[0];
+    aiFood_required_condition = nutrientCriteria[1];
+
+
+    decisionData = [aiFood_name];
+
+
+    // Level 1: check the requested tag --> if ask high carb, check existence of high carb tag
+
+    // Level 2: check if other high tags exist. if exists, ignore this food
+
+
+    aiFood_required_tag = aiFood_required_nutrient + " " + aiFood_required_condition;
+    if (aiFood_tags.includes(aiFood_required_tag)) {
+        decisionData.push(aiFood_required_tag);
+
+        food_explain_nutrient = makeFoodSuggestExplanation(userFood_name, "calories", userFood_calories, evaluate_calories_max, "<=");
+
+        decisionData.push(food_explain_calories);
+    }
+
+
+    if (aiFood_tags.includes(aiFood_required_tag)) {
+        decisionData.push(aiFood_required_tag);
+
+        food_explain_nutrient = makeFoodSuggestExplanation(userFood_name, "calories", userFood_calories, evaluate_calories_max, "<=");
+
+        decisionData.push(food_explain_calories);
+    }
 
 
 
-*/
+
+
+    // ...
+
+
+    
+    decisionData_string = decisionData.join();
+    return decisionData_string;
+}
