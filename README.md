@@ -28,11 +28,27 @@ When searching for foods, it will also add the food to our local database. A fea
 ### Food History Log
 This page shows the user food history for the selected day. After loading the data, the user can also delete items from their history by pressing the delete icon. Feedback is incorporated by adding the labels in the history tab. When clicking on the labels, the decision tree algorithm is displayed to show the user how it came upon this label to incorporate explainable AI. For the demo's sake, the rules are also presented and made editable by the user.
 
+![History 1](/pictures/history1.PNG)
+
 ### Tracking Nutrition
-This page shows the macronutrient breakdown for the selected day. It also will load suggestions of foods to eat based off the previously mentioned tagging system.
+This page shows the macronutrient breakdown for the selected day. For example, the user can select a day and then a type of graph[8] to show the macronutrient breakdown for that day.
+
+![Track 1](/pictures/track1.PNG)
+
+This will also load the food suggestions. The user can then see how eating said food will change their nutrient breakdown.
+
+![Track 2](/pictures/track2.PNG)
+
+By clicking the trash icon, the user can add the items to a "do not suggest" list. These items will not be suggested in the future.
 
 ### User Preferences
 This page allows the user to develop their own user preferences/diet plan. Recommended values are given, and the user can adjust macronutrient needs as necessary using the sliders.
+
+![Track 2](/pictures/preferences1.PNG)
+
+### Video Demo
+
+TODO
 
 ### References and Resources
 1. EER Equations - https://www.nap.edu/read/11537/chapter/8
