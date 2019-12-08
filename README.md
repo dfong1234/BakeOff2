@@ -60,3 +60,4 @@ This page allows the user to develop their own user preferences/diet plan. Recom
 6. Nutritionix API - https://developer.nutritionix.com/docs/v2
 7. Nutritionix Nutrition Label - https://github.com/nutritionix/nutrition-label
 8. Chart.js - https://www.chartjs.org/docs/latest/
+9. Jquery UI - https://jqueryui.com/
