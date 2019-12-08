@@ -11,15 +11,15 @@ NutriPlan is a nutrition/diet web application. It allows users to set up a dieta
 ## Usage
 
 ### Adding a Food
-This page allows users to add foods to their food log. Through the Nutritionix NLP API, the query can consist of multiple food items. For example: 
+This page allows users to add foods to their food log. Through the Nutritionix NLP API[6], the query can consist of multiple food items. For example: 
 
 ![Search 1](/pictures/index_search.PNG)
 
-This will then add the food items to the results datatable:
+This will then add the food items to the results datatable[5]:
 
 ![Search 2](/pictures/index_search2.PNG)
 
-Finally, clicking the double arrow icon will propogate the nutrition facts to the nutrition label, and the user can select the time and date to add the food to the food log.
+Finally, clicking the double arrow icon will propogate the nutrition facts to the nutrition label[7], and the user can select the time and date to add the food to the food log.
 
 ![Search 3](/pictures/index_search3.PNG)
 
