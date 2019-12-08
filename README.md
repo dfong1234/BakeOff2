@@ -8,6 +8,11 @@ NutriPlan is a nutrition/diet web application. It allows users to set up a dieta
 2. Install flask using `pip install flask`
 3. Run the server using `python flask_server.py`
 
+
+## Video Demo
+
+TODO
+
 ## Usage
 
 ### Adding a Food
@@ -45,10 +50,6 @@ By clicking the trash icon, the user can add the items to a "do not suggest" lis
 This page allows the user to develop their own user preferences/diet plan. Recommended values are given, and the user can adjust macronutrient needs as necessary using the sliders.
 
 ![Track 2](/pictures/preferences1.PNG)
-
-### Video Demo
-
-TODO
 
 ### References and Resources
 1. EER Equations - https://www.nap.edu/read/11537/chapter/8
