@@ -11,7 +11,7 @@ NutriPlan is a nutrition/diet web application. It allows users to set up a dieta
 
 ## Video Demo
 
-TODO
+[![Video Demo](/pictures/video.png)](https://youtu.be/qHQXprU_Wno)
 
 ## Usage
 
