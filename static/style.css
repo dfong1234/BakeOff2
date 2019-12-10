@@ -1,11 +1,12 @@
 /*	................................................................................
  *  style.css
- *	Style Sheet for BakeOff2:
+ *	Style Sheet for BakeOff2: NutriPlan
  *  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
  *  Date Created: 10/15/2019
- *  Last Modified: 12/03/2019
+ *  Last Modified: 12/10/2019
  *	................................................................................
  */
+
 /* --- head CSS settings --- */
 head {
   background-color: lightgray; 
@@ -105,6 +106,7 @@ body {
   background-color: #2196F3;
 }
 */
+
 /* Table */
 td, th {
   border: 1px solid #dddddd;

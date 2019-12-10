@@ -1,20 +1,10 @@
 //	................................................................................
 //  bakeoff2.preference.js
-//	javascript for User Preference page of BakeOff2:
+//	javascript for User Preference page of BakeOff2: NutriPlan
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 12/03/2019
+//  Last Modified: 12/10/2019
 //	................................................................................
-
-/*  --- ---  */
-// --- Initialization ---
-
-// --- Variables ---
-
-// --- Functions ---
-
-// --- In-Use ---
-
 
 /*  --- Website Header and Tabs ---  */
 // --- Variables ---
@@ -25,7 +15,7 @@ var color = 'dodgerblue';
 openTab(tabName, color) 
 
 
-// Load the html elements of the web page before the local data
+// Load HTML utility elements after the web page is loaded
 $(document).ready(function() {
     $("#slider-user-carbohydrates").slider({
         max: 100,
@@ -85,8 +75,6 @@ $(document).ready(function() {
         "info": false
     }).clear().draw();
 });
-
-
 
 
 
@@ -165,7 +153,7 @@ loadDietProfile();
 
 
 /*  --- Daily Reference Intake Planner ---  */
-// Dietary Reference Intakes: The Essential Guide to Nutrient Requirements (2006)
+// Dietary Reference Intakes: The Essential Guide to Nutrient Requirements
 // https://www.nap.edu/read/11537/chapter/8
 // http://www.nationalacademies.org/hmd/~/media/Files/Activity%20Files/Nutrition/DRI-Tables/8_Macronutrient%20Summary.pdf
 
@@ -193,7 +181,6 @@ var userFood_vitaminD_cutoff = 99999;
 var userFood_vitaminB12_cutoff = 99999;
 var aiFood_required_condition = "";
 var aiFood_required_nutrient = "";
-
 
 
 // --- Functions ---
@@ -347,7 +334,6 @@ $("#dri-calculate-button").click(function() {
     $("#user-calories").val(dailyPlan_calories);
 
 
-    // https://api.jqueryui.com/slider/#method-option
     $("#slider-user-carbohydrates").slider("value", 50);
     $("#slider-user-proteins").slider("value", 25);
     $("#slider-user-fats").slider("value", 25);

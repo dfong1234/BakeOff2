@@ -1,20 +1,10 @@
 //  ................................................................................
 //  bakeoff2.index.js
-//  javascript for index page of BakeOff2:
+//  javascript for index page of BakeOff2: NutriPlan
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 11/27/2019
+//  Last Modified: 12/10/2019
 //  ................................................................................
-
-/*  --- ---  */
-// --- Initialization ---
-
-// --- Variables ---
-
-// --- Functions ---
-
-// --- In-Use ---
-
 
 /*  --- Website Header and Tabs ---  */
 // --- Variables ---
@@ -25,13 +15,11 @@ var tabColor = 'tomato';
 openTab(tabName, tabColor) 
 
 
-
 /*  --- Datepiacker ---  */
 // --- Initialization ---
 $(function() {
     $("#datepicker").datepicker();
 });
-
 
 
 /*  --- DataTable ---  */
@@ -49,6 +37,8 @@ $(document).ready(function() {
 
     $('#nutrition-facts').nutritionLabel({showLegacyVersion : false});
 });
+
+
 
 
 /*  --- Load Dislike Foods ---  */
@@ -81,7 +71,9 @@ var instant_url = "https://trackapi.nutritionix.com/v2/search/instant";
 var foods_onlineData = {};  // Data of multiple foods obtained from online database
 var generatedTags = {};
 
+
 // --- Functions ---
+// Helper Function: search the requested foods from the online database
 function searchFood(searchTerm) {
     var data_params = {
         "query" : searchTerm
@@ -109,7 +101,7 @@ function searchFood(searchTerm) {
             $("#table-search").DataTable().clear().draw();
             fillResultTable();
             alert("Success in obtaining information from database");
-            //had to move this since ajax call is async, so need to do it like this
+
             var iter = 0;
             function sendRequestHelper(){
                 if(iter < foods_onlineData.length){
@@ -127,6 +119,7 @@ function searchFood(searchTerm) {
     });
 };
 
+// Helper Function: populate the food result table with obtained foods
 function fillResultTable() {
     $("#result-table").DataTable().clear().draw();
     for(let i = 0; i < foods_onlineData.length; i++){
@@ -141,15 +134,16 @@ function fillResultTable() {
     };  
 }
 
+// Helper Function: include the obtained foods into a local database for food suggestion
 function addFoodToLocalDatabase(food) {
 
-    function helperVitID(attribute_ID){
+    function addFood_findMicronutrientValue(attribute_ID){
         for(let i = 0; i < food["full_nutrients"].length; i++) {
             if(attribute_ID == food["full_nutrients"][i]["attr_id"]){
                 return food["full_nutrients"][i]["value"];
             }	
         }
-        return "0"; //not found probably means zero amount
+        return "0"; // not found probably means zero amount
     }
 
     
@@ -167,11 +161,11 @@ function addFoodToLocalDatabase(food) {
         "carbohydrates": helperNormalize(food["nf_total_carbohydrate"]),
         "proteins": helperNormalize(food["nf_protein"]),
         "fats": helperNormalize(food["nf_total_fat"]),
-        "iron": helperNormalize(helperVitID(303)),
-        "vitaminD": helperNormalize(helperVitID(324)),
-        "vitaminB12": helperNormalize(helperVitID(418)),
-        "calcium": helperNormalize(helperVitID(301)),
-        "magnesium": helperNormalize(helperVitID(304)),
+        "iron": helperNormalize(addFood_findMicronutrientValue(303)),
+        "vitaminD": helperNormalize(addFood_findMicronutrientValue(324)),
+        "vitaminB12": helperNormalize(addFood_findMicronutrientValue(418)),
+        "calcium": helperNormalize(addFood_findMicronutrientValue(301)),
+        "magnesium": helperNormalize(addFood_findMicronutrientValue(304)),
     };
     
     var food_localData_original = {
@@ -181,11 +175,11 @@ function addFoodToLocalDatabase(food) {
         "carbohydrates": food["nf_total_carbohydrate"],
         "proteins": food["nf_protein"],
         "fats": food["nf_total_fat"],
-        "iron": helperVitID(303),
-        "vitaminD": helperVitID(324),
-        "vitaminB12": helperVitID(418),
-        "calcium": helperVitID(301),
-        "magnesium": helperVitID(304),
+        "iron": addFood_findMicronutrientValue(303),
+        "vitaminD": addFood_findMicronutrientValue(324),
+        "vitaminB12": addFood_findMicronutrientValue(418),
+        "calcium": addFood_findMicronutrientValue(301),
+        "magnesium": addFood_findMicronutrientValue(304),
     };
 
 
@@ -212,28 +206,7 @@ function addFoodToLocalDatabase(food) {
     else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) || (food_localData["proteins"] < 5)){
         tags.push("Low Fats");
     }
-    /*
-    if( ((food_localData["proteins"] * 4) > (0.4 * food_localData["calories"])) ){
-        tags.push("High Proteins");
-    }
-    else if( (food_localData["proteins"] * 4) < (0.2 * food_localData["calories"]) ){
-        tags.push("Low Proteins");
-    }
 
-    if( (food_localData["carbohydrates"] * 4) > (0.4 * food_localData["calories"]) ){
-        tags.push("High Carbohydrates");
-    }
-    else if( (food_localData["carbohydrates"] * 4) < (0.2 * food_localData["calories"]) ){
-        tags.push("Low Carbohydrates");
-    }
-
-    if( (food_localData["fats"] * 9) > (0.4 * food_localData["calories"]) ){
-        tags.push("High Fats");
-    }
-    else if( (food_localData["fats"] * 9) < (0.2 * food_localData["calories"]) ){
-        tags.push("Low Fats");
-    }
-    */
     food_localData_original["tags"] = JSON.stringify(tags);
     generatedTags[food["food_name"]] = JSON.stringify(tags);
     return food_localData_original;
@@ -247,14 +220,18 @@ $('#index-search-icon').click(function() {
 
 
 
+
+
 /*  --- Nutrition Fact Board  --- */
 // --- Variables ---
-var food_mealData = {};   // Data of single food that will be added to user's meal history
+var food_mealData = {};       // Data of single food that will be added to user's meal history
 var food_nutritionData = {};  // Data of single food that will be loaded to Nutrition Fact Label
+
 var url_params = new URLSearchParams(window.location.search);
+
 // --- Functions ---
-//helper function for filling out nutrition table
-function findVitaminValue(attribute_ID){
+// Helper Function: get the value of requested micronutrient
+function findMicronutrientValue(attribute_ID){
     for(let i = 0; i < food_nutritionData["full_nutrients"].length; i++) {
         if(attribute_ID == food_nutritionData["full_nutrients"][i]["attr_id"]){
             return food_nutritionData["full_nutrients"][i]["value"];
@@ -264,14 +241,13 @@ function findVitaminValue(attribute_ID){
 }
 
 // --- In-Use ---
-//Clicking column button to display data in nutrition label
 $("#result-table tbody").on('click', 'button', function(){
     //Assuming we have already done database search, and populated row with data...
 
-    //Grab data from row in table
+    // Grab data from row in table
     var row_data = $('#result-table').DataTable().row($(this).parents('tr')).data();
 
-    //find correct food item in the saved data from when we populated the table
+    // Find correct food item in the saved data from when we populated the table
     for(let i = 0; i < foods_onlineData.length; i++){
         food_nutritionData = foods_onlineData[i];
         if(food_nutritionData["food_name"] == row_data[0]) { //found it, so break
@@ -279,7 +255,7 @@ $("#result-table tbody").on('click', 'button', function(){
         }
     }
 
-    //food_mealData will contain user, and food name, meal time, meal date of food.
+    // food_mealData will contain user, and food name, meal time, meal date of food.
     if(url_params.has('user')){
         food_mealData["user"] = url_params.get('user');
     }
@@ -292,14 +268,14 @@ $("#result-table tbody").on('click', 'button', function(){
     food_mealData["carbohydrates"] = row_data[3];
     food_mealData["proteins"] = row_data[4];
     food_mealData["fats"] = row_data[5];
-    food_mealData["iron"] = findVitaminValue(303);
-    food_mealData["vitaminD"] = findVitaminValue(324);
-    food_mealData["vitaminB12"] = findVitaminValue(418);
-    food_mealData["calcium"] = findVitaminValue(301);
-    food_mealData["magnesium"] = findVitaminValue(304);
+    food_mealData["iron"] = findMicronutrientValue(303);
+    food_mealData["vitaminD"] = findMicronutrientValue(324);
+    food_mealData["vitaminB12"] = findMicronutrientValue(418);
+    food_mealData["calcium"] = findMicronutrientValue(301);
+    food_mealData["magnesium"] = findMicronutrientValue(304);
     food_mealData["tags"] = generatedTags[row_data[0]];
 
-    //food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
+    // food_nutritionData will contain important nutrition facts of food. Update nutrition label accordingly
     $('#nutrition-facts').nutritionLabel({
         itemName : food_nutritionData["food_name"],
 
@@ -312,7 +288,7 @@ $("#result-table tbody").on('click', 'button', function(){
         showPolyFat : false,
         showMonoFat : false,
 
-        //main nutrients
+        // Common nutrients on Nutrition Facts Label
         valueCalories    : food_nutritionData["nf_calories"],
         valueTotalFat    : food_nutritionData["nf_total_fat"],
         valueSatFat      : food_nutritionData["nf_saturated_fat"],
@@ -324,22 +300,24 @@ $("#result-table tbody").on('click', 'button', function(){
         valueSugars      : food_nutritionData["nf_sugars"],
         valueProteins    : food_nutritionData["nf_protein"],
 
-        //additional nutrients -- determined by user preferences. Vitamin ID's can be found here: https://docs.google.com/spreadsheets/d/14ssR3_vFYrVAidDLJoio07guZM80SMR5nxdGpAX-1-A/edit#gid=0
-        valueVitaminD       : findVitaminValue(324),
-        valuePotassium_2018 : findVitaminValue(306),
-        valueCalcium        : findVitaminValue(301),
-        valueIron           : findVitaminValue(303),
-        valueVitaminB12     : findVitaminValue(418),
-        valueAddedSugars    : findVitaminValue(539),
-        valueMagnesium      : findVitaminValue(304),
+        // additional nutrients for Nutrition Facts Label
+        // The online database's IDs of all micronutrients can be found here: 
+        // https://docs.google.com/spreadsheets/d/14ssR3_vFYrVAidDLJoio07guZM80SMR5nxdGpAX-1-A/edit#gid=0
+        
+        valueVitaminD       : findMicronutrientValue(324),
+        valuePotassium_2018 : findMicronutrientValue(306),
+        valueCalcium        : findMicronutrientValue(301),
+        valueIron           : findMicronutrientValue(303),
+        valueVitaminB12     : findMicronutrientValue(418),
+        valueAddedSugars    : findMicronutrientValue(539),
+        valueMagnesium      : findMicronutrientValue(304),
 
-        //serving info
+        // Serving Size
         valueServingWeightGrams : food_nutritionData["serving_weight_grams"],
         showLegacyVersion : false
     });
 });
 
-//Clicking add button to add to meal history
 $('#food-add-icon').click(function() {
     food_mealData["meal"] = $("#meal-time").val();
     food_mealData["date"] = $("#datepicker").val();
@@ -348,8 +326,13 @@ $('#food-add-icon').click(function() {
 });
 
 
+
+/*  --- Autocomplete for food search field  --- */
+// TODO: update the list for autocomplete whenever a new food is searched
+
+// --- In-Use ---
 //Example of autocomplete functionality
-$( function() {
+$(function() {
     var recentlyUsed = [
         "chicken",
         "rice"
@@ -359,3 +342,4 @@ $( function() {
         source: recentlyUsed
     });
 });
+

@@ -1,9 +1,20 @@
+/*	................................................................................
+ *  Recipe.css
+ *	Style Sheet for Recipe page of BakeOff2: NutriPlan
+ *  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
+ *  Date Created: 10/15/2019
+ *  Last Modified: 12/10/2019
+ *	................................................................................
+ */
+
+/* --- head CSS settings --- */
 head {
   background-color: lightgray; 
   font-weight: normal;
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* --- body CSS settings --- */
 body {
   background-color: lightgray; 
   font-weight: normal;
@@ -13,6 +24,7 @@ body {
 
 }
 
+/* --- recipe.html CSS settings --- */
 .recipe-container {
   width: 65%;
   box-sizing: border-box; 

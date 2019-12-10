@@ -1,20 +1,10 @@
 //  ................................................................................
 //  bakeoff2.history.js
-//  javascript for Food Log page of BakeOff2:
+//  javascript for Food Log page of BakeOff2: NutriPlan
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 12/02/2019
+//  Last Modified: 12/10/2019
 //  ................................................................................
-
-/*  --- ---  */
-// --- Initialization ---
-
-// --- Variables ---
-
-// --- Functions ---
-
-// --- In-Use ---
-
 
 /*  --- Website Header and Tabs ---  */
 // --- Variables ---
@@ -25,7 +15,7 @@ var tabColor = 'orange';
 openTab(tabName, tabColor)
 
 
-//Wait till document is "loaded" before starting data stuff, just in case of bugs or something
+// Load HTML utility elements after the web page is loaded
 $(document).ready(function() {
     /*  --- Datepiacker ---  */
     // --- Initialization ---
@@ -33,20 +23,14 @@ $(document).ready(function() {
 
 
     /*  --- DataTable ---  */
-    // https://datatables.net/forums/discussion/50691/how-to-use-columndefs-multiple-time-in-a-datatable
-    // https://datatables.net/forums/discussion/43625/change-a-cells-css-based-on-a-different-cells-value
     // --- Initialization ---
     $('table.display').DataTable({
-        // https://datatables.net/forums/discussion/50691/how-to-use-columndefs-multiple-time-in-a-datatable
+
         "columnDefs": [
             {
                 targets: -2,
-                // https://datatables.net/reference/option/columns.createdCell
                 createdCell: function (cell, cellData, rowData, rowIndex, colIndex) {
                 },
-                // https://www.tutorialrepublic.com/faq/how-to-convert-comma-separated-string-into-an-array-in-javascript.php
-                // https://datatables.net/reference/option/columns.render
-                // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
                 render: function(data, type, full){
                     var data_array = data.split(",");
                     var data_class = "food-tag-" + data_array[1].replace(" ", "-");
@@ -60,8 +44,6 @@ $(document).ready(function() {
             },
             {
             	targets: -3,
-                // https://datatables.net/reference/option/columns.render
-                // https://datatables.net/forums/discussion/44145/showing-object-object-instead-of-showing-the-button-with-id-in-data-id-in-editor
             	render: function(data, type, full){
                     var data_array = data.split(",");
                     var return_string = ""
@@ -69,15 +51,14 @@ $(document).ready(function() {
                         return_string += "<label class=\""+ data_array[i] + "\">" + data_array[i] + "</label><br><div style=\"margin-top: 4px\"></div>";
                     }
                     return return_string;
-                    //return ("<label class=\""+ data_array[0] + "\">" + data_array[0] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_carbs\">" + data_array[1] + "</label><br><div style=\"margin-top: 4px\"></div><label class=\"label_fat\">" + data_array[2] + "</label>");
                 }
             }
         ],
         "searching": false,
         "paging": false,
         "info": false
-    })  //Default clear the table until filled
-    .clear().draw();
+    })
+    .clear().draw(); // Default: Clear any data from the table
 
 });
 
@@ -148,7 +129,7 @@ function deleteItem(meal_ID, meal, row_selector) {
         "date": $("#datepicker").val()
     };
     $(meal_ID).DataTable().row(row_selector).remove().draw();
-    $.ajax({        //theres no $.delete, so do it the sad ugly way 
+    $.ajax({ // No $.delete, so do it manually 
         url: "/food-log" + window.location.search,
         type: "DELETE",
         data: my_data, 
@@ -177,8 +158,8 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_breakfast[i];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
+
             var tags = food_nutrition["tags"].join(",");
-            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_breakfast").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
                     food_nutrition["calories"], food_nutrition["carbohydrates"], 
                     food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
@@ -189,8 +170,8 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_lunch[j];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
+
             var tags = food_nutrition["tags"].join(",");
-            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_lunch").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
                     food_nutrition["calories"], food_nutrition["carbohydrates"], 
                     food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
@@ -201,13 +182,12 @@ $("#history-search-icon").click(function(){
             var food_nutrition = foods_dinner[k];
             // Call AI for Food Evaluation
             var food_decision = food_EvaluationByAI(food_nutrition);
+
             var tags = food_nutrition["tags"].join(",");
-            //tags = tags.replace("Carbohydrates", "Carbs");
             $("#table_dinner").DataTable().row.add([food_nutrition["name"], food_nutrition["serving"],
                     food_nutrition["calories"], food_nutrition["carbohydrates"], 
                     food_nutrition["proteins"], food_nutrition["fats"], tags, food_decision]).draw();
         };
-
 
 
         // style food tags
@@ -215,7 +195,6 @@ $("#history-search-icon").click(function(){
         $("label:contains('Good Food')").css( "padding", "5px");
         $("label:contains('Bad Food')").css( "color", "white");
         $("label:contains('Bad Food')").css( "padding", "5px");
-        // https://api.jquery.com/contains-selector/
         $("label:contains('Good Food')").css( "background-color", "lightseagreen" );
         $("label:contains('Bad Food')").css( "background-color", "tomato" );
 
@@ -259,6 +238,9 @@ $("#history-search-icon").click(function(){
     });
 });
 
+
+/* Explanalbe AI: show explanations when user click the AI-generated labels */
+/* TODO: migrate these scattered codes to bakeoff2.ai.js */
 $("#table_breakfast tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
     var food_of_cell = $("#table_breakfast").DataTable().cell(cell_row, 0).data();
@@ -270,10 +252,8 @@ $("#table_breakfast tbody").on('click', 'label', function () {
     console.log($(this).attr("class"));
 
     if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
         
-        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
         for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
             document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
         }
@@ -283,28 +263,24 @@ $("#table_breakfast tbody").on('click', 'label', function () {
     }
 
     if ($(this).attr("class") == "High Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "High Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for more than 40% of calories";
     }
     
     if ($(this).attr("class") == "High Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "Low Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for less than 20% of calories";
@@ -312,14 +288,12 @@ $("#table_breakfast tbody").on('click', 'label', function () {
     }
 
     if ($(this).attr("class") == "Low Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for less than 20% of calories";
     }
 
     if ($(this).attr("class") == "Low Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for less than 20% of calories";
@@ -327,6 +301,9 @@ $("#table_breakfast tbody").on('click', 'label', function () {
 
 } );
 
+
+/* Explanalbe AI: show explanations when user click the AI-generated labels */
+/* TODO: migrate these scattered codes to bakeoff2.ai.js */
 $("#table_lunch tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
     var food_of_cell = $("#table_lunch").DataTable().cell(cell_row, 0).data();
@@ -339,10 +316,8 @@ $("#table_lunch tbody").on('click', 'label', function () {
     console.log($(this).attr("class"));
 
     if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
         
-        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
         for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
             document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
         }
@@ -353,28 +328,24 @@ $("#table_lunch tbody").on('click', 'label', function () {
 
 
     if ($(this).attr("class") == "High Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "High Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for more than 40% of calories";
     }
     
     if ($(this).attr("class") == "High Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "Low Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for less than 20% of calories";
@@ -382,14 +353,12 @@ $("#table_lunch tbody").on('click', 'label', function () {
     }
 
     if ($(this).attr("class") == "Low Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for less than 20% of calories";
     }
 
     if ($(this).attr("class") == "Low Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for less than 20% of calories";
@@ -397,7 +366,8 @@ $("#table_lunch tbody").on('click', 'label', function () {
 } );
 
 
-
+/* Explanalbe AI: show explanations when user click the AI-generated labels */
+/* TODO: migrate these scattered codes to bakeoff2.ai.js */
 $("#table_dinner tbody").on('click', 'label', function () {
     var cell_row = $(this).parents('tr');
     var food_of_cell = $("#table_dinner").DataTable().cell(cell_row, 0).data();
@@ -409,10 +379,8 @@ $("#table_dinner tbody").on('click', 'label', function () {
     console.log($(this).attr("class"));
 
     if ($(this).attr("class") == "food-tag-Good-Food" || $(this).attr("class") == "food-tag-Bad-Food"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  cell_data_abstractTag_array[0] + " is " + cell_data_abstractTag_array[1] + " because:" + "<br />";
         
-        // https://www.geeksforgeeks.org/how-to-append-html-code-to-a-div-using-javascript/
         for (var i = 2; i < cell_data_abstractTag_array.length; i++) {
             document.getElementById("history-alert").innerHTML += "• " + cell_data_abstractTag_array[i] + "<br />";
         }
@@ -422,28 +390,24 @@ $("#table_dinner tbody").on('click', 'label', function () {
     }
 
     if ($(this).attr("class") == "High Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Carbohydrates" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "High Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Proteins" + " because:" + "<br />";        
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for more than 40% of calories";
     }
     
     if ($(this).attr("class") == "High Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "High Fats" + " because:" + "<br />";   
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for more than 40% of calories";
     }
 
     if ($(this).attr("class") == "Low Carbohydrates"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Carbohydrates" + " because:" + "<br />"; 
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " carbohydrates accounts for less than 20% of calories";
@@ -451,14 +415,12 @@ $("#table_dinner tbody").on('click', 'label', function () {
     }
 
     if ($(this).attr("class") == "Low Proteins"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Proteins" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " proteins accounts for less than 20% of calories";
     }
 
     if ($(this).attr("class") == "Low Fats"){
-        //https://stackoverflow.com/questions/19438895/add-a-new-line-in-innerhtml
         document.getElementById("history-alert").innerHTML =  food_of_cell + " has " + "Low Fats" + " because:" + "<br />";
         document.getElementById("history-alert").innerHTML += "• " + food_of_cell + 
             " fats accounts for less than 20% of calories";
@@ -481,12 +443,11 @@ $("#table_dinner tbody").on('click', 'button', function () {
 
 
 
-
 /*  --- Food Evaluation Criteria Planner ---  */
 // --- In-Use ---
 $("#food-cutoff-button").click(function() {
 
-    //update user's diet profile object
+    // Update user's diet profile object
     userDietProfile["cutoff_calories"] = $("#cutoff-calories").val();
     userDietProfile["cutoff_carbohydrates"] = $("#cutoff-carbohydrates").val();
     userDietProfile["cutoff_proteins"] = $("#cutoff-proteins").val();
@@ -496,7 +457,6 @@ $("#food-cutoff-button").click(function() {
     userDietProfile["cutoff_magnesium"] = $("#cutoff-magnesium").val();
     userDietProfile["cutoff_vitaminD"] = $("#cutoff-vitaminD").val();
     userDietProfile["cutoff_vitaminB12"] = $("#cutoff-vitaminB12").val();
-
 
     $.post("/food-pref", userDietProfile, null, "json");
 

@@ -1,20 +1,10 @@
 //  ................................................................................
 //  bakeoff2.ai.js
-//  javascript for AI of BakeOff2:
+//  javascript for AI of BakeOff2: NutriPlan 
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 12/03/2019
+//  Last Modified: 12/10/2019
 //  ................................................................................
-
-/*  --- ---  */
-// --- Initialization ---
-
-// --- Variables ---
-
-// --- Functions ---
-
-// --- In-Use ---
-
 
 /*  --- Load Local Food Database ---  */
 // --- Variables ---
@@ -29,7 +19,6 @@ function loadLocalFoodDatabase() {
 
 // --- In-Use ---
 loadLocalFoodDatabase();
-
 
 
 
@@ -91,7 +80,6 @@ loadFoodsDislike();
 
 
 
-
 /*  --- Food Choice Decision Making ---  */
 // --- Variables ---
 var userFood_name;
@@ -139,7 +127,7 @@ function makeEvaluateExplanation(foodName, nutrientName, foodNutrientValue, Nutr
     return explanation;
 }
 
-// Major function:
+// Major function: evaluate a user food from his or her food log 
 function food_EvaluationByAI(userFood) {
     // Get the food's nutrition data
     userFood_name = userFood["name"];
@@ -264,33 +252,27 @@ function food_EvaluationByAI(userFood) {
 
 
 
-
 /*  --- Food Suggestion Decision Making ---  */
 // --- Variables ---
+var allMeals_calories = 0;
+var allMeals_carbohydrates = 0;
+var allMeals_proteins = 0;
+var allMeals_fats = 0;
+
+// From User Diet Profile:
 var aiFood_required_condition = "";
 var aiFood_required_nutrient = "";
-
 
 var dailyPlan_calories = 0; 
 var dailyPlan_carbohydrates = 0; 
 var dailyPlan_proteins = 0;  
 var dailyPlan_fats = 0;  
 
-var allMeals_calories = 0;
-var allMeals_carbohydrates = 0;
-var allMeals_proteins = 0;
-var allMeals_fats = 0;
-
 
 // --- Functions ---
 // Helper Function: generate an explanation for food evaluation
+/* TODO: Migrate the scatterd codes to here */
 function makeSuggestExplanation(foodName, nutrientName, foodNutrientValue, NutrientThreshold, operator){
- /*
-    explanation = foodName + " " + nutrientName + " = " + foodNutrientValue + " " +
-        operator + " allowed " + nutrientName + " = " + NutrientThreshold;
-    
-        return explanation;
- */
     return ("")
 }
 
@@ -298,25 +280,23 @@ function makeSuggestExplanation(foodName, nutrientName, foodNutrientValue, Nutri
 function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
 
 
-    // Level 0: Get Disliked Foods
+    // Get Disliked Foods
     loadFoodsDislike();
 
-    // Level 1: check the requested tag --> if ask high carb, check existence of high carb tag
+    /* Decision Tree Level 1: check the requested tags */
+    // Example: if ask high protein, check existence of high protein tag 
     // Done in flask
 
 
     // Get the food's nutrition criteria
     aiFood_required_nutrient = nutrientCriteria["nutrient"];
-
-    //aiFood_required_nutrient = aiFood_required_nutrient[0].toUpperCase() + aiFood_required_nutrient.substring(1)
-
     aiFood_required_condition = nutrientCriteria["condition"];
-    //aiFood_required_condition = aiFood_required_condition[0].toUpperCase() + aiFood_required_condition.substring(1)
 
-    // decisionData = [aiFood_name];
+
+    /* Decision Tree Level 2: check the number of other same-condition tags for each passed food */
+    // Example: if ask high protein, count number of high tags of other macronutrients
     var aiFoods_othersameConditionTags_numbers = [];
 
-    // Level 2: check the number of existing other same-condition tags for each passed foods.
     for (i = 0; i < aiFoods.length ; i++){
         if (aiFood_required_condition == "high") {
             if (aiFood_required_nutrient == "carbohydrates") {
@@ -361,8 +341,8 @@ function foods_SuggestionByAI(aiFoods, nutrientCriteria) {
         }
     }
 
-    // Level 3: get first three foods based on least amount of other same-condition tags
-    // Ignore any that is also in Foods_dislike
+    /* Decision Tree Level 3: get first three foods that have least number of other same-condition tags */
+    // Ignore any food that is also in Foods_dislike
     var aiFoods_selected = [];
     var otherSameConditionCounter = 0;
     var numberOfFoodSelected = 0;

@@ -3,7 +3,7 @@
 #   Python code of a flask sever for local Web development 
 #   Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 #   Date Created: 10/15/2019
-#   Last Modified: 12/03/2019
+#   Last Modified: 12/10/2019
 #   ................................................................................
 
 import os
@@ -66,43 +66,14 @@ def foodDatabase():
         received_data = None
 
         with open(json_file, 'r') as file:
-            stored_data = json.load(file)  # in python list
+            stored_data = json.load(file)
 
-        # print("STORED DATA ____________________________")
-        # print(type(stored_data))
-        # print(stored_data)
-
-        received_data = request.form.to_dict()  # in python dict
+        received_data = request.form.to_dict()
         received_data["tags"] = json.loads(received_data["tags"])
-        # print("RECEIVED DATA______________________________")
-        # print(type(received_data))
-        # print(received_data)
 
         if not any(temp["name"] == received_data["name"] for temp in stored_data):
         	stored_data.append(received_data.copy())
-        
-        # print("NEW STORED DATA______________________________________")
-        # print(type(stored_data))
-        # print(stored_data)
 
-        # Remove duplicate dicts
-        # https://stackoverflow.com/questions/9427163/remove-duplicate-dict-in-list-in-python
-        # seen = set()
-        # combined_data = []
-        # for dictionary in stored_data:
-        #     dictionary_tuple = tuple(dictionary.items())
-        #     if dictionary_tuple not in seen:
-        #         seen.add(dictionary_tuple)
-        #         combined_data.append(dictionary)
-
-        # print("COMBINED DATA________________________________")
-        # print(type(combined_data))
-        # print(combined_data)
-
-        # dictonary to string
-        # json_combined_data = json.dumps(combined_data)
-        # print(type(json_combined_data))
-        # print(json_combined_data)
         json_stored_data = json.dumps(stored_data)
         with open(json_file, 'w') as file:
             file.seek(0)
@@ -145,7 +116,7 @@ def foodLog():
                 return "ERROR"
 
 def processFoodData(received_data, stored_data, method):
-    #Make sure required fields are present
+    # Make sure required fields are present
     if method == 'POST' and not all(keys in received_data for keys in ["name", "meal", "date", "user", "serving", "calories", "carbohydrates", "proteins", "fats"]):
         raise Exception("not all required data was present in received_data")
     elif method == 'DELETE' and not all(keys in received_data for keys in ["name", "meal", "date", "user"]):
@@ -246,7 +217,6 @@ def foodTagQuery():
 
         with open(json_file, 'r') as file:
             stored_data = json.load(file)
-            # print(stored_data)
 
             received_data = request.form.to_dict()
             print(received_data)
@@ -255,7 +225,6 @@ def foodTagQuery():
             foods_qualified = []
 
             for food_dict in stored_data:
-                # print(food_dict)
                 if target_nutrient == "proteins" and target_condition == "high":
                     if ("High Proteins" in food_dict["tags"]): 
                         foods_qualified.append(food_dict.copy())
@@ -292,4 +261,4 @@ def foodTagQuery():
 if __name__ == "__main__":
     app.debug = True
     # access the website through http://localhost:8080/
-    app.run(host='0.0.0.0', port=8888)
+    app.run(host='0.0.0.0', port=8080)

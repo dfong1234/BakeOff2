@@ -1,9 +1,9 @@
 //	................................................................................
 //  bakeoff2.main.js
-//	javascript for common actions in BakeOff2:
+//	javascript for common actions in BakeOff2: NutriPlan
 //  Written by: Daniel Fong, Mark Chen, Riyya Hari Iyer
 //  Date Created: 10/15/2019
-//  Last Modified: 11/26/2019
+//  Last Modified: 12/10/2019
 //	................................................................................
 
 function changeTab(tabName, color) {
@@ -14,7 +14,7 @@ function changeTab(tabName, color) {
     if (tabName == 'Recipes') window.location.href = 'Recipes.html' + window.location.search;
 }
 
-function openTab(cityName, color) {
+function openTab(tabName, color) {
     // Hide all elements with class="tabcontent" by default */
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -30,11 +30,11 @@ function openTab(cityName, color) {
     }
   
     // Show the specific tab content
-    document.getElementById(cityName).style.display = "block";
-    console.log(document.getElementById(cityName));
+    document.getElementById(tabName).style.display = "block";
+    console.log(document.getElementById(tabName));
 
     // Add the specific color to the button used to open the tab content
-    var tabID = cityName + '-tab'
+    var tabID = tabName + '-tab'
     document.getElementById(tabID).style.backgroundColor = color;
 }
 
